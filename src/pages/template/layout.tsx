@@ -1,12 +1,14 @@
 import { Box } from "@mui/material";
 import React from "react";
-import { Sidebar } from "~/components/layout/sidebar";
+import { LandingSidebar } from "~/components/layout/sidebar";
 
 const TemplateLayout: React.FC = () => {
     return (
-        <Box className="flex h-screen w-screen">
-            <Sidebar />
+        // <Container maxWidth="lg">
+        <Box display={"flex"} flexDirection={"column"} minHeight="100vh" className="">
+            <LandingSidebar />
         </Box>
+        // </Container>
     );
 };
 

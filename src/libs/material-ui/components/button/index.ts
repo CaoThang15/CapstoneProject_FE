@@ -25,6 +25,25 @@ export const buttonThemeConfig: Components = {
             root: {
                 textTransform: "none",
             },
+            outlined: {
+                "&:hover": {},
+            },
+        },
+    },
+    MuiIconButton: {
+        styleOverrides: {
+            root: {
+                borderRadius: "6px",
+                textTransform: "none",
+
+                "&:focus": {
+                    outline: "none",
+                },
+                "&:focus-visible": {
+                    outline: "none",
+                    boxShadow: "none",
+                },
+            },
         },
     },
 };

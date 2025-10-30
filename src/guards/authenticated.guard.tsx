@@ -2,7 +2,6 @@ import { Box } from "@mui/material";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Outlet, useLocation, useNavigate } from "react-router";
-import { Sidebar } from "~/components/layout/sidebar";
 import { Spinner } from "~/components/layout/spinner";
 import i18n from "~/configs/i18n";
 import { Role } from "~/constants/roles";
@@ -49,10 +48,7 @@ const AuthenticatedGuard: React.FC<AuthenticatedGuardProps> = ({ role }) => {
 
     return (
         <Box className="flex h-full">
-            <Sidebar />
-            <Box
-                className={`h-full min-h-screen w-full flex-1 overflow-y-auto ${location.pathname !== "/" ? "p-2" : ""}`}
-            >
+            <Box className={`h-full min-h-screen w-full flex-1 overflow-y-auto`}>
                 <Outlet />
             </Box>
         </Box>

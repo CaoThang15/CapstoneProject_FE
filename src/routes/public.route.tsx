@@ -1,6 +1,7 @@
-import { Route } from "react-router";
 import { lazy } from "react";
-import LandingBackground from "~/pages/landing";
+import { Route } from "react-router";
+import HomePage from "~/pages/homepage/home.page";
+import AppWrapper from "~/wrapper/app.wrapper";
 
 const LoginPage = lazy(() => import("../pages/auth/login.page"));
 const ExamplePage = lazy(() => import("../pages/template/app"));
@@ -14,9 +15,9 @@ export const PublicRoutes = (
             <Route path="form" element={<TemplateForm />} />
             <Route path="layout" element={<TemplateLayout />} />
         </Route>
-        <Route>
+        <Route element={<AppWrapper />}>
             <Route path="login" element={<LoginPage />} />
-            <Route index element={<LandingBackground />} />
+            <Route index element={<HomePage />} />
         </Route>
         <Route path="*" element={<div>Developing</div>} />
     </Route>
