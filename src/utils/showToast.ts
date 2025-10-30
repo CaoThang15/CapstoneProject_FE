@@ -1,7 +1,11 @@
-import { toast } from "react-toastify";
+import { toast, ToastContent } from "react-toastify";
 
-export function success(message: string) {
-    toast.success(message);
+// export function success(message: string) {
+//     toast.success(message);
+// }
+
+export function success(content: ToastContent) {
+    toast.success(content);
 }
 
 export function error(message: string) {

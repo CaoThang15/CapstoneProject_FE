@@ -42,7 +42,7 @@ const LandingHeader: React.FC = () => {
                             className="h-9 border-none px-5 text-gray-600"
                             onClick={() => handleNavigate("/")}
                         >
-                            <Typography className="hidden whitespace-nowrap md:inline">Home</Typography>
+                            <Typography className="hidden whitespace-nowrap font-semibold md:inline">Home</Typography>
                         </Button>
                         <Button
                             sx={{
@@ -52,7 +52,9 @@ const LandingHeader: React.FC = () => {
                             className="h-9 border-none px-5 text-gray-600"
                             onClick={() => handleNavigate("/category")}
                         >
-                            <Typography className="hidden whitespace-nowrap md:inline">Categories</Typography>
+                            <Typography className="hidden whitespace-nowrap font-semibold md:inline">
+                                Categories
+                            </Typography>
                         </Button>
                         {/* <Button
                             sx={{
@@ -61,7 +63,7 @@ const LandingHeader: React.FC = () => {
                             startIcon={<Person />}
                             className="h-9 border-none px-5 text-gray-600"
                         >
-                            <Typography className="hidden whitespace-nowrap md:inline">My Account</Typography>
+                            <Typography className="font-semibold hidden whitespace-nowrap md:inline">My Account</Typography>
                         </Button> */}
                         <Button
                             sx={{
@@ -71,7 +73,9 @@ const LandingHeader: React.FC = () => {
                             className="h-9 border-none px-5 text-gray-600"
                             onClick={() => (window.location.href = "/login")}
                         >
-                            <Typography className="hidden whitespace-nowrap md:inline">Sign in</Typography>
+                            <Typography className="hidden whitespace-nowrap font-semibold md:inline">
+                                Sign in
+                            </Typography>
                         </Button>
                         <Button
                             sx={{
@@ -93,7 +97,7 @@ const LandingHeader: React.FC = () => {
                             }
                             className="h-9 border-none px-5 text-gray-600"
                         >
-                            <Typography className="hidden whitespace-nowrap md:inline">Cart</Typography>
+                            <Typography className="hidden whitespace-nowrap font-semibold md:inline">Cart</Typography>
                         </Button>
                     </Stack>
                 </Box>
