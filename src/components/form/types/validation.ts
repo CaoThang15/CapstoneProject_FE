@@ -46,6 +46,13 @@ export type TValidationNoFutureDate = {
     noFutureDate?: boolean;
 };
 
+export type TValidationMatchField = {
+    /**
+     * Name of the field this value must match (e.g. "password")
+     */
+    matchField?: string;
+};
+
 export type TValidationRules = TValidationRequired &
     TValidationMinLength &
     TValidationMaxLength &

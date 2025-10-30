@@ -34,13 +34,13 @@ const ControllerWrapper = <TFieldValues extends FieldValues, TName extends Path<
     render,
     ...validationProps
 }: ControllerWrapperProps<TFieldValues, TName>) => {
-    const { control, formState } = useFormContext<TFieldValues>();
+    const { control, formState, getValues } = useFormContext<TFieldValues>();
 
     const { i18n, t } = useTranslation();
 
     // Recompute validation rules when language changes
     const rules = React.useMemo(() => {
-        return mapValidationRules<TFieldValues, TName>({ ...validationProps }, t);
+        return mapValidationRules<TFieldValues, TName>({ ...validationProps }, t, getValues);
     }, [i18n.language, validationProps]);
 
     return (

@@ -8,6 +8,16 @@ export type TLoginResponse = {
     message: string;
 };
 
+export type TRegisterRequest = {
+    firstName: string;
+    lastName: string;
+    email: string;
+    password: string;
+    confirmPassword: string;
+    userName: string;
+    phone: string;
+    location: string;
+};
 export type RefreshTokenRequest = {
     refreshToken: string;
 };
