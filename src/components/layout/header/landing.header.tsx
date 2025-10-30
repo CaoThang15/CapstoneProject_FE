@@ -1,10 +1,14 @@
-import { Category, Home, Person, Recycling, ShoppingCart } from "@mui/icons-material";
+import { Category, Home, LoginOutlined, Recycling, ShoppingCart } from "@mui/icons-material";
 import { AppBar, Badge, Box, Button, IconButton, Stack, Typography } from "@mui/material";
 import classNames from "classnames";
 import React from "react";
 
 const LandingHeader: React.FC = () => {
     const [totalCartItems, _] = React.useState<number>(0);
+
+    const handleNavigate = (href: string) => {
+        window.location.href = href;
+    };
 
     return (
         <AppBar position="sticky" sx={{ top: 0 }} className="shadow-m w-full justify-center bg-white px-3 py-2">
@@ -24,14 +28,19 @@ const LandingHeader: React.FC = () => {
                             S-Market
                         </Typography>
                     </Stack>
-                    <Stack flexDirection="row" className="ml-4 basis-2/5 space-x-3" alignItems="center">
+                    <Stack
+                        flexDirection="row"
+                        className="ml-4 basis-2/5 space-x-3"
+                        justifyContent="flex-end"
+                        alignItems="center"
+                    >
                         <Button
                             sx={{
                                 "& .MuiButton-startIcon": { mr: { xs: 0, md: 1 } },
                             }}
                             startIcon={<Home />}
                             className="h-9 border-none px-5 text-gray-600"
-                            onClick={() => (window.location.href = "/")}
+                            onClick={() => handleNavigate("/")}
                         >
                             <Typography className="hidden whitespace-nowrap md:inline">Home</Typography>
                         </Button>
@@ -41,10 +50,11 @@ const LandingHeader: React.FC = () => {
                             }}
                             startIcon={<Category />}
                             className="h-9 border-none px-5 text-gray-600"
+                            onClick={() => handleNavigate("/category")}
                         >
                             <Typography className="hidden whitespace-nowrap md:inline">Categories</Typography>
                         </Button>
-                        <Button
+                        {/* <Button
                             sx={{
                                 "& .MuiButton-startIcon": { mr: { xs: 0, md: 1 } },
                             }}
@@ -52,6 +62,16 @@ const LandingHeader: React.FC = () => {
                             className="h-9 border-none px-5 text-gray-600"
                         >
                             <Typography className="hidden whitespace-nowrap md:inline">My Account</Typography>
+                        </Button> */}
+                        <Button
+                            sx={{
+                                "& .MuiButton-startIcon": { mr: { xs: 0, md: 1 } },
+                            }}
+                            startIcon={<LoginOutlined />}
+                            className="h-9 border-none px-5 text-gray-600"
+                            onClick={() => (window.location.href = "/login")}
+                        >
+                            <Typography className="hidden whitespace-nowrap md:inline">Sign in</Typography>
                         </Button>
                         <Button
                             sx={{

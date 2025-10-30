@@ -8,6 +8,7 @@ const RegisterPage = lazy(() => import("../pages/auth/register/register.page"));
 const ExamplePage = lazy(() => import("../pages/template/app"));
 const TemplateForm = lazy(() => import("../pages/template/form"));
 const TemplateLayout = lazy(() => import("../pages/template/layout"));
+const CategoryPage = lazy(() => import("../pages/category/category.page"));
 
 export const PublicRoutes = (
     <Route>
@@ -20,6 +21,9 @@ export const PublicRoutes = (
             <Route path="login" element={<LoginPage />} />
             <Route path="register" element={<RegisterPage />} />
             <Route index element={<HomePage />} />
+            <Route path="category">
+                <Route index element={<CategoryPage />} />
+            </Route>
         </Route>
         <Route path="*" element={<div>Developing</div>} />
     </Route>
