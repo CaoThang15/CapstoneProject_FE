@@ -4,7 +4,6 @@ export const buttonThemeConfig: Components = {
     MuiButtonBase: {
         styleOverrides: {
             root: {
-                borderRadius: "6px",
                 textTransform: "none",
 
                 "&:focus": {
@@ -24,26 +23,28 @@ export const buttonThemeConfig: Components = {
         styleOverrides: {
             root: {
                 textTransform: "none",
+                borderRadius: "12px",
             },
             outlined: {
                 "&:hover": {},
             },
-        },
-    },
-    MuiIconButton: {
-        styleOverrides: {
-            root: {
-                borderRadius: "6px",
-                textTransform: "none",
-
-                "&:focus": {
-                    outline: "none",
-                },
-                "&:focus-visible": {
-                    outline: "none",
-                    boxShadow: "none",
-                },
+            containedPrimary: {
+                color: "#FFFFFF",
             },
         },
+        variants: [
+            {
+                props: { variant: "contained", color: "light" },
+                style: {
+                    backgroundColor: "#e6fdf7",
+                    color: "#0b8f7b",
+                    border: "1px solid #0b8f7b",
+                    "&:hover": {
+                        backgroundColor: "#d1faf1",
+                        borderColor: "#0a7a68",
+                    },
+                },
+            },
+        ],
     },
 };

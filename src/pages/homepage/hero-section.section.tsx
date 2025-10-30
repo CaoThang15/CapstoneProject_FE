@@ -1,4 +1,4 @@
-import { Compost, LabelOff, Shield, Star } from "@mui/icons-material";
+import { Compost, Shield, Star } from "@mui/icons-material";
 import { Box, Grid, Stack, Typography } from "@mui/material";
 import React from "react";
 import { HighlightCard } from "~/components/common";

@@ -7,7 +7,7 @@ import { LandingHeader } from "~/components/layout/header";
 const AppWrapper: React.FC = () => {
     return (
         // <Box className="flex h-full">
-        <Box className={`h-full min-h-screen w-full overflow-y-auto px-4 py-3`}>
+        <Box className={`flex min-h-screen w-full flex-col`}>
             <LandingHeader />
             <main className="container mx-auto my-3 flex-grow">
                 <Outlet />

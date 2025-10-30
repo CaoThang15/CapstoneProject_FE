@@ -8,7 +8,12 @@ interface HighlightCardProps {
 
 const HighlightCard: React.FC<HighlightCardProps> = ({ startIcon, typography }) => {
     return (
-        <IconButton className="bg-primary cursor-default" disableRipple sx={{ bgcolor: "primary.light" }}>
+        <IconButton
+            className="cursor-default rounded-xl"
+            // color="light"
+            disableRipple
+            sx={{ bgcolor: "primary.light", color: "primary.main" }}
+        >
             <Stack direction="row" spacing={1} alignItems="center" className="me-2">
                 {startIcon}
                 {typography}

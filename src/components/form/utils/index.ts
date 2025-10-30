@@ -17,6 +17,7 @@ export const toBaseOption = <T>(source: T[], options: { label: keyof T; value: k
 export const mapValidationRules = <TFieldValues extends FieldValues, TName extends Path<TFieldValues>>(
     rules: TValidationRules,
     t: TFunction,
+    getValues?: (name: Path<TFieldValues>) => unknown,
 ): RegisterOptions<TFieldValues, TName> => {
     const validation: RegisterOptions<TFieldValues, TName> = {};
 
@@ -114,6 +115,16 @@ export const mapValidationRules = <TFieldValues extends FieldValues, TName exten
             if (!value) return true;
             const today = normalizeStartDate(new Date());
             return new Date(value) <= today ? true : t(i18n.translationKey.dateMustNotBeInTheFuture);
+        };
+    }
+
+    if (rules.matchField) {
+        validation.validate.matchField = (value: unknown) => {
+            if (!rules.matchField || !getValues) return true;
+            const target = getValues(rules.matchField as Path<TFieldValues>);
+            return value === target
+                ? true
+                : t(i18n.translationKey.fieldMustMatchOtherField, { field: rules.matchField });
         };
     }
 

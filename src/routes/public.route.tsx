@@ -3,7 +3,8 @@ import { Route } from "react-router";
 import HomePage from "~/pages/homepage/home.page";
 import AppWrapper from "~/wrapper/app.wrapper";
 
-const LoginPage = lazy(() => import("../pages/auth/login.page"));
+const LoginPage = lazy(() => import("../pages/auth/login/login.page"));
+const RegisterPage = lazy(() => import("../pages/auth/register/register.page"));
 const ExamplePage = lazy(() => import("../pages/template/app"));
 const TemplateForm = lazy(() => import("../pages/template/form"));
 const TemplateLayout = lazy(() => import("../pages/template/layout"));
@@ -17,6 +18,7 @@ export const PublicRoutes = (
         </Route>
         <Route element={<AppWrapper />}>
             <Route path="login" element={<LoginPage />} />
+            <Route path="register" element={<RegisterPage />} />
             <Route index element={<HomePage />} />
         </Route>
         <Route path="*" element={<div>Developing</div>} />

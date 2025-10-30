@@ -1,5 +1,5 @@
 import { AddShoppingCart } from "@mui/icons-material";
-import { Box, Button, IconButton, Rating, Typography } from "@mui/material";
+import { Box, Button, Rating, Typography } from "@mui/material";
 import React from "react";
 import { formatCurrencyVND } from "~/utils/currency";
 
@@ -31,15 +31,7 @@ const ProductSummary: React.FC = () => {
                 Seller: <span className="font-semibold">Apple</span>
             </Typography>
             <Typography className="mt-1 text-sm text-gray-500">Location: Hanoi</Typography>
-            <Button
-                startIcon={<AddShoppingCart />}
-                variant="contained"
-                fullWidth
-                sx={{
-                    bgcolor: "primary.light",
-                }}
-                className="mt-3"
-            >
+            <Button startIcon={<AddShoppingCart />} variant="contained" fullWidth color="light" className="mt-3">
                 Add to Cart
             </Button>
         </Box>

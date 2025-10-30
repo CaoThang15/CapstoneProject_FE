@@ -2,11 +2,11 @@ import { PaletteOptions } from "@mui/material";
 
 export const themePalette: PaletteOptions = {
     primary: {
-        main: "#1AAE6F", // main green button
-        light: "#66D1B5",
+        main: "#0b8f7b",
+        light: "#e6fdf7",
     },
     secondary: {
-        main: "#2563EB", // blue accent
+        main: "#2563EB",
         light: "#60A5FA",
     },
     tertiary: {

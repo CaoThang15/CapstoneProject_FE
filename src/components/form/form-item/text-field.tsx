@@ -5,6 +5,7 @@ import { ControllerWrapper, FormErrorMessage } from "../common";
 import { BaseFormItemProps } from "../types/form-item";
 import {
     TValidationEmail,
+    TValidationMatchField,
     TValidationMaxLength,
     TValidationMinLength,
     TValidationPassword,
@@ -20,7 +21,8 @@ type TextFieldValidationRules = TValidationMinLength &
     TValidationMaxLength &
     TValidationPattern &
     TValidationEmail &
-    TValidationPassword;
+    TValidationPassword &
+    TValidationMatchField;
 
 export type TextFieldFormItemProps = BaseFormItemProps &
     TextFieldUIProps &

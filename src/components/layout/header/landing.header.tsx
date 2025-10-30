@@ -4,37 +4,25 @@ import classNames from "classnames";
 import React from "react";
 
 const LandingHeader: React.FC = () => {
-    const [totalCartItems, setTotalCartItems] = React.useState<number>(0);
+    const [totalCartItems, _] = React.useState<number>(0);
 
     return (
-        <AppBar
-            position="sticky"
-            sx={{ top: 0 }}
-            className="shadow-m w-full justify-center rounded-xl bg-white px-3 py-2"
-        >
+        <AppBar position="sticky" sx={{ top: 0 }} className="shadow-m w-full justify-center bg-white px-3 py-2">
             <Box className="container mx-auto">
                 <Box className="flex basis-3/5 items-center justify-between">
-                    <Stack direction={"row"} spacing={2} alignItems="center" className="pe-4">
-                        <IconButton
-                            disableRipple
-                            size="large"
-                            edge="start"
-                            color="inherit"
-                            aria-label="menu"
-                            sx={{ mr: 2 }}
-                        >
+                    <Stack
+                        direction={"row"}
+                        spacing={2}
+                        alignItems="center"
+                        className="cursor-pointer pe-4"
+                        onClick={() => (window.location.href = "/")}
+                    >
+                        <IconButton disableRipple size="large" edge="start" aria-label="menu" sx={{ mr: 2 }}>
                             <Recycling />
                         </IconButton>
-                        <Typography variant="h6" className="w-1/2 whitespace-nowrap">
+                        <Typography variant="h6" className="w-1/2 whitespace-nowrap text-gray-600">
                             S-Market
                         </Typography>
-                        {/* <Box display={{ xs: "none", lg: "block" }} className="w-full">
-                            <SearchBox
-                                iconPosition="start"
-                                className="hidden md:block"
-                                onChange={(value) => console.log(value)}
-                            />
-                        </Box> */}
                     </Stack>
                     <Stack flexDirection="row" className="ml-4 basis-2/5 space-x-3" alignItems="center">
                         <Button
@@ -42,7 +30,7 @@ const LandingHeader: React.FC = () => {
                                 "& .MuiButton-startIcon": { mr: { xs: 0, md: 1 } },
                             }}
                             startIcon={<Home />}
-                            className="h-9 rounded-xl border-gray-300 px-5"
+                            className="h-9 border-none px-5 text-gray-600"
                             onClick={() => (window.location.href = "/")}
                         >
                             <Typography className="hidden whitespace-nowrap md:inline">Home</Typography>
@@ -52,7 +40,7 @@ const LandingHeader: React.FC = () => {
                                 "& .MuiButton-startIcon": { mr: { xs: 0, md: 1 } },
                             }}
                             startIcon={<Category />}
-                            className="h-9 rounded-xl border-gray-300 px-5"
+                            className="h-9 border-none px-5 text-gray-600"
                         >
                             <Typography className="hidden whitespace-nowrap md:inline">Categories</Typography>
                         </Button>
@@ -61,7 +49,7 @@ const LandingHeader: React.FC = () => {
                                 "& .MuiButton-startIcon": { mr: { xs: 0, md: 1 } },
                             }}
                             startIcon={<Person />}
-                            className="h-9 rounded-xl border-gray-300 px-5"
+                            className="h-9 border-none px-5 text-gray-600"
                         >
                             <Typography className="hidden whitespace-nowrap md:inline">My Account</Typography>
                         </Button>
@@ -83,7 +71,7 @@ const LandingHeader: React.FC = () => {
                                     <ShoppingCart fontSize="small" />
                                 </Badge>
                             }
-                            className="h-9 rounded-xl border-gray-300 px-5"
+                            className="h-9 border-none px-5 text-gray-600"
                         >
                             <Typography className="hidden whitespace-nowrap md:inline">Cart</Typography>
                         </Button>

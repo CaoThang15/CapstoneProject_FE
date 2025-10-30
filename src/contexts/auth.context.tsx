@@ -36,8 +36,8 @@ export const AuthContextProvider: React.FC<PropsWithChildren> = ({ children }) =
 
     const loadUserInfor = React.useCallback(async () => {
         try {
-            const response = await authService.getCurrentUser();
-            setUser(response.Data);
+            // const response = await authService.getCurrentUser();
+            // setUser(response.Data);
         } catch {
             setUser(null);
         }
