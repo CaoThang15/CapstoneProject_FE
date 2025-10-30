@@ -3,7 +3,6 @@ import { callApi } from "~/libs/axios/request";
 import { HttpMethod, IBaseApiResponse } from "~/libs/axios/types";
 import { LogOutResponse, RefreshTokenResponse, ResetPasswordResponse, TLoginRequest, TLoginResponse } from "./types";
 import { Staff } from "~/entities";
-import { UserPermission } from "~/entities/user-permission";
 
 const login = async (params: TLoginRequest): Promise<IBaseApiResponse<TLoginResponse>> => {
     return await callApi<TLoginResponse>({
@@ -36,13 +35,6 @@ const logout = async (): Promise<IBaseApiResponse<LogOutResponse>> => {
     });
 };
 
-const getUserPermission = async (): Promise<IBaseApiResponse<UserPermission>> => {
-    return await callApi<UserPermission>({
-        url: endpoints.auth.userPermission,
-        method: HttpMethod.GET,
-    });
-};
-
 const resetPassword = async (payload: { email: string }): Promise<IBaseApiResponse<ResetPasswordResponse>> => {
     return await callApi<ResetPasswordResponse>({
         url: endpoints.auth.resetPassword,
@@ -56,6 +48,5 @@ export const authService = {
     logout,
     refreshToken,
     getCurrentUser,
-    getUserPermission,
     resetPassword,
 };

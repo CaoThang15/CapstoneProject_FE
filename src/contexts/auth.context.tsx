@@ -8,13 +8,11 @@ import { showToast } from "~/utils";
 import i18n from "~/configs/i18n";
 import { useTranslation } from "react-i18next";
 import { Staff } from "~/entities/person-info.entity";
-import { UserPermission } from "~/entities/user-permission";
 
 export type AuthContextProps = {
     isLoading: boolean;
     isInitialized: boolean;
     user: Staff | null;
-    userPermission?: UserPermission;
     login: (params: TLoginRequest) => Promise<void>;
     logout: () => void;
 };
@@ -33,7 +31,6 @@ export const AuthContextProvider: React.FC<PropsWithChildren> = ({ children }) =
     const { t } = useTranslation();
     const [isLoading, setIsLoading] = React.useState<boolean>(true);
     const [user, setUser] = React.useState<Staff | null>(null);
-    const [userPermission, setUserPermission] = React.useState<UserPermission | null>(null);
     const [isInitialized, setIsInitialized] = React.useState<boolean>(false);
     const navigate = useNavigate();
 
@@ -43,15 +40,6 @@ export const AuthContextProvider: React.FC<PropsWithChildren> = ({ children }) =
             setUser(response.Data);
         } catch {
             setUser(null);
-        }
-    }, []);
-
-    const loadUserPermission = React.useCallback(async () => {
-        try {
-            const response = await authService.getUserPermission();
-            setUserPermission(response.Data);
-        } catch {
-            setUserPermission(null);
         }
     }, []);
 
@@ -95,7 +83,7 @@ export const AuthContextProvider: React.FC<PropsWithChildren> = ({ children }) =
         setIsInitialized(false);
         setIsLoading(true);
 
-        await Promise.all([loadUserInfor(), loadUserPermission()]);
+        await Promise.all([loadUserInfor()]);
 
         setIsInitialized(true);
         setIsLoading(false);
@@ -110,11 +98,10 @@ export const AuthContextProvider: React.FC<PropsWithChildren> = ({ children }) =
             isLoading,
             isInitialized,
             user,
-            userPermission,
             login: handleLogin,
             logout: handleLogout,
         }),
-        [isLoading, isInitialized, user, userPermission, handleLogin, handleLogout],
+        [isLoading, isInitialized, user, handleLogin, handleLogout],
     );
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

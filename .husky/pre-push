@@ -1,2 +1,2 @@
-yarn lint
-yarn run build
+npm run lint
+npm run build

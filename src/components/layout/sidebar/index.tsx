@@ -12,7 +12,6 @@ const UserInfoSummary: React.FC = () => {
     const auth = useAuth();
 
     const fullName: string = auth?.user?.name ?? "N/A";
-    const department = auth?.userPermission?.departments[0] ?? "N/A";
 
     const initials =
         fullName
@@ -31,7 +30,7 @@ const UserInfoSummary: React.FC = () => {
                     {fullName}
                 </Typography>
                 <Typography variant="body2" color="text.secondary" className="truncate">
-                    {`${department}`}
+                    {`N/A`}
                 </Typography>
             </Box>
         </Box>
@@ -57,7 +56,7 @@ export const Sidebar: React.FC = () => {
                 }));
 
         return filterTree(sidebarTree);
-    }, [auth?.userPermission]);
+    }, [auth]);
 
     return (
         <Drawer
