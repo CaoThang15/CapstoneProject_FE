@@ -29,8 +29,10 @@ createRoot(document.getElementById("root")!).render(
                         <ApplicationRoutes />
                         <ToastContainer
                             position="top-right"
-                            autoClose={3000}
-                            hideProgressBar={false}
+                            autoClose={1000000}
+                            icon={<></>}
+                            closeButton={false}
+                            hideProgressBar={true}
                             newestOnTop={false}
                             closeOnClick
                             rtl={false}
@@ -39,6 +41,10 @@ createRoot(document.getElementById("root")!).render(
                             pauseOnHover
                             theme="light"
                             transition={Zoom}
+                            toastStyle={{
+                                padding: 8,
+                                minHeight: "auto",
+                            }}
                         />
                     </MaterialUIThemeProvider>
                 </AuthContextProvider>

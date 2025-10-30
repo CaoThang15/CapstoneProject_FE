@@ -9,6 +9,8 @@ const ExamplePage = lazy(() => import("../pages/template/app"));
 const TemplateForm = lazy(() => import("../pages/template/form"));
 const TemplateLayout = lazy(() => import("../pages/template/layout"));
 const CategoryPage = lazy(() => import("../pages/category/category.page"));
+const ProductCategoryPage = lazy(() => import("../pages/category/(path)/product-category.page"));
+const ProductDetailPage = lazy(() => import("../pages/product/product-detail.page"));
 
 export const PublicRoutes = (
     <Route>
@@ -23,6 +25,10 @@ export const PublicRoutes = (
             <Route index element={<HomePage />} />
             <Route path="category">
                 <Route index element={<CategoryPage />} />
+                <Route path=":slug" element={<ProductCategoryPage />} />
+            </Route>
+            <Route path="product">
+                <Route path=":id" element={<ProductDetailPage />} />
             </Route>
         </Route>
         <Route path="*" element={<div>Developing</div>} />
