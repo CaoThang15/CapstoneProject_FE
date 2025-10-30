@@ -64,4 +64,5 @@ export type TValidationRules = TValidationRequired &
     TValidationMinDate &
     TValidationMaxDate &
     TValidationNoPastDate &
-    TValidationNoFutureDate;
+    TValidationNoFutureDate &
+    TValidationMatchField;

@@ -13,7 +13,6 @@ import {
 } from "@mui/icons-material";
 import { Box, Button, Divider, Grid, Stack, Typography } from "@mui/material";
 import React from "react";
-import { useTranslation } from "react-i18next";
 import RegisterImage from "~/assets/images/register-page-image.png";
 import { HighlightCard } from "~/components/common";
 import DynamicForm from "~/components/form/dynamic-form";
@@ -24,7 +23,6 @@ import { useAuth } from "~/contexts/auth.context";
 import { TRegisterRequest } from "~/services/auth/types";
 
 const RegisterPage: React.FC = () => {
-    const { t } = useTranslation();
     const { login, isLoading } = useAuth();
 
     const form = useForm<TRegisterRequest>({});
