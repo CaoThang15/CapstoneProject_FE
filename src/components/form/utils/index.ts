@@ -122,7 +122,7 @@ export const mapValidationRules = <TFieldValues extends FieldValues, TName exten
         validation.validate.matchField = (value: unknown) => {
             if (!rules.matchField || !getValues) return true;
             const target = getValues(rules.matchField as Path<TFieldValues>);
-            return value === target ? true : "Mismatch";
+            return value === target ? true : "Vui lòng nhập đúng giá trị";
         };
     }
 

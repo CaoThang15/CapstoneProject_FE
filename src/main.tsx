@@ -7,6 +7,7 @@ import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router";
 import { ToastContainer, Zoom } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import "./toast.css";
 import "~/configs/i18n";
 import { AuthContextProvider } from "./contexts/auth.context.tsx";
 import { HttpContextProvider } from "./contexts/http.context.tsx";
@@ -30,7 +31,7 @@ createRoot(document.getElementById("root")!).render(
                             position="top-right"
                             autoClose={3000}
                             closeButton={false}
-                            hideProgressBar={true}
+                            hideProgressBar
                             newestOnTop={false}
                             closeOnClick
                             rtl={false}
@@ -40,9 +41,17 @@ createRoot(document.getElementById("root")!).render(
                             theme="light"
                             transition={Zoom}
                             toastStyle={{
-                                padding: "8px 16px",
+                                padding: "12px 20px",
+                                borderRadius: "12px",
                                 minHeight: "auto",
+                                background: "#fff",
+                                color: "#2F3645",
+                                fontSize: "0.95rem",
+                                fontWeight: 500,
+                                boxShadow: "0 2px 10px rgba(0, 0, 0, 0.08)",
+                                border: "1px solid #f0f0f0",
                             }}
+                            toastClassName="toast-body"
                         />
                     </MaterialUIThemeProvider>
                 </AuthContextProvider>

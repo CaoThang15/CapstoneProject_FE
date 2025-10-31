@@ -100,6 +100,7 @@ export const TextFieldFormItem: React.FC<TextFieldFormItemProps> = ({
     pattern = undefined,
     isPassword = false,
     required = false,
+    matchField = undefined,
     ...props
 }) => {
     const [showPassword, setShowPassword] = React.useState(false);
@@ -115,6 +116,7 @@ export const TextFieldFormItem: React.FC<TextFieldFormItemProps> = ({
             maxLength={maxLength}
             minLength={minLength}
             pattern={pattern}
+            matchField={matchField}
             required={required}
             defaultValue={defaultValue ?? ""}
             render={({ field, error }) => (
@@ -122,7 +124,7 @@ export const TextFieldFormItem: React.FC<TextFieldFormItemProps> = ({
                     <TextField
                         {...field}
                         value={field.value ?? ""}
-                        label={label}
+                        label={""}
                         placeholder={placeholder}
                         required={required}
                         fullWidth={fullWidth}

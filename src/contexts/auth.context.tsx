@@ -3,18 +3,28 @@ import React, { PropsWithChildren } from "react";
 import { useNavigate } from "react-router";
 import { IBaseApiResponse } from "~/libs/axios/types";
 import { authService } from "~/services/auth";
-import { TLoginRequest, TLoginResponse } from "~/services/auth/types";
+import {
+    TLoginRequest,
+    TLoginResponse,
+    TRegisterRequest,
+    TVerifyLoginOtpResponse,
+    TVerifyOtpRequest,
+} from "~/services/auth/types";
 import { showToast } from "~/utils";
 import i18n from "~/configs/i18n";
 import { useTranslation } from "react-i18next";
-import { Staff } from "~/entities/person-info.entity";
+import { User } from "~/entities";
+import { getAxiosErrorMessageKey } from "~/libs/axios/helper";
 
 export type AuthContextProps = {
     isLoading: boolean;
     isInitialized: boolean;
-    user: Staff | null;
+    user: User | null;
     login: (params: TLoginRequest) => Promise<void>;
     logout: () => void;
+    verifyLoginOtp: (params: TVerifyOtpRequest) => Promise<void>;
+    register: (params: TRegisterRequest) => Promise<void>;
+    verifyRegisterOtp: (params: TVerifyOtpRequest) => Promise<void>;
 };
 
 const defaultProvider: AuthContextProps = {
@@ -23,21 +33,24 @@ const defaultProvider: AuthContextProps = {
     user: null,
     login: () => Promise.resolve(),
     logout: () => {},
+    verifyLoginOtp: () => Promise.resolve(),
+    verifyRegisterOtp: () => Promise.resolve(),
+    register: () => Promise.resolve(),
 };
 
 export const AuthContext = React.createContext(defaultProvider);
 
 export const AuthContextProvider: React.FC<PropsWithChildren> = ({ children }) => {
     const { t } = useTranslation();
-    const [isLoading, setIsLoading] = React.useState<boolean>(true);
-    const [user, setUser] = React.useState<Staff | null>(null);
+    const [isLoading, setIsLoading] = React.useState<boolean>(false);
+    const [user, setUser] = React.useState<User | null>(null);
     const [isInitialized, setIsInitialized] = React.useState<boolean>(false);
     const navigate = useNavigate();
 
     const loadUserInfor = React.useCallback(async () => {
         try {
-            // const response = await authService.getCurrentUser();
-            // setUser(response.Data);
+            const response = await authService.getCurrentUser();
+            setUser(response.data);
         } catch {
             setUser(null);
         }
@@ -46,22 +59,30 @@ export const AuthContextProvider: React.FC<PropsWithChildren> = ({ children }) =
     const handleLogin = React.useCallback(async (params: TLoginRequest) => {
         try {
             setIsLoading(true);
-
             await authService.login(params);
-            await initializeUser();
-
-            showToast.success(t(i18n.translationKey.loginSuccessfully));
-
-            const redirectUrl = sessionStorage.getItem("redirectUrl");
-            sessionStorage.removeItem("redirectUrl");
-            navigate(redirectUrl ?? "/");
         } catch (error) {
             const axiosError = error as AxiosError<IBaseApiResponse<TLoginResponse>>;
+
             if (!axiosError.response) {
                 showToast.error(t(i18n.translationKey.somethingWentWrong));
-                return;
+            } else {
+                showToast.error(t(axiosError.response.data.message));
             }
-            showToast.error(t(axiosError.response.data.message));
+
+            throw error;
+        } finally {
+            setIsLoading(false);
+        }
+    }, []);
+
+    const handleRegister = React.useCallback(async (params: TRegisterRequest) => {
+        try {
+            setIsLoading(true);
+            await authService.register(params);
+        } catch (error) {
+            console.log(error);
+            showToast.error(getAxiosErrorMessageKey(error));
+            throw error;
         } finally {
             setIsLoading(false);
         }
@@ -71,9 +92,35 @@ export const AuthContextProvider: React.FC<PropsWithChildren> = ({ children }) =
         try {
             setIsLoading(true);
             await authService.logout();
-            navigate("/login");
+            navigate("/");
             showToast.success(t(i18n.translationKey.logoutSuccessfully));
             setUser(null);
+        } finally {
+            setIsLoading(false);
+        }
+    }, []);
+
+    const handleVerifyLoginOtp = React.useCallback(async (params: TVerifyOtpRequest) => {
+        try {
+            setIsLoading(true);
+            await authService.verifyLoginOtp(params);
+            await initializeUser();
+        } catch (error) {
+            showToast.error(getAxiosErrorMessageKey(error));
+            throw error;
+        } finally {
+            setIsLoading(false);
+        }
+    }, []);
+
+    const handleVerifyRegisterOtp = React.useCallback(async (params: TVerifyOtpRequest) => {
+        try {
+            setIsLoading(true);
+            await authService.verifyRegisterOtp(params);
+            await initializeUser();
+        } catch (error) {
+            showToast.error(getAxiosErrorMessageKey(error));
+            throw error;
         } finally {
             setIsLoading(false);
         }
@@ -100,8 +147,20 @@ export const AuthContextProvider: React.FC<PropsWithChildren> = ({ children }) =
             user,
             login: handleLogin,
             logout: handleLogout,
+            verifyLoginOtp: handleVerifyLoginOtp,
+            verifyRegisterOtp: handleVerifyRegisterOtp,
+            register: handleRegister,
         }),
-        [isLoading, isInitialized, user, handleLogin, handleLogout],
+        [
+            isLoading,
+            isInitialized,
+            user,
+            handleLogin,
+            handleLogout,
+            handleVerifyLoginOtp,
+            handleVerifyRegisterOtp,
+            handleRegister,
+        ],
     );
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

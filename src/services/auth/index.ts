@@ -1,14 +1,33 @@
 import { endpoints } from "~/constants/endpoints";
 import { callApi } from "~/libs/axios/request";
 import { HttpMethod, IBaseApiResponse } from "~/libs/axios/types";
-import { LogOutResponse, RefreshTokenResponse, ResetPasswordResponse, TLoginRequest, TLoginResponse } from "./types";
-import { Staff } from "~/entities";
+import {
+    LogOutResponse,
+    RefreshTokenResponse,
+    ResetPasswordResponse,
+    TLoginRequest,
+    TLoginResponse,
+    TRegisterRequest,
+    TRegisterResponse,
+    TVerifyLoginOtpResponse,
+    TVerifyOtpRequest,
+    TVerifyRegisterOtpResponse,
+} from "./types";
+import { User } from "~/entities";
 
 const login = async (params: TLoginRequest): Promise<IBaseApiResponse<TLoginResponse>> => {
     return await callApi<TLoginResponse>({
         url: endpoints.auth.login,
         method: HttpMethod.POST,
         data: params,
+    });
+};
+
+const verifyLoginOtp = async (payload: TVerifyOtpRequest): Promise<IBaseApiResponse<TVerifyLoginOtpResponse>> => {
+    return await callApi<TVerifyLoginOtpResponse>({
+        url: endpoints.auth.verifyLoginOtp,
+        method: HttpMethod.POST,
+        data: payload,
     });
 };
 
@@ -20,8 +39,8 @@ const refreshToken = async (): Promise<IBaseApiResponse<RefreshTokenResponse>> =
     });
 };
 
-const getCurrentUser = async (): Promise<IBaseApiResponse<Staff>> => {
-    return await callApi<Staff>({
+const getCurrentUser = async (): Promise<IBaseApiResponse<User>> => {
+    return await callApi<User>({
         url: endpoints.auth.currentUser,
         method: HttpMethod.GET,
     });
@@ -43,10 +62,29 @@ const resetPassword = async (payload: { email: string }): Promise<IBaseApiRespon
     });
 };
 
+const register = async (payload: TRegisterRequest): Promise<IBaseApiResponse<TRegisterResponse>> => {
+    return await callApi<TRegisterResponse>({
+        url: endpoints.auth.register,
+        method: HttpMethod.POST,
+        data: payload,
+    });
+};
+
+const verifyRegisterOtp = async (payload: TVerifyOtpRequest): Promise<IBaseApiResponse<TVerifyRegisterOtpResponse>> => {
+    return await callApi<TVerifyRegisterOtpResponse>({
+        url: endpoints.auth.verifyRegisterOtp,
+        method: HttpMethod.POST,
+        data: payload,
+    });
+};
+
 export const authService = {
     login,
     logout,
     refreshToken,
     getCurrentUser,
     resetPassword,
+    register,
+    verifyLoginOtp,
+    verifyRegisterOtp,
 };
