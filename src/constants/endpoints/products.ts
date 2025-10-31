@@ -6,4 +6,6 @@ export const productsEndpoints = {
     getProductBySlug: (slug: string) => `${productEndpointPrefix}/${slug}`,
     createProduct: `${productEndpointPrefix}`,
     updateProduct: (id: number) => `${productEndpointPrefix}/${id}`,
+    generateProductDescription: `/ai/suggest-description`,
+    deleteProduct: (productId: number) => `${productEndpointPrefix}/${productId}`,
 };

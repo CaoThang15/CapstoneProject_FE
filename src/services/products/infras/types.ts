@@ -59,3 +59,16 @@ export interface UpdateProductRequest {
     sharedFiles: SharedFile[];
     properties: UpdateProductProperty[];
 }
+
+export interface GenerateProductDescriptionRequest {
+    categoryName?: string;
+    name?: string;
+    price: number;
+    description?: string;
+    note?: string;
+    isNew: boolean;
+    properties?: {
+        value: string;
+        name: string;
+    }[];
+}

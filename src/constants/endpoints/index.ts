@@ -6,6 +6,7 @@ import { productsEndpoints } from "./products";
 import { publicApiEndpoints } from "./public-api";
 import { uploadFileEndpoints } from "./upload-file";
 import { usersEndpoints } from "./users";
+import { voucherEndpoints } from "./voucher";
 
 export const endpoints = {
     uploadFile: uploadFileEndpoints,
@@ -15,5 +16,6 @@ export const endpoints = {
     products: productsEndpoints,
     users: usersEndpoints,
     orders: ordersEndpoints,
+    vouchers: voucherEndpoints,
     notifications: notificationsEndpoints,
 };

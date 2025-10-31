@@ -1,5 +1,16 @@
 import {
+    CheckCircle as CheckCircleIcon,
+    Circle as CircleIcon,
+    Delete as DeleteIcon,
+    Info as InfoIcon,
+    Notifications as NotificationsIcon,
+    ShoppingCart as OrderIcon,
+    Payment as PaymentIcon,
+    LocalOffer as VoucherIcon,
+} from "@mui/icons-material";
+import {
     Box,
+    Button,
     CircularProgress,
     Divider,
     IconButton,
@@ -10,29 +21,17 @@ import {
     Popover,
     Stack,
     Typography,
-    Chip,
-    Button,
 } from "@mui/material";
-import {
-    Notifications as NotificationsIcon,
-    Delete as DeleteIcon,
-    Circle as CircleIcon,
-    CheckCircle as CheckCircleIcon,
-    Info as InfoIcon,
-    LocalOffer as VoucherIcon,
-    ShoppingCart as OrderIcon,
-    Payment as PaymentIcon,
-} from "@mui/icons-material";
+import dayjs from "dayjs";
 import React from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import {
     useInfiniteQueryNotifications,
-    useMutationMarkRead,
-    useMutationMarkAllRead,
     useMutationDeleteNotification,
+    useMutationMarkAllRead,
+    useMutationMarkRead,
 } from "~/services/notifications/hooks";
 import { Notification } from "~/services/notifications/infras";
-import dayjs from "dayjs";
 
 const NotificationTypeIcon: React.FC<{ type: Notification["type"]; isRead: boolean }> = ({ type, isRead }) => {
     const iconColor = isRead ? "action" : "primary";

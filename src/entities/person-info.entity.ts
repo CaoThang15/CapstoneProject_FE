@@ -1,7 +1,7 @@
 import { Role } from "~/constants/roles";
 import { BaseEntity } from "./base.entity";
 
-export interface User extends BaseEntity {
+export class User extends BaseEntity {
     address: string;
     avatar: string;
     email: string;

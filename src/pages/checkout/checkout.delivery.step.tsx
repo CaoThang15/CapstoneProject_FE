@@ -24,7 +24,7 @@ export const DeliveryStep: React.FC = () => {
             </Typography>
             <Grid container spacing={1} mt={1}>
                 <Grid size={{ xs: 12, md: 6 }}>
-                    <FormItem render="text-input" name="fullName" label="Full Name" required></FormItem>
+                    <FormItem render="text-input" name="name" label="Full Name" required></FormItem>
                 </Grid>
                 <Grid size={{ xs: 12, md: 6 }}>
                     <FormItem
