@@ -3,7 +3,7 @@ import { Box, Button, Chip, Stack, Typography } from "@mui/material";
 import { ColDef, ICellRendererParams } from "ag-grid-community";
 import dayjs from "dayjs";
 import React from "react";
-import { BoxSection, ImageRenderer } from "~/components/common";
+import { BoxSection } from "~/components/common";
 import { AgDataGrid, useAgGrid } from "~/components/common/ag-grid";
 import { SearchBox } from "~/components/common/search-box";
 import DynamicForm from "~/components/form/dynamic-form";
@@ -39,33 +39,7 @@ const ProductManagementPage: React.FC = () => {
     });
 
     const colDefs: ColDef<Product>[] = [
-        {
-            headerName: "Product ID",
-            field: "id",
-            flex: 0.5,
-            cellClass: "ag-cell-center",
-        },
-
-        {
-            headerName: "Name",
-            flex: 1.5,
-            cellStyle: { whiteSpace: "normal", lineHeight: "1.4" },
-            autoHeight: true,
-            cellRenderer: (params: ICellRendererParams<Product>) => {
-                return (
-                    <Box className="flex items-center gap-3 p-2">
-                        <ImageRenderer
-                            src={params.data.sharedFiles?.[0]?.path}
-                            alt={params.data.name}
-                            className="h-[100px] w-[100px] object-cover"
-                        />
-                        <Typography className="break-words" sx={{ whiteSpace: "normal", wordBreak: "break-word" }}>
-                            {params.data.name}
-                        </Typography>
-                    </Box>
-                );
-            },
-        },
+        { headerName: "Name", field: "name", flex: 2, cellClass: "ag-cell-center" },
 
         {
             field: "price",
@@ -102,7 +76,7 @@ const ProductManagementPage: React.FC = () => {
             headerName: "Actions",
             cellRenderer: (params: ICellRendererParams<Product>) => {
                 return (
-                    <Stack direction={"row"} spacing={1} className="h-full items-center justify-center">
+                    <Stack direction={"row"} spacing={1} className="justify-center">
                         <Button
                             variant="contained"
                             onClick={() => (window.location.href = `/seller/products/update/${params.data.id}`)}

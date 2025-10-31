@@ -9,13 +9,11 @@ import { useForm } from "~/components/form/hooks/use-form";
 import { EMAIL_PATTERN, PHONE_NUMBER_PATTERN } from "~/components/form/validation/pattern";
 import { CloudinaryFolder } from "~/constants/enums";
 import { useAuth } from "~/contexts/auth.context";
-import { useQueryGetInfinityOrders } from "~/services/orders/hooks/queries";
 import { useMutationUploadImage } from "~/services/public-api/upload-file/hooks/mutation";
 import { UploadedFile } from "~/services/public-api/upload-file/infras";
 import { UpdateProfileRequest } from "~/services/users/infras";
 import { useMutationUpdateProfile } from "~/services/users/infras/hooks/mutation";
 import { showToast } from "~/utils";
-import { formatCurrencyVND } from "~/utils/currency";
 
 type UpdateProfileFormValue = UpdateProfileRequest & {
     uploadedFile: UploadedFile;
@@ -26,9 +24,6 @@ const ProfilePage: React.FC = () => {
     const [isEditing, setIsEditing] = React.useState<boolean>(false);
     const { mutateAsync: uploadImage } = useMutationUploadImage();
     const { mutateAsync: updateProfile, isPending } = useMutationUpdateProfile();
-    const {
-        data: { items: orders },
-    } = useQueryGetInfinityOrders({ page: 1, pageSize: 3 });
 
     const form = useForm<UpdateProfileFormValue>({
         defaultValues: {
@@ -120,6 +115,20 @@ const ProfilePage: React.FC = () => {
                                         <Typography variant="body1">{user.phone ?? "N/A"} </Typography>
                                     </Box>
                                 )}
+
+                                {/* <Box className="mt-4 flex gap-2">
+                                    <Button variant="contained" startIcon={<Upload />}>
+                                        Upload new photo
+                                    </Button>
+                                    <Button
+                                        disabled={isEditing}
+                                        variant="outlined"
+                                        color="inherit"
+                                        startIcon={<Delete />}
+                                    >
+                                        Remove
+                                    </Button>
+                                </Box> */}
                             </Stack>
                         </Stack>
 
@@ -217,23 +226,6 @@ const ProfilePage: React.FC = () => {
             </DynamicForm>
             <BoxSection>
                 <Typography variant="h6">Recent order</Typography>
-                <Stack spacing={1} className="mt-2">
-                    {orders.map((order) => (
-                        <BoxSection key={order.id} className="flex items-center justify-between border-gray-200">
-                            <ImageRenderer
-                                src={order.orderDetails[0].productImagePath}
-                                className="h-10 w-10 object-cover"
-                            />
-                            <Stack spacing={1} className="flex-1 px-3">
-                                <Typography>{order.orderDetails[0].productName}</Typography>
-                                <Typography>
-                                    Order #{order.id} - {order.statusName}
-                                </Typography>
-                            </Stack>
-                            <Typography className="font-bold">{formatCurrencyVND(order.totalAmount)}</Typography>
-                        </BoxSection>
-                    ))}
-                </Stack>
             </BoxSection>
         </Box>
     );

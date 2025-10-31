@@ -18,13 +18,12 @@ import { useForgotPassword } from "~/contexts/forgot-password.context";
 import { showToast } from "~/utils";
 import { ForgotPasswordStepper } from "./forgot-password-stepper";
 import { OtpCodeFormValue } from "~/components/form/types/form-value";
-import { useMutationSendForgotPasswordOtp, useMutationVerifyForgotPasswordOtp } from "~/services/auth/mutations";
 
 const MAX_SUBMIT_OTP_FAILED = 5;
 const LOCK_DURATION = 5 * 60;
 
 const EnterOTPCodeStep: React.FC = () => {
-    const { nextStep, prevStep, email, setResetToken } = useForgotPassword();
+    const { nextStep, prevStep } = useForgotPassword();
     const form = useForm<OtpCodeFormValue>();
 
     const [secondsLeft, setSecondsLeft] = React.useState<number>(60);
@@ -33,23 +32,13 @@ const EnterOTPCodeStep: React.FC = () => {
     const [isLocked, setIsLocked] = React.useState<boolean>(false);
     const [lockTimeLeft, setLockTimeLeft] = React.useState<number>(LOCK_DURATION);
 
-    const { mutateAsync: sendForgotPasswordOtp, isPending: isSendingEmail } = useMutationSendForgotPasswordOtp();
-    const { mutateAsync: verifyForgotPasswordOtp, isPending: isVerifyingOtp } = useMutationVerifyForgotPasswordOtp();
-
     const handleSubmit = async () => {
         if (isLocked) return;
 
         try {
-            const values = form.getValues();
-            const response = await verifyForgotPasswordOtp({
-                email,
-                otp: values.otpCode,
-            });
-
-            if (!response.data) throw new Error("Invalid OTP");
-
-            setResetToken(response.data.resetToken);
+            // TODO: call verify OTP API
             nextStep();
+            throw new Error("Invalid OTP");
         } catch (error) {
             const message = (error as Error).message;
             setFailedCounter((prev) => prev + 1);
@@ -61,10 +50,8 @@ const EnterOTPCodeStep: React.FC = () => {
         }
     };
 
-    const handleResend = async () => {
+    const handleResend = () => {
         // TODO: call API for resend
-        await sendForgotPasswordOtp(email);
-
         setSecondsLeft(60);
         setIsActive(true);
     };
@@ -188,8 +175,6 @@ const EnterOTPCodeStep: React.FC = () => {
                             size="small"
                             disabled={isActive}
                             onClick={handleResend}
-                            loading={isSendingEmail}
-                            loadingPosition="start"
                         >
                             Resend code
                         </Button>
@@ -224,8 +209,6 @@ const EnterOTPCodeStep: React.FC = () => {
                         type="submit"
                         className="!py-3"
                         disabled={form.formState.isSubmitting || isLocked}
-                        loading={isVerifyingOtp}
-                        loadingPosition="start"
                     >
                         <Typography className="text-[16px] text-base font-semibold">Send reset code</Typography>
                     </Button>

@@ -17,7 +17,6 @@ import { EMAIL_PATTERN } from "~/components/form/validation/pattern";
 import { useForgotPassword } from "~/contexts/forgot-password.context";
 import { ForgotPasswordStepper } from "./forgot-password-stepper";
 import { useNavigate } from "react-router";
-import { useMutationSendForgotPasswordOtp } from "~/services/auth/mutations";
 
 type EnterEmailFormValues = {
     email: string;
@@ -25,14 +24,10 @@ type EnterEmailFormValues = {
 
 const EnterEmailStep: React.FC = () => {
     const navigate = useNavigate();
-    const { nextStep, setEmail } = useForgotPassword();
+    const { nextStep } = useForgotPassword();
     const form = useForm<EnterEmailFormValues>();
-    const { mutateAsync: sendForgotPasswordOtp, isPending } = useMutationSendForgotPasswordOtp();
 
     const handleSubmit = async () => {
-        const values = form.getValues();
-        await sendForgotPasswordOtp(values.email);
-        setEmail(values.email);
         nextStep();
     };
 
@@ -110,8 +105,6 @@ const EnterEmailStep: React.FC = () => {
                         type="submit"
                         className="!py-3"
                         disabled={form.formState.isSubmitting || !form.formState.isValid}
-                        loading={isPending}
-                        loadingPosition="start"
                     >
                         <Typography className="text-[16px] text-base font-semibold">Send reset code</Typography>
                     </Button>

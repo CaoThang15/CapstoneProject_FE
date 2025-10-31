@@ -27,6 +27,7 @@ export interface IApiRequestParams extends Record<string, any> {}
 
 export interface IQueryRequest extends IBaseApiRequest {
     method: HttpMethod.GET | HttpMethod.DELETE;
+
     params?: IApiRequestParams;
 }
 
@@ -48,7 +49,7 @@ export interface IProblemDetailErrorResponse {
 //     data: T;
 // }
 export interface IPaginationRequest {
-    page?: number;
+    pageIndex?: number;
     pageSize?: number;
 }
 
@@ -68,8 +69,4 @@ export interface IPagination<T> {
 export interface IDateRangeRequest {
     fromDate?: Date | string;
     toDate?: Date | string;
-}
-
-export interface ISearchKeywordRequest {
-    keyword?: string;
 }

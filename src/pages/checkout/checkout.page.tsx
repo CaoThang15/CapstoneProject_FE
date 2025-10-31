@@ -73,10 +73,6 @@ const CheckoutContent: React.FC = () => {
         );
     }, [productCart, allLoaded]);
 
-    React.useEffect(() => {
-        checkoutForm.setValue("totalAmount", subtotal);
-    }, [subtotal]);
-
     return (
         <DynamicForm form={checkoutForm}>
             <Grid container spacing={3}>

@@ -30,6 +30,25 @@ export const CheckoutSidebar: React.FC = () => {
                     </Button>
                 ))}
             </Stack>
+            {/* <List>
+                {steps.map((s) => (
+                    <ListItemButton
+                        key={s.key}
+                        selected={step === s.key}
+                        onClick={() => setStep(s.key as CheckoutStep)}
+                    >
+                        <ListItemText
+                            primary={s.icon}
+                            secondary={s.label}
+                            slotProps={{
+                                primary: {
+                                    fontWeight: step === s.key ? 700 : 500,
+                                },
+                            }}
+                        />
+                    </ListItemButton>
+                ))}
+            </List> */}
         </BoxSection>
     );
 };

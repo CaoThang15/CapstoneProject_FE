@@ -10,6 +10,6 @@ export const profileSidebarTree: SidebarTabProps[] = [
     {
         labelKey: "Orders",
         icon: <AddBoxOutlined />,
-        pathName: "/orders",
+        pathName: "orders",
     },
 ];

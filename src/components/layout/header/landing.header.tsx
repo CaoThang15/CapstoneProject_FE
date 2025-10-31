@@ -5,6 +5,7 @@ import classNames from "classnames";
 import React from "react";
 import { useAuth } from "~/contexts/auth.context";
 import { LocalStorageCartItems } from "~/pages/cart/types";
+import { NotificationBell } from "~/components/common/notification";
 
 const LandingHeader: React.FC = () => {
     const { user, logout } = useAuth();
@@ -73,6 +74,9 @@ const LandingHeader: React.FC = () => {
                                 </Badge>
                             </IconButton>
                         </Tooltip>
+
+                        {/* Notification Bell */}
+                        {user && <NotificationBell />}
 
                         {user ? (
                             <>
