@@ -47,6 +47,15 @@ export enum PaymentStatus {
     PENDING,
 }
 
+export enum OrderStatus {
+    PendingConfirmation = 2,
+    PendingShipment,
+    Shipping,
+    Delivered,
+    Returned,
+    Cancelled,
+}
+
 export enum CloudinaryFolder {
     PROFILE = "profile",
     CATEGORY = "category",
@@ -56,4 +65,10 @@ export enum CloudinaryFolder {
 export enum PaginationOrderBy {
     ASC = "asc",
     DESC = "desc",
+}
+
+export enum OrderPaymentMethod {
+    CASH = "CASH",
+    CREDIT = "CREDIT",
+    DEBIT = "DEBIT",
 }

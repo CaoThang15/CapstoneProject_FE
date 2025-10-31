@@ -10,8 +10,7 @@ export interface SharedFile {
 export interface ProductProperty {
     id: number;
     value: string;
-    propertyId: number;
-    propertyName: string;
+    name: string;
 }
 
 export interface Product extends BaseEntity {

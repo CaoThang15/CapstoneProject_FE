@@ -13,6 +13,7 @@ import {
     Wifi,
 } from "@mui/icons-material";
 import { Avatar, Box, Button, Chip, Divider, Grid, Rating, Stack, TextField, Typography } from "@mui/material";
+import { useLocalStorage } from "@uidotdev/usehooks";
 import React from "react";
 import { useParams } from "react-router";
 import { HistogramBar, ReviewItem } from "~/components/comments";
@@ -21,12 +22,23 @@ import { SlugPathParams } from "~/routes/types";
 import { useQueryGetProductBySlug } from "~/services/products/hooks/queries";
 import { showToast } from "~/utils";
 import { formatCurrencyVND } from "~/utils/currency";
+import { LocalStorageCartItems } from "../cart/types";
 
 const ProductDetailPage: React.FC = () => {
+    const [_, saveLocalCartProducts] = useLocalStorage("cart", {} as LocalStorageCartItems);
+
     const { slug } = useParams<SlugPathParams>();
     const { data: product, isLoading, isError } = useQueryGetProductBySlug(slug);
 
     const handleAddToCart = () => {
+        saveLocalCartProducts((prev) => {
+            const currentQty = prev[product.id]?.quantity || 0;
+
+            return {
+                ...prev,
+                [product.id]: { quantity: currentQty + 1 },
+            };
+        });
         showToast.success(<AddToCartToastContent />);
     };
 
@@ -139,7 +151,7 @@ const ProductDetailPage: React.FC = () => {
                                     <Stack spacing={3} className="ps-3" mt={1.5}>
                                         {product.properties.map((p) => (
                                             <Stack direction="row" justifyContent="space-between">
-                                                <Typography className="text-sm">{p.propertyName}</Typography>
+                                                <Typography className="text-sm">{p.name}</Typography>
                                                 <Typography className="text-sm text-gray-500">{p.value}</Typography>
                                             </Stack>
                                         ))}
@@ -288,9 +300,9 @@ const ProductDetailPage: React.FC = () => {
                             <BoxSection className="h-full p-3 md:p-4">
                                 <Stack spacing={1}>
                                     <Typography variant="h5" fontWeight={700}>
-                                        $135
+                                        {formatCurrencyVND(product.price)}
                                     </Typography>
-                                    <Typography className="text-xs text-gray-500">Est. $170</Typography>
+                                    {/* <Typography className="text-xs text-gray-500">Est. $170</Typography> */}
                                     <Button
                                         startIcon={<ShoppingCart />}
                                         variant="contained"
@@ -307,7 +319,7 @@ const ProductDetailPage: React.FC = () => {
                                         <Stack direction="row" spacing={1} alignItems="center">
                                             <LocalShippingOutlined fontSize="small" className="text-gray-500" />
                                             <Typography className="text-sm text-gray-500">
-                                                Free shipping over $100
+                                                Free shipping over {formatCurrencyVND(500000)}
                                             </Typography>
                                         </Stack>
                                         <Stack direction="row" spacing={1} alignItems="center">

@@ -1,5 +1,6 @@
 import { authEndpoints } from "./auth";
 import { categoriesEndpoints } from "./categories";
+import { ordersEndpoints } from "./orders";
 import { productsEndpoints } from "./products";
 import { publicApiEndpoints } from "./public-api";
 import { uploadFileEndpoints } from "./upload-file";
@@ -12,4 +13,5 @@ export const endpoints = {
     categories: categoriesEndpoints,
     products: productsEndpoints,
     users: usersEndpoints,
+    orders: ordersEndpoints,
 };

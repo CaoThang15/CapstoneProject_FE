@@ -6,14 +6,15 @@ import { Product } from "~/entities/product.entity";
 import { LocalStorageCartItems } from "~/pages/cart/types";
 import { showToast } from "~/utils";
 import { formatCurrencyVND } from "~/utils/currency";
-import { AddToCartToastContent } from "..";
+import { AddToCartToastContent, ImageRenderer } from "..";
+import { useNavigate } from "react-router";
 
 interface ProductSummaryProps {
     product?: Product;
 }
 const ProductSummary: React.FC<ProductSummaryProps> = ({ product }) => {
     const [_, saveLocalCartProducts] = useLocalStorage("cart", {} as LocalStorageCartItems);
-
+    const navigate = useNavigate();
     const handleAddToCart = () => {
         saveLocalCartProducts((prev) => {
             const currentQty = prev[product.id]?.quantity || 0;
@@ -28,16 +29,24 @@ const ProductSummary: React.FC<ProductSummaryProps> = ({ product }) => {
     };
 
     return (
-        <Box className="rounded-xl border border-gray-200 bg-white px-5 pb-3 pt-2">
-            <img
+        <Box
+            className="cursor-pointer rounded-xl border border-gray-200 bg-white px-5 pb-3 pt-2 hover:shadow-lg"
+            onClick={() => navigate(`/product/${product.slug}`)}
+        >
+            <ImageRenderer
+                src={product.sharedFiles?.[0]?.path}
+                alt={product.name}
+                className="h-[300px] w-full object-cover"
+            />
+            {/* <img
                 src="https://cdn2.cellphones.com.vn/x/media/catalog/product/m/a/macbook-air-gold-select-201810_4_3_1_1_1_1.jpg"
                 alt="Product"
                 className="h-[300px] w-full object-cover"
-            />
-            <Box className="flex justify-between py-2">
-                <Typography className="text-lg font-semibold">Macbook Air 2020 M1 256GB</Typography>
+            /> */}
+            <Box className="flex justify-between py-2" gap={1}>
+                <Typography className="text-lg font-semibold">{product.name}</Typography>
                 <Typography className="text-right text-lg font-semibold text-red-500">
-                    {formatCurrencyVND(25000000)}
+                    {formatCurrencyVND(product.price)}
                 </Typography>
             </Box>
             <Rating
@@ -51,9 +60,9 @@ const ProductSummary: React.FC<ProductSummaryProps> = ({ product }) => {
                 }}
             />
             <Typography className="mt-1 text-sm text-gray-500">
-                Seller: <span className="font-semibold">Apple</span>
+                Seller: <span className="font-semibold">{product.seller.name}</span>
             </Typography>
-            <Typography className="mt-1 text-sm text-gray-500">Location: Hanoi</Typography>
+            {/* <Typography className="mt-1 text-sm text-gray-500">Location: Hanoi</Typography> */}
             <Button
                 startIcon={<AddShoppingCart />}
                 variant="contained"

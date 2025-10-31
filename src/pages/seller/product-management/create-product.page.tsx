@@ -119,15 +119,15 @@ const CreateProductPage: React.FC = () => {
                                         </Typography>
                                     </BoxSection>
                                     <Stack spacing={1} className="my-2">
-                                        {/* <FormItem render="input-number" name="price" label="Your Price" fullWidth /> */}
-                                        <Box className="flex items-center justify-between">
-                                            <Typography variant="body1" className="text-sm text-gray-500">
+                                        <FormItem render="input-number" name="price" label="Your Price" fullWidth />
+                                        {/* <Box className="flex items-center justify-between"> */}
+                                        {/* <Typography variant="body1" className="text-sm text-gray-500">
                                                 Your price
                                             </Typography>
                                             <Typography variant="body1" fontWeight={600}>
                                                 {formatCurrencyVND(280000)}
                                             </Typography>
-                                        </Box>
+                                        </Box> */}
                                         <Box className="flex items-center justify-between">
                                             <Typography variant="body1" className="text-sm text-gray-500">
                                                 Market price

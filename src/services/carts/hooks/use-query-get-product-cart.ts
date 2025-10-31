@@ -5,7 +5,7 @@ import { IBaseApiResponse } from "~/libs/axios/types";
 import { LocalStorageCartItems, ProductCartItem } from "~/pages/cart/types";
 import { productsApi } from "~/services/products/infras";
 
-interface ProductCartResult {
+export interface ProductCartResult {
     isLoading: boolean;
     isError: boolean;
     error: Error | null;

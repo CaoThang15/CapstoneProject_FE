@@ -1,15 +1,19 @@
 import { Route } from "react-router";
 import { Role } from "~/constants/roles";
 import AuthenticatedGuard from "~/guards/authenticated.guard";
+import CheckoutPage from "~/pages/checkout/checkout.page";
 import LandingBackground from "~/pages/landing";
 import { ProfilePage } from "~/pages/profile";
 import CreateProductPage from "~/pages/seller/product-management/create-product.page";
 import ProductManagementPage from "~/pages/seller/product-management/product-management.page";
-import { ManagerWrapper, ProfileWrapper } from "~/wrapper";
+import { AppWrapper, ManagerWrapper, ProfileWrapper } from "~/wrapper";
 
 export const AuthenticatedRoutes = (
     <Route>
         <Route element={<AuthenticatedGuard />}>
+            <Route element={<AppWrapper />}>
+                <Route path="checkout" element={<CheckoutPage />} />
+            </Route>
             <Route element={<ProfileWrapper />}>
                 <Route path="profile" element={<ProfilePage />} />
             </Route>

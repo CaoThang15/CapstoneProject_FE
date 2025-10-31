@@ -37,11 +37,15 @@ const UsersQueryKey = {
     UPDATE_PROFILE: "updateProfile",
 };
 
+const OrdersQueryKey = {
+    CREATE: "createOrder",
+};
 export const QueryKey = {
     UPLOAD_FILE: UploadFileQueryKey,
     USER: UserQueryKey,
     AUTH: AuthQueryKey,
     CATEGORIES: CategoriesQueryKey,
+    ORDERS: OrdersQueryKey,
     PRODUCTS: ProductsQueryKey,
     USERS: UsersQueryKey,
 };
