@@ -11,6 +11,7 @@ const TemplateLayout = lazy(() => import("../pages/template/layout"));
 const CategoryPage = lazy(() => import("../pages/category/category.page"));
 const ProductCategoryPage = lazy(() => import("../pages/category/(path)/product-category.page"));
 const ProductDetailPage = lazy(() => import("../pages/product/product-detail.page"));
+const ForgotPasswordPage = lazy(() => import("../pages/auth/forgot-password/forgot-password.page"));
 
 export const PublicRoutes = (
     <Route>
@@ -22,6 +23,7 @@ export const PublicRoutes = (
         <Route element={<AppWrapper />}>
             <Route path="login" element={<LoginPage />} />
             <Route path="register" element={<RegisterPage />} />
+            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
             <Route index element={<HomePage />} />
             <Route path="category">
                 <Route index element={<CategoryPage />} />

@@ -2,23 +2,11 @@ import { Box, Typography, Stack, Chip, Button } from "@mui/material";
 import React from "react";
 import { useNavigate } from "react-router";
 import { showToast } from "~/utils";
+import { AddToCartToastContent } from "..";
 
 interface Props {
     product: any;
 }
-
-const AddToCartToastContent: React.FC = () => {
-    const navigate = useNavigate();
-
-    return (
-        <Box className="flex items-center gap-2">
-            <Typography variant="body2">Added to cart</Typography>
-            <Button variant="text" size="small" color="primary" onClick={() => navigate("/cart")}>
-                View Cart
-            </Button>
-        </Box>
-    );
-};
 
 const ProductOverview: React.FC<Props> = ({ product }) => {
     const navigate = useNavigate();
@@ -29,7 +17,7 @@ const ProductOverview: React.FC<Props> = ({ product }) => {
 
     const handleAddToCart = (e: React.MouseEvent) => {
         e.stopPropagation();
-        showToast.success(<AddToCartToastContent />);
+        showToast.success(<AddToCartToastContent product={product} />);
     };
 
     return (

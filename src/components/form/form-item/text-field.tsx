@@ -136,15 +136,18 @@ export const TextFieldFormItem: React.FC<TextFieldFormItemProps> = ({
                         size={size}
                         margin="normal"
                         slotProps={{
-                            input: getAdornmentProps({
-                                isPassword,
-                                showPassword,
-                                onTogglePassword: handleTogglePasswordVisibility,
-                                startAdornment,
-                                endAdornment,
-                                hasValue: !!field.value,
-                                onClear: () => field.onChange(""),
-                            }),
+                            input: {
+                                ...getAdornmentProps({
+                                    isPassword,
+                                    showPassword,
+                                    onTogglePassword: handleTogglePasswordVisibility,
+                                    startAdornment,
+                                    endAdornment,
+                                    hasValue: !!field.value,
+                                    onClear: () => field.onChange(""),
+                                }),
+                                className: "rounded-xl",
+                            },
                         }}
                         {...props}
                     />
