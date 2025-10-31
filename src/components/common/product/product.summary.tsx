@@ -1,9 +1,32 @@
 import { AddShoppingCart } from "@mui/icons-material";
 import { Box, Button, Rating, Typography } from "@mui/material";
+import { useLocalStorage } from "@uidotdev/usehooks";
 import React from "react";
+import { Product } from "~/entities/product.entity";
+import { LocalStorageCartItems } from "~/pages/cart/types";
+import { showToast } from "~/utils";
 import { formatCurrencyVND } from "~/utils/currency";
+import { AddToCartToastContent } from "..";
 
-const ProductSummary: React.FC = () => {
+interface ProductSummaryProps {
+    product?: Product;
+}
+const ProductSummary: React.FC<ProductSummaryProps> = ({ product }) => {
+    const [_, saveLocalCartProducts] = useLocalStorage("cart", {} as LocalStorageCartItems);
+
+    const handleAddToCart = () => {
+        saveLocalCartProducts((prev) => {
+            const currentQty = prev[product.id]?.quantity || 0;
+
+            return {
+                ...prev,
+                [product.id]: { quantity: currentQty + 1 },
+            };
+        });
+
+        showToast.success(<AddToCartToastContent />);
+    };
+
     return (
         <Box className="rounded-xl border border-gray-200 bg-white px-5 pb-3 pt-2">
             <img
@@ -31,7 +54,14 @@ const ProductSummary: React.FC = () => {
                 Seller: <span className="font-semibold">Apple</span>
             </Typography>
             <Typography className="mt-1 text-sm text-gray-500">Location: Hanoi</Typography>
-            <Button startIcon={<AddShoppingCart />} variant="contained" fullWidth color="light" className="mt-3">
+            <Button
+                startIcon={<AddShoppingCart />}
+                variant="contained"
+                fullWidth
+                color="light"
+                className="mt-3"
+                onClick={handleAddToCart}
+            >
                 Add to Cart
             </Button>
         </Box>

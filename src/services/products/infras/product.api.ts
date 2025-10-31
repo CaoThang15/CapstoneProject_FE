@@ -18,7 +18,15 @@ const getProductBySlug = (slug: string) => {
     });
 };
 
+const getProductById = (id: number) => {
+    return callApi<Product>({
+        url: endpoints.products.getProductById(id),
+        method: HttpMethod.GET,
+    });
+};
+
 export const productsApi = {
     getListProducts,
     getProductBySlug,
+    getProductById,
 };
