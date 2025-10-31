@@ -38,7 +38,7 @@ export const SwitchFormItem: React.FC<SwitchFormItemProps> = ({
                                     {...switchProps}
                                 />
                             }
-                            label={label}
+                            label={""}
                         />
                         <FormErrorMessage errorMessage={error} label={label} />
                     </FormGroup>

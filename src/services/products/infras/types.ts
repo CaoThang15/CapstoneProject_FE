@@ -16,18 +16,17 @@ export interface GetProductWithPaginationRequest {
     isNew?: boolean;
     isHide?: boolean;
     isAdminHide?: boolean;
-    sellerId?: boolean;
+    sellerId?: number;
     order?: string;
     orderBy?: PaginationOrderBy;
     page?: number;
     pageSize?: number;
 }
 
-export interface UpsertProductProperty {
-    propertyName: string;
+export interface CreateProductProperty {
+    name: string;
     value: string;
 }
-
 export interface CreateProductRequest {
     categoryId: number;
     name: string;
@@ -36,6 +35,27 @@ export interface CreateProductRequest {
     stockQuantity: number;
     note: string;
     sellerId: number;
+    location?: string;
     sharedFiles: SharedFile[];
-    properties: UpsertProductProperty[];
+    properties: CreateProductProperty[];
+}
+
+export interface UpdateProductProperty {
+    id?: number;
+    name: string;
+    value: string;
+}
+
+export interface UpdateProductRequest {
+    id: number;
+    categoryId: number;
+    name: string;
+    price: number;
+    description: string;
+    stockQuantity: number;
+    note: string;
+    location?: string;
+    sellerId: number;
+    sharedFiles: SharedFile[];
+    properties: UpdateProductProperty[];
 }

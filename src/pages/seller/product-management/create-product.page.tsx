@@ -1,6 +1,14 @@
-import { AddOutlined, BackHandOutlined, DeleteOutline, LocalShippingOutlined } from "@mui/icons-material";
+import {
+    AddOutlined,
+    BackHandOutlined,
+    DeleteOutline,
+    LocalAtmOutlined,
+    LocalShippingOutlined,
+    MapOutlined,
+} from "@mui/icons-material";
 import { Avatar, Box, Button, Chip, Divider, Grid, IconButton, Stack, Typography } from "@mui/material";
 import React from "react";
+import { useNavigate } from "react-router";
 import { BoxSection, HighlightCard } from "~/components/common";
 import { FormLabel } from "~/components/form/common";
 import DynamicForm from "~/components/form/dynamic-form";
@@ -15,21 +23,28 @@ import { useMutationCreateProduct } from "~/services/products/hooks/mutation";
 import { CreateProductRequest } from "~/services/products/infras";
 import { useMutationDeleteFile, useMutationUploadFile } from "~/services/public-api/upload-file/hooks/mutation";
 import { UploadedFile } from "~/services/public-api/upload-file/infras";
+import { showToast } from "~/utils";
 import { formatCurrencyVND } from "~/utils/currency";
+
+type CreateProductFormValue = CreateProductRequest & {
+    media?: UploadedFile[];
+};
 
 const CreateProductPage: React.FC = () => {
     const { user } = useAuth();
-    const form = useForm<CreateProductRequest>({
+    const navigate = useNavigate();
+    const form = useForm<CreateProductFormValue>({
         defaultValues: {
-            properties: [{ value: "", propertyName: "" }],
+            properties: [{ value: "", name: "" }],
             sellerId: user.id,
+            media: [],
         },
     });
     const { data: listCategories } = useQueryCategories();
-    const { mutateAsync: createProduct } = useMutationCreateProduct();
+    const { mutateAsync: createProduct, isPending } = useMutationCreateProduct();
     const handleAddProperty = () => {
         const current = form.getValues("properties") || [];
-        form.setValue("properties", [...current, { propertyName: "", value: "" }]);
+        form.setValue("properties", [...current, { name: "", value: "" }]);
     };
 
     const handleRemoveProperty = (index: number) => {
@@ -43,18 +58,41 @@ const CreateProductPage: React.FC = () => {
     const { mutateAsync: uploadFile } = useMutationUploadFile();
     const { mutateAsync: deleteFile } = useMutationDeleteFile();
 
-    const handleSubmit = async (values: CreateProductRequest) => {
-        await createProduct(values);
+    const handleSubmit = async (values: CreateProductFormValue) => {
+        const { media, ...rest } = values;
+
+        const payload: CreateProductRequest = {
+            ...rest,
+            price: Number(values.price),
+            stockQuantity: Number(values.stockQuantity),
+            sharedFiles: media?.map((file) => ({
+                name: file.fileName,
+                path: file.imageUrl,
+            })),
+        };
+
+        await createProduct(payload);
+        showToast.success("Create product successfully");
+        form.reset();
+        navigate("/seller/products");
     };
 
     return (
         <Box className="px-3 py-2">
             <DynamicForm form={form} onSubmit={handleSubmit}>
+                <BoxSection className="mb-4 flex items-center justify-between border border-gray-200 p-3">
+                    <Box>
+                        <Typography variant="h6">New Listing</Typography>
+                        <Typography className="text-sm text-gray-500">
+                            Define a category to organize products and improve discovery.
+                        </Typography>
+                    </Box>
+                </BoxSection>
                 <Stack spacing={2}>
                     <Box>
                         <Grid container spacing={2}>
-                            <Grid size={{ xs: 12, md: 8 }}>
-                                <BoxSection className="">
+                            <Grid size={{ xs: 12, md: 7 }}>
+                                <BoxSection className="h-full">
                                     <Typography variant="h6" fontWeight={600} mb={2}>
                                         Core Product
                                     </Typography>
@@ -105,7 +143,7 @@ const CreateProductPage: React.FC = () => {
                                     </Grid>
                                 </BoxSection>
                             </Grid>
-                            <Grid size={{ xs: 12, md: 4 }}>
+                            <Grid size={{ xs: 12, md: 5 }}>
                                 <BoxSection className="h-full">
                                     <Typography variant="h6" fontWeight={600} mb={2}>
                                         Pricing & Safety
@@ -119,15 +157,20 @@ const CreateProductPage: React.FC = () => {
                                         </Typography>
                                     </BoxSection>
                                     <Stack spacing={1} className="my-2">
-                                        <FormItem render="input-number" name="price" label="Your Price" fullWidth />
-                                        {/* <Box className="flex items-center justify-between"> */}
-                                        {/* <Typography variant="body1" className="text-sm text-gray-500">
-                                                Your price
-                                            </Typography>
-                                            <Typography variant="body1" fontWeight={600}>
-                                                {formatCurrencyVND(280000)}
-                                            </Typography>
-                                        </Box> */}
+                                        <BoxSection className="flex !w-full items-center space-x-2 !px-4 !pb-1 !pt-3">
+                                            <LocalAtmOutlined className="text-gray-600" />
+                                            <Box className="flex-1">
+                                                <FormItem
+                                                    render="input-number"
+                                                    name="price"
+                                                    label="Your Price"
+                                                    required
+                                                    prefix="VND"
+                                                    fullWidth
+                                                    minNumber={1}
+                                                />
+                                            </Box>
+                                        </BoxSection>
                                         <Box className="flex items-center justify-between">
                                             <Typography variant="body1" className="text-sm text-gray-500">
                                                 Market price
@@ -146,7 +189,18 @@ const CreateProductPage: React.FC = () => {
 
                                     <Stack spacing={1}>
                                         <Divider sx={{ width: "100%", my: 1 }} />
-                                        <FormItem render="text-input" name="location" label="Location" fullWidth />
+                                        <BoxSection className="flex !w-full items-center space-x-2 !px-4 !pb-1 !pt-3">
+                                            <MapOutlined className="text-gray-600" />
+                                            <Box className="flex-1">
+                                                <FormItem
+                                                    render="text-input"
+                                                    name="location"
+                                                    label="Location"
+                                                    fullWidth
+                                                    required
+                                                />
+                                            </Box>
+                                        </BoxSection>
                                         <Box>
                                             <FormLabel label={"Delivery Options"} />
                                             <Stack direction="row" spacing={1} mt={1}>
@@ -180,7 +234,7 @@ const CreateProductPage: React.FC = () => {
                     </Box>
                     <Box>
                         <Grid container spacing={2}>
-                            <Grid size={{ xs: 12, md: 8 }}>
+                            <Grid size={{ xs: 12, md: 7 }}>
                                 {/* Media */}
                                 <BoxSection className="h-full">
                                     <Typography variant="h6" fontWeight={600} mb={2}>
@@ -211,7 +265,7 @@ const CreateProductPage: React.FC = () => {
                                     </Typography>
                                 </BoxSection>
                             </Grid>
-                            <Grid size={{ xs: 12, md: 4 }}>
+                            <Grid size={{ xs: 12, md: 5 }}>
                                 <BoxSection className="h-full">
                                     <Stack direction="row" justifyContent="space-between" alignItems="center" mb={2}>
                                         <Typography variant="h6" fontWeight={600}>
@@ -228,9 +282,9 @@ const CreateProductPage: React.FC = () => {
                                     </Stack>
 
                                     <Grid container spacing={1}>
-                                        {form.watch("properties")?.map((_: any, index: number) => (
+                                        {form.watch("properties")?.map((_, index: number) => (
                                             <React.Fragment key={index}>
-                                                <Grid size={{ xs: 12, md: 5 }}>
+                                                <Grid size={{ xs: 12, md: 5.5 }}>
                                                     <FormItem
                                                         render="text-input"
                                                         name={`properties.${index}.name`}
@@ -239,7 +293,7 @@ const CreateProductPage: React.FC = () => {
                                                         required
                                                     />
                                                 </Grid>
-                                                <Grid size={{ xs: 12, md: 5 }}>
+                                                <Grid size={{ xs: 12, md: 5.5 }}>
                                                     <FormItem
                                                         render="text-input"
                                                         name={`properties.${index}.value`}
@@ -249,7 +303,7 @@ const CreateProductPage: React.FC = () => {
                                                     />
                                                 </Grid>
                                                 <Grid
-                                                    size={{ xs: 12, md: 2 }}
+                                                    size={{ xs: 12, md: 1 }}
                                                     sx={{
                                                         display: "flex",
                                                         alignItems: "center",
@@ -300,7 +354,13 @@ const CreateProductPage: React.FC = () => {
                 <Stack direction="row" justifyContent="flex-end" spacing={2} mt={4}>
                     <Button variant="outlined">Save Draft</Button>
                     <Button variant="outlined">Preview</Button>
-                    <Button variant="contained" color="primary" type="submit">
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        type="submit"
+                        loading={isPending}
+                        loadingPosition="start"
+                    >
                         Publish
                     </Button>
                 </Stack>

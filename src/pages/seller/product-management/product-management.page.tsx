@@ -11,6 +11,7 @@ import FormItem from "~/components/form/form-item";
 import { useForm } from "~/components/form/hooks/use-form";
 import { toBaseOption } from "~/components/form/utils";
 import { ProductStatus } from "~/constants/enums";
+import { useAuth } from "~/contexts/auth.context";
 import { Category, Product } from "~/entities";
 import { usePagination } from "~/hooks";
 import { useQueryCategories } from "~/services/categories/hooks/queries";
@@ -19,15 +20,23 @@ import { GetProductWithPaginationRequest } from "~/services/products/infras";
 import { formatCurrencyVND } from "~/utils/currency";
 
 const ProductManagementPage: React.FC = () => {
+    const { user } = useAuth();
     const [searchValue, setSearchValue] = React.useState<string>("");
     const agGrid = useAgGrid();
     const form = useForm<GetProductWithPaginationRequest>();
     const { handlePageChange, pageIndex, pageSize } = usePagination();
     const { data: listCategories } = useQueryCategories();
+
     const {
         data: { items: listProducts, total: totalProducts },
         isLoading,
-    } = useQueryGetProductWithPagination({ keyword: searchValue, page: pageIndex, pageSize, ...form.watch() });
+    } = useQueryGetProductWithPagination({
+        sellerId: user.id,
+        keyword: searchValue,
+        page: pageIndex,
+        pageSize,
+        ...form.watch(),
+    });
 
     const colDefs: ColDef<Product>[] = [
         { headerName: "Name", field: "name", flex: 2, cellClass: "ag-cell-center" },
@@ -65,10 +74,15 @@ const ProductManagementPage: React.FC = () => {
         },
         {
             headerName: "Actions",
-            cellRenderer: () => {
+            cellRenderer: (params: ICellRendererParams<Product>) => {
                 return (
                     <Stack direction={"row"} spacing={1} className="justify-center">
-                        <Button variant="contained">Edit</Button>
+                        <Button
+                            variant="contained"
+                            onClick={() => (window.location.href = `/seller/products/update/${params.data.id}`)}
+                        >
+                            Edit
+                        </Button>
                         <Button color="error">Remove</Button>
                     </Stack>
                 );
@@ -82,7 +96,7 @@ const ProductManagementPage: React.FC = () => {
     }, [isLoading, totalProducts]);
 
     const totalPrice = React.useMemo(() => {
-        return listProducts.reduce((acc, curr) => acc + curr.price, 0);
+        return listProducts.reduce((acc, curr) => acc + curr.stockQuantity * curr.price, 0);
     }, [isLoading, totalProducts]);
 
     return (
@@ -106,12 +120,6 @@ const ProductManagementPage: React.FC = () => {
                     </Stack>
                 </BoxSection>
                 <BoxSection className="flex items-center justify-between border border-gray-200">
-                    {/* <Stack spacing={1} direction={"row"}>
-                        <Button variant="contained">Active</Button>
-                        <Button variant="contained">Active</Button>
-                        <Button variant="contained">Active</Button>
-                        <Button variant="contained">Active</Button>
-                    </Stack> */}
                     <Stack className="w-full justify-end" direction="row" spacing={1}>
                         <FormItem
                             render="autocomplete"
@@ -134,7 +142,7 @@ const ProductManagementPage: React.FC = () => {
                 </BoxSection>
                 <Stack direction="row" spacing={2}>
                     <BoxSection className="w-full border border-gray-200">
-                        <Typography variant="h6">{totalProductQuantity}</Typography>
+                        <Typography variant="h6">{totalProducts}</Typography>
                         <Typography className="text-sm text-gray-500">Active listings</Typography>
                     </BoxSection>
                     <BoxSection className="w-full border border-gray-200">

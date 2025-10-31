@@ -137,7 +137,7 @@ export const ImageUploaderFormItem: React.FC<ImageUploaderFormItemProps> = ({
             render={({ field, error }) => {
                 const value = field.value as UploadedFile[] | UploadedFile | null;
                 const files = maxFiles > 1 ? ((value as UploadedFile[]) ?? []) : value ? [value as UploadedFile] : [];
-                const canUploadMore = !readOnly && files.length < maxFiles;
+                const canUploadMore = files.length < maxFiles;
 
                 return (
                     <Box className="h-full w-full">
@@ -161,7 +161,7 @@ export const ImageUploaderFormItem: React.FC<ImageUploaderFormItemProps> = ({
                                         <LoadingContainer isLoading={isDeleting}>
                                             {renderFile ? renderFile(file) : <DefaultFileUpload file={file} />}
                                         </LoadingContainer>
-                                        {!readOnly && !isDeleting && (
+                                        {!readOnly && !isDeleting && file.imageUrl && (
                                             <Box className="absolute inset-0 flex items-start justify-end opacity-0 transition-opacity group-hover:opacity-100">
                                                 <IconButton
                                                     size="small"
@@ -187,13 +187,13 @@ export const ImageUploaderFormItem: React.FC<ImageUploaderFormItemProps> = ({
                                         className={classNames(
                                             "flex h-[150px] w-[200px] cursor-pointer flex-col items-center justify-center rounded-2xl border border-dashed transition hover:bg-gray-50",
                                             {
-                                                "border-red-300": !error,
-                                                "border-gray-300": !!error,
+                                                "border-red-300": !!error,
+                                                "border-gray-300": !error,
                                             },
                                         )}
                                         onClick={(e) => {
                                             e.stopPropagation();
-                                            open();
+                                            if (!readOnly) open();
                                         }}
                                     >
                                         <LoadingContainer isLoading={uploading}>

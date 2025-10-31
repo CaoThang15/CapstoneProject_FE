@@ -18,16 +18,11 @@ const DynamicForm = <T extends FieldValues = FieldValues>({
 }: Props<T>) => {
     const { handleSubmit, formState } = form;
     const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
-    const [pendingAction, setPendingAction] = useState<"submit" | "leave" | null>(null);
     const [pendingTx, setPendingTx] = useState<any>(null);
 
     const handleSubmitForm = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         e.stopPropagation();
-
-        // if (onSubmit) {
-        //     handleSubmit(onSubmit)();
-        // }
 
         if (onSubmit) {
             handleSubmit(onSubmit)();
@@ -50,7 +45,6 @@ const DynamicForm = <T extends FieldValues = FieldValues>({
     // Intercept navigation
     useBlocker((tx) => {
         if (formState.isDirty) {
-            setPendingAction("leave");
             setPendingTx(tx);
             setOpenConfirmDialog(true);
         } else {
@@ -58,20 +52,35 @@ const DynamicForm = <T extends FieldValues = FieldValues>({
         }
     }, formState.isDirty);
 
+    React.useEffect(() => {
+        const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+            if (formState.isDirty) {
+                event.preventDefault();
+                event.returnValue = ""; // Modern browsers require this to show the confirmation dialog
+                // setOpenConfirmDialog(true);
+                return "";
+            }
+        };
+
+        if (formState.isDirty) {
+            window.addEventListener("beforeunload", handleBeforeUnload);
+        }
+
+        return () => {
+            window.removeEventListener("beforeunload", handleBeforeUnload);
+        };
+    }, [formState.isDirty]);
+
     const handleConfirmClose = () => {
         setOpenConfirmDialog(false);
-        setPendingAction(null);
         setPendingTx(null);
     };
 
     const handleConfirmProceed = () => {
         setOpenConfirmDialog(false);
-        if (pendingAction === "submit" && onSubmit) {
-            handleSubmit(onSubmit)();
-        } else if (pendingAction === "leave" && pendingTx) {
+        if (pendingTx) {
             pendingTx.retry();
         }
-        setPendingAction(null);
         setPendingTx(null);
     };
 

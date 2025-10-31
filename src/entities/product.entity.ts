@@ -22,6 +22,7 @@ export interface Product extends BaseEntity {
     description: string;
     stockQuantity: number;
     note: string;
+    location?: string;
     status: ProductStatus;
     isNew: boolean;
     isAdminHide: boolean;
