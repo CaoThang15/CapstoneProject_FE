@@ -6,7 +6,6 @@ import { LandingHeader } from "~/components/layout/header";
 
 const AppWrapper: React.FC = () => {
     return (
-        // <Box className="flex h-full">
         <Box className={`flex min-h-screen w-full flex-col`}>
             <LandingHeader />
             <main className="container mx-auto my-3 flex-grow">
@@ -14,7 +13,6 @@ const AppWrapper: React.FC = () => {
             </main>
             <LandingFooter />
         </Box>
-        // </Box>
     );
 };
 

@@ -1,20 +1,14 @@
 import { AxiosError } from "axios";
 import React, { PropsWithChildren } from "react";
-import { useNavigate } from "react-router";
-import { IBaseApiResponse } from "~/libs/axios/types";
-import { authService } from "~/services/auth";
-import {
-    TLoginRequest,
-    TLoginResponse,
-    TRegisterRequest,
-    TVerifyLoginOtpResponse,
-    TVerifyOtpRequest,
-} from "~/services/auth/types";
-import { showToast } from "~/utils";
-import i18n from "~/configs/i18n";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router";
+import i18n from "~/configs/i18n";
 import { User } from "~/entities";
 import { getAxiosErrorMessageKey } from "~/libs/axios/helper";
+import { IBaseApiResponse } from "~/libs/axios/types";
+import { authService } from "~/services/auth";
+import { TLoginRequest, TLoginResponse, TRegisterRequest, TVerifyOtpRequest } from "~/services/auth/types";
+import { showToast } from "~/utils";
 
 export type AuthContextProps = {
     isLoading: boolean;

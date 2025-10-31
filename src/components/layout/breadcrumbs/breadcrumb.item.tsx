@@ -6,8 +6,9 @@ import { IBreadcrumbItem } from "~/configs/breadcrumbs.config";
 interface BreadcrumbItemProps {
     breadcrumb: IBreadcrumbItem;
     isLast: boolean;
+    isManagerBreadcrumb?: boolean;
 }
-export const BreadcrumbItem: React.FC<BreadcrumbItemProps> = ({ breadcrumb, isLast }) => {
+export const BreadcrumbItem: React.FC<BreadcrumbItemProps> = ({ breadcrumb, isLast, isManagerBreadcrumb = false }) => {
     const navigate = useNavigate();
 
     const handleBreadcrumbClick = (path?: string) => {
@@ -59,7 +60,7 @@ export const BreadcrumbItem: React.FC<BreadcrumbItemProps> = ({ breadcrumb, isLa
                 background: "transparent",
                 padding: 0,
                 font: "inherit",
-                fontSize: "0.875rem",
+                fontSize: isManagerBreadcrumb ? "1rem" : "0.875rem",
                 display: "flex",
                 alignItems: "center",
             }}

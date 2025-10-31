@@ -1,24 +1,16 @@
-import {
-    AccessTimeOutlined,
-    CachedOutlined,
-    ChevronLeftOutlined,
-    EmailOutlined,
-    HourglassEmptyOutlined,
-    SendOutlined,
-    ShieldOutlined,
-} from "@mui/icons-material";
+import { AccessTimeOutlined, EmailOutlined, SendOutlined, ShieldOutlined } from "@mui/icons-material";
 import { Box, Button, Stack, Typography } from "@mui/material";
 import React from "react";
+import { useNavigate } from "react-router";
+import EnterOTPCodeImage from "~/assets/images/enter-otp-code-image.png";
 import { HighlightCard } from "~/components/common";
 import DynamicForm from "~/components/form/dynamic-form";
 import FormItem from "~/components/form/form-item";
 import { useForm } from "~/components/form/hooks/use-form";
 import { OtpCodeFormValue } from "~/components/form/types/form-value";
+import { useAuth } from "~/contexts/auth.context";
 import { useLoginStep } from "~/pages/auth/login/login-context";
 import { showToast } from "~/utils";
-import EnterOTPCodeImage from "~/assets/images/enter-otp-code-image.png";
-import { useAuth } from "~/contexts/auth.context";
-import { useNavigate } from "react-router";
 
 const MAX_SUBMIT_OTP_FAILED = 5;
 const LOCK_DURATION = 5 * 60;
@@ -29,7 +21,7 @@ const EnterLoginOtpStep: React.FC = () => {
     const navigate = useNavigate();
     const form = useForm<OtpCodeFormValue>();
 
-    const [secondsLeft, setSecondsLeft] = React.useState<number>(60);
+    const [_, setSecondsLeft] = React.useState<number>(60);
     const [isActive, setIsActive] = React.useState<boolean>(true);
     const [failedCounter, setFailedCounter] = React.useState<number>(0);
     const [isLocked, setIsLocked] = React.useState<boolean>(false);
@@ -97,14 +89,6 @@ const EnterLoginOtpStep: React.FC = () => {
 
         return () => clearInterval(timer);
     }, [isLocked]);
-
-    const formattedSecondsTime = React.useMemo(() => {
-        const minutes = Math.floor(secondsLeft / 60)
-            .toString()
-            .padStart(2, "0");
-        const seconds = (secondsLeft % 60).toString().padStart(2, "0");
-        return `${minutes}:${seconds}`;
-    }, [secondsLeft]);
 
     const formattedLockTime = React.useMemo(() => {
         const minutes = Math.floor(lockTimeLeft / 60)

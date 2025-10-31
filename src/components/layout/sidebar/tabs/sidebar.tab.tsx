@@ -25,7 +25,6 @@ export const SidebarTabItem: React.FC<SidebarTabProps> = ({
     const { t } = useTranslation();
     const navigate = useNavigate();
     const location = useLocation();
-
     const [isExpanded, setIsExpanded] = React.useState<boolean>(false);
 
     const active = React.useMemo(() => {
@@ -46,7 +45,16 @@ export const SidebarTabItem: React.FC<SidebarTabProps> = ({
 
         if (pathName) {
             navigate(pathName);
-            return;
+            // const buildBreadcrumbs = (item: SidebarTabProps, parent?: SidebarTabProps[]): IBreadcrumbItem[] => {
+            //     const parents = parent || [];
+            //     return [
+            //         breadcrumbs[0],
+            //         ...parents.map((p) => ({ label: p.labelKey, path: p.pathName })),
+            //         { label: item.labelKey, path: item.pathName },
+            //     ];
+            // };
+
+            // setBreadcrumbs(buildBreadcrumbs({ icon, labelKey, pathName, children }));
         }
 
         if (hasChildren) {
@@ -73,7 +81,7 @@ export const SidebarTabItem: React.FC<SidebarTabProps> = ({
                             )}
                         </IconButton>
                     ) : (
-                        <Box className="h-[30px] w-[30px]" />
+                        <Box className="" />
                     )}
                     {icon && <Box className="text-sm text-gray-500">{icon}</Box>}
                     <Typography
