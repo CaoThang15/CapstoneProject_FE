@@ -33,6 +33,8 @@ const ProductsQueryKey = {
     GET_PRODUCT_BY_SLUG: "getProductBySlug",
     CREATE: "createProduct",
     UPDATE: "updateProduct",
+    GENERATE_DESCRIPTION: "generateProductDescription",
+    DELETE: "deleteProduct",
 };
 const UsersQueryKey = {
     UPDATE_PROFILE: "updateProfile",
@@ -40,6 +42,16 @@ const UsersQueryKey = {
 
 const OrdersQueryKey = {
     CREATE: "createOrder",
+    GET_ORDERS: "getOrders",
+    GET_MY_ORDERS: "getMyOrders",
+    GET_ORDER_BY_ID: "getOrderById",
+    UPDATE_ORDER_STATUS: "updateOrderStatus",
+};
+
+const VoucherQueryKey = {
+    VALIDATE_VOUCHER: "validateVoucher",
+    GET_VOUCHER_BY_CODE: "getVoucherByCode",
+    GET_MY_VOUCHERS: "getMyVouchers",
 };
 
 const NotificationQueryKey = {
@@ -59,5 +71,6 @@ export const QueryKey = {
     ORDERS: OrdersQueryKey,
     PRODUCTS: ProductsQueryKey,
     USERS: UsersQueryKey,
+    VOUCHER: VoucherQueryKey,
     NOTIFICATIONS: NotificationQueryKey,
 };

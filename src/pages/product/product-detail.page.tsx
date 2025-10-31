@@ -23,6 +23,8 @@ import { useQueryGetProductBySlug } from "~/services/products/hooks/queries";
 import { showToast } from "~/utils";
 import { formatCurrencyVND } from "~/utils/currency";
 import { LocalStorageCartItems } from "../cart/types";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 const ProductDetailPage: React.FC = () => {
     const [_, saveLocalCartProducts] = useLocalStorage("cart", {} as LocalStorageCartItems);
@@ -61,7 +63,7 @@ const ProductDetailPage: React.FC = () => {
                                         <Box className="h-[420px] flex-1 rounded-lg object-cover md:h-[520px]">
                                             <ImageRenderer
                                                 src={product.sharedFiles?.[0]?.path}
-                                                className="rounded-xl"
+                                                className="rounded-xl object-contain"
                                             />
                                         </Box>
                                         {product.sharedFiles?.length > 1 ? (
@@ -122,6 +124,17 @@ const ProductDetailPage: React.FC = () => {
                                                 <Battery0Bar color="action" fontSize="small" />
                                                 <Typography className="text-sm">Case battery 88%</Typography>
                                             </Stack>
+                                        </Grid>
+
+                                        <Grid size={12}>
+                                            <Typography className="mb-2">
+                                                <strong>Mô tả sản phẩm:</strong>
+                                            </Typography>
+                                            <Typography className="whitespace-pre-line text-gray-700">
+                                                <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                                                    {product.description}
+                                                </ReactMarkdown>
+                                            </Typography>
                                         </Grid>
                                     </Grid>
                                 </BoxSection>

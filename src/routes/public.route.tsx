@@ -12,7 +12,6 @@ const CategoryPage = lazy(() => import("../pages/category/category.page"));
 const ProductCategoryPage = lazy(() => import("../pages/category/(path)/product-category.page"));
 const ProductDetailPage = lazy(() => import("../pages/product/product-detail.page"));
 const ForgotPasswordPage = lazy(() => import("../pages/auth/forgot-password/forgot-password.page"));
-const CartPage = lazy(() => import("../pages/cart/cart-page"));
 
 export const PublicRoutes = (
     <Route>
@@ -33,7 +32,6 @@ export const PublicRoutes = (
             <Route path="product">
                 <Route path=":slug" element={<ProductDetailPage />} />
             </Route>
-            <Route path="cart" element={<CartPage />} />
         </Route>
         <Route path="*" element={<div>Developing</div>} />
     </Route>

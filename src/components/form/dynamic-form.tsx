@@ -17,8 +17,8 @@ const DynamicForm = <T extends FieldValues = FieldValues>({
     submitOnEnter = true,
 }: Props<T>) => {
     const { handleSubmit, formState } = form;
-    const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
-    const [pendingTx, setPendingTx] = useState<any>(null);
+    // const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
+    // const [pendingTx, setPendingTx] = useState<any>(null);
 
     const handleSubmitForm = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -43,14 +43,14 @@ const DynamicForm = <T extends FieldValues = FieldValues>({
     };
 
     // Intercept navigation
-    useBlocker((tx) => {
-        if (formState.isDirty) {
-            setPendingTx(tx);
-            setOpenConfirmDialog(true);
-        } else {
-            tx.retry();
-        }
-    }, formState.isDirty);
+    // useBlocker((tx) => {
+    //     if (formState.isDirty) {
+    //         setPendingTx(tx);
+    //         setOpenConfirmDialog(true);
+    //     } else {
+    //         tx.retry();
+    //     }
+    // }, formState.isDirty);
 
     React.useEffect(() => {
         const handleBeforeUnload = (event: BeforeUnloadEvent) => {
@@ -71,29 +71,29 @@ const DynamicForm = <T extends FieldValues = FieldValues>({
         };
     }, [formState.isDirty]);
 
-    const handleConfirmClose = () => {
-        setOpenConfirmDialog(false);
-        setPendingTx(null);
-    };
+    // const handleConfirmClose = () => {
+    //     setOpenConfirmDialog(false);
+    //     setPendingTx(null);
+    // };
 
-    const handleConfirmProceed = () => {
-        setOpenConfirmDialog(false);
-        if (pendingTx) {
-            pendingTx.retry();
-        }
-        setPendingTx(null);
-    };
+    // const handleConfirmProceed = () => {
+    //     setOpenConfirmDialog(false);
+    //     if (pendingTx) {
+    //         pendingTx.retry();
+    //     }
+    //     setPendingTx(null);
+    // };
 
     return (
         <FormProvider {...form}>
             <form noValidate onSubmit={handleSubmitForm} onKeyDown={handleKeyDown}>
                 {children}
             </form>
-            <UnchangeConfirmationDiaglog
+            {/* <UnchangeConfirmationDiaglog
                 handleClose={handleConfirmClose}
                 handleProceed={handleConfirmProceed}
                 open={openConfirmDialog}
-            />
+            /> */}
         </FormProvider>
     );
 };

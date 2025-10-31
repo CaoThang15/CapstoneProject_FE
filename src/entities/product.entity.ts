@@ -13,8 +13,7 @@ export interface ProductProperty {
     name: string;
 }
 
-export interface Product extends BaseEntity {
-    id: number;
+export class Product extends BaseEntity {
     categoryId: number;
     name: string;
     price: number;

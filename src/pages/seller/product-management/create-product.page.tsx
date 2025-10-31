@@ -2,6 +2,7 @@ import {
     AddOutlined,
     BackHandOutlined,
     DeleteOutline,
+    GeneratingTokensOutlined,
     LocalAtmOutlined,
     LocalShippingOutlined,
     MapOutlined,
@@ -19,29 +20,66 @@ import { CloudinaryFolder } from "~/constants/enums";
 import { useAuth } from "~/contexts/auth.context";
 import { Category } from "~/entities";
 import { useQueryCategories } from "~/services/categories/hooks/queries";
-import { useMutationCreateProduct } from "~/services/products/hooks/mutation";
+import { useMutationCreateProduct, useMutationGenerateProductDescription } from "~/services/products/hooks/mutation";
 import { CreateProductRequest } from "~/services/products/infras";
 import { useMutationDeleteFile, useMutationUploadFile } from "~/services/public-api/upload-file/hooks/mutation";
 import { UploadedFile } from "~/services/public-api/upload-file/infras";
 import { showToast } from "~/utils";
 import { formatCurrencyVND } from "~/utils/currency";
+import { GeneratingDescriptionConfirmPopup } from "./popup/generating-description-confirm.popup";
 
 type CreateProductFormValue = CreateProductRequest & {
     media?: UploadedFile[];
+    categoryName?: string;
 };
 
 const CreateProductPage: React.FC = () => {
     const { user } = useAuth();
-    const navigate = useNavigate();
     const form = useForm<CreateProductFormValue>({
         defaultValues: {
-            properties: [{ value: "", name: "" }],
+            properties: [
+                { name: "Brand", value: "Apple" },
+                { name: "Model", value: "iPhone 16 Pro Max" },
+                { name: "Release Year", value: "2024" },
+                { name: "Finish / Material", value: "Titanium frame (grade 5), glass front & back" },
+                { name: "Colours", value: "Black Titanium, White Titanium, Natural Titanium, Desert Titanium" },
+                { name: "Dimensions (H × W × D)", value: "163 mm × 77.6 mm × 8.25 mm" },
+                { name: "Weight", value: "227 g" },
+                { name: "Display Size", value: "6.9 inches (diagonal) OLED" },
+                { name: "Display Resolution", value: "2868 × 1320 pixels (~460 ppi)" },
+                {
+                    name: "Display Features",
+                    value: "Super Retina XDR, Always-On, ProMotion up to 120Hz, HDR, True Tone",
+                },
+                { name: "Chipset", value: "Apple A18 Pro (3 nm)" },
+                { name: "CPU", value: "6-core (2 performance + 4 efficiency)" },
+                { name: "GPU", value: "6-core Apple GPU" },
+                { name: "Neural Engine", value: "16-core" },
+                { name: "Storage Options", value: "256 GB, 512 GB, 1 TB" },
+                { name: "Rear Camera System", value: "48 MP main + 48 MP ultra-wide + 12 MP 5× telephoto" },
+                { name: "Optical Zoom", value: "5× optical zoom in (periscope telephoto)" },
+                { name: "Front Camera", value: "12 MP TrueDepth" },
+                { name: "Water & Dust Resistance", value: "IP68 (up to 6 metres for 30 minutes)" },
+                {
+                    name: "Battery & Charging",
+                    value: "Li-Ion (non-removable), supports USB-C charging, MagSafe wireless",
+                },
+                { name: "Operating System", value: "iOS 18 (out of the box)" },
+                { name: "Other Features", value: "Dynamic Island, Action Button, Titanium build" },
+            ],
             sellerId: user.id,
             media: [],
         },
     });
+    const navigate = useNavigate();
+    const [openConfirmPopup, setOpenConfirmPopup] = React.useState<boolean>(false);
+    const [draftSuggestedDescription, setDraftSuggestedDescription] = React.useState<string>("");
+
     const { data: listCategories } = useQueryCategories();
     const { mutateAsync: createProduct, isPending } = useMutationCreateProduct();
+    const { mutateAsync: generateProductDescription, isPending: isGeneratingDescription } =
+        useMutationGenerateProductDescription();
+
     const handleAddProperty = () => {
         const current = form.getValues("properties") || [];
         form.setValue("properties", [...current, { name: "", value: "" }]);
@@ -76,6 +114,29 @@ const CreateProductPage: React.FC = () => {
         form.reset();
         navigate("/seller/products");
     };
+
+    const handleGenerateDescription = async () => {
+        const suggestedDescription = await generateProductDescription({
+            categoryName: form.getValues("categoryName") || "",
+            name: form.getValues("name") || "",
+            price: Number(form.getValues("price") || 0),
+            isNew: true,
+            properties:
+                form.getValues("properties").map((property) => ({
+                    name: property.name,
+                    value: property.value,
+                })) || [],
+            description: form.getValues("description") || "",
+            note: form.getValues("note") || "",
+        });
+        setDraftSuggestedDescription(suggestedDescription);
+        setOpenConfirmPopup(true);
+    };
+
+    React.useEffect(() => {
+        const selectedCategory = listCategories?.find((category) => category.id === form.getValues("categoryId"));
+        form.setValue("categoryName", selectedCategory?.name || "");
+    }, [form.watch("categoryId"), listCategories]);
 
     return (
         <Box className="px-3 py-2">
@@ -136,6 +197,18 @@ const CreateProductPage: React.FC = () => {
                                                 label="Description"
                                                 fullWidth
                                             />
+                                            <Box className="mt-1 flex justify-end">
+                                                <Button
+                                                    className=""
+                                                    variant="outlined"
+                                                    startIcon={<GeneratingTokensOutlined />}
+                                                    onClick={handleGenerateDescription}
+                                                    loading={isGeneratingDescription}
+                                                    loadingPosition="start"
+                                                >
+                                                    Generate Description
+                                                </Button>
+                                            </Box>
                                         </Grid>
                                         <Grid size={{ xs: 12 }}>
                                             <FormItem render="text-area" name="note" label="Note" rows={2} fullWidth />
@@ -364,6 +437,11 @@ const CreateProductPage: React.FC = () => {
                         Publish
                     </Button>
                 </Stack>
+                <GeneratingDescriptionConfirmPopup
+                    open={openConfirmPopup}
+                    onClose={() => setOpenConfirmPopup(false)}
+                    description={draftSuggestedDescription}
+                />
             </DynamicForm>
         </Box>
     );

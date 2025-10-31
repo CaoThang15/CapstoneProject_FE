@@ -43,6 +43,7 @@ export const AuthContextProvider: React.FC<PropsWithChildren> = ({ children }) =
     const [isInitialized, setIsInitialized] = React.useState<boolean>(false);
     const navigate = useNavigate();
 
+    console.log(user);
     const loadUserInfor = React.useCallback(async () => {
         try {
             const response = await authService.getCurrentUser();

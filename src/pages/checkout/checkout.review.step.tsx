@@ -24,7 +24,7 @@ export const ReviewStep: React.FC<Props> = ({ productCart }) => {
     const navigate = useNavigate();
     const checkoutForm = useFormContext<CreateOrderRequestFormValue>();
 
-    const { fullName, province, ward, phoneNumber, shippingAddress, paymentMethod } = checkoutForm.getValues();
+    const { name, province, ward, phoneNumber, shippingAddress, paymentMethod } = checkoutForm.getValues();
 
     const paymentLabel = React.useMemo(() => {
         switch (paymentMethod) {
@@ -81,7 +81,7 @@ export const ReviewStep: React.FC<Props> = ({ productCart }) => {
                             Ship to:
                         </Typography>
                         <Typography>
-                            {fullName} — {phoneNumber}
+                            {name} — {phoneNumber}
                         </Typography>
                         <Typography>{fullAddress}</Typography>
                     </Box>

@@ -3,7 +3,7 @@ import { Box, Button, Chip, Stack, Typography } from "@mui/material";
 import { ColDef, ICellRendererParams } from "ag-grid-community";
 import dayjs from "dayjs";
 import React from "react";
-import { BoxSection } from "~/components/common";
+import { BoxSection, ImageRenderer } from "~/components/common";
 import { AgDataGrid, useAgGrid } from "~/components/common/ag-grid";
 import { SearchBox } from "~/components/common/search-box";
 import DynamicForm from "~/components/form/dynamic-form";
@@ -18,15 +18,18 @@ import { useQueryCategories } from "~/services/categories/hooks/queries";
 import { useQueryGetProductWithPagination } from "~/services/products/hooks/queries";
 import { GetProductWithPaginationRequest } from "~/services/products/infras";
 import { formatCurrencyVND } from "~/utils/currency";
+import { DeleteProductConfirmPopup } from "./popup/delete-product-confirm.popup";
 
 const ProductManagementPage: React.FC = () => {
-    const { user } = useAuth();
-    const [searchValue, setSearchValue] = React.useState<string>("");
-    const agGrid = useAgGrid();
     const form = useForm<GetProductWithPaginationRequest>();
+    const { user } = useAuth();
+    const agGrid = useAgGrid();
     const { handlePageChange, pageIndex, pageSize } = usePagination();
-    const { data: listCategories } = useQueryCategories();
 
+    const [searchValue, setSearchValue] = React.useState<string>("");
+    const [deleteProductId, setDeleteProductId] = React.useState<number | null>(null);
+
+    const { data: listCategories } = useQueryCategories();
     const {
         data: { items: listProducts, total: totalProducts },
         isLoading,
@@ -39,7 +42,33 @@ const ProductManagementPage: React.FC = () => {
     });
 
     const colDefs: ColDef<Product>[] = [
-        { headerName: "Name", field: "name", flex: 2, cellClass: "ag-cell-center" },
+        {
+            headerName: "Product ID",
+            field: "id",
+            flex: 0.5,
+            cellClass: "ag-cell-center",
+        },
+
+        {
+            headerName: "Name",
+            flex: 1.5,
+            cellStyle: { whiteSpace: "normal", lineHeight: "1.4" },
+            autoHeight: true,
+            cellRenderer: (params: ICellRendererParams<Product>) => {
+                return (
+                    <Box className="flex items-center gap-3 p-2">
+                        <ImageRenderer
+                            src={params.data.sharedFiles?.[0]?.path}
+                            alt={params.data.name}
+                            className="h-[100px] w-[100px] object-cover"
+                        />
+                        <Typography className="break-words" sx={{ whiteSpace: "normal", wordBreak: "break-word" }}>
+                            {params.data.name}
+                        </Typography>
+                    </Box>
+                );
+            },
+        },
 
         {
             field: "price",
@@ -76,14 +105,16 @@ const ProductManagementPage: React.FC = () => {
             headerName: "Actions",
             cellRenderer: (params: ICellRendererParams<Product>) => {
                 return (
-                    <Stack direction={"row"} spacing={1} className="justify-center">
+                    <Stack direction={"row"} spacing={1} className="h-full items-center justify-center">
                         <Button
                             variant="contained"
                             onClick={() => (window.location.href = `/seller/products/update/${params.data.id}`)}
                         >
                             Edit
                         </Button>
-                        <Button color="error">Remove</Button>
+                        <Button color="error" onClick={() => setDeleteProductId(params.data.id)}>
+                            Remove
+                        </Button>
                     </Stack>
                 );
             },
@@ -165,6 +196,11 @@ const ProductManagementPage: React.FC = () => {
                     totalItems={totalProducts}
                     onPageChange={handlePageChange}
                     {...agGrid}
+                />
+                <DeleteProductConfirmPopup
+                    open={!!deleteProductId}
+                    onClose={() => setDeleteProductId(null)}
+                    productId={deleteProductId!}
                 />
             </Stack>
         </DynamicForm>
