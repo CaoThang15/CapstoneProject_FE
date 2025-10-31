@@ -8,8 +8,9 @@ import { adminSidebarTree } from "~/configs/sidebar/admin.sidebar";
 import { sellerSidebarTree } from "~/configs/sidebar/seller.sidebar";
 import { Role } from "~/constants/roles";
 import { useAuth } from "~/contexts/auth.context";
-import { useManagerBreadcrumb } from "../breadcrumbs";
+import { useBreadcrumb } from "../breadcrumbs";
 import { SidebarTabItem, SidebarTabProps } from "./tabs/sidebar.tab";
+import { DEFAULT_FIRST_BREADCRUMB_MANAGER } from "~/configs/breadcrumbs.config";
 
 const UserInfoSummary: React.FC = () => {
     const { user } = useAuth();
@@ -45,7 +46,7 @@ const UserInfoSummary: React.FC = () => {
 export const ManagerSidebar: React.FC = () => {
     const { logout, user } = useAuth();
     const { pathname } = useLocation();
-    const { breadcrumbs, setBreadcrumbs } = useManagerBreadcrumb();
+    const { breadcrumbs, setBreadcrumbs } = useBreadcrumb();
     const [isOpen, setIsOpen] = React.useState(false);
 
     const handleLogout = () => {
@@ -88,14 +89,14 @@ export const ManagerSidebar: React.FC = () => {
 
         if (foundPath && foundPath.length > 0) {
             setBreadcrumbs([
-                breadcrumbs[0],
+                DEFAULT_FIRST_BREADCRUMB_MANAGER,
                 ...foundPath.map((item) => ({
                     label: item.labelKey,
                     path: item.pathName,
                 })),
             ]);
         } else {
-            setBreadcrumbs([breadcrumbs[0]]);
+            setBreadcrumbs([DEFAULT_FIRST_BREADCRUMB_MANAGER]);
         }
     }, [pathname, filteredSidebarTree, findBreadcrumbPath, setBreadcrumbs]);
 

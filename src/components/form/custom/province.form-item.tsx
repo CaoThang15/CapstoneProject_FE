@@ -30,7 +30,7 @@ const ProvinceFormItem: React.FC<ProvinceFormItemProps> = ({ name = "province", 
     const handleChange = (_: React.SyntheticEvent<Element, Event>, value: string) => {
         const selected = province.find((p) => p.name == value);
         form.setValue(name, value);
-        form.setValue("provinceCode", selected?.id ?? "");
+        form.setValue("provinceCode", selected?.code ?? "");
     };
 
     React.useEffect(() => {
@@ -41,7 +41,7 @@ const ProvinceFormItem: React.FC<ProvinceFormItemProps> = ({ name = "province", 
         if (provinceFormValue && province.length > 0) {
             const selected = province.find((p) => p.name === provinceFormValue);
             if (selected) {
-                form.setValue("provinceCode", selected.id);
+                form.setValue("provinceCode", selected.code);
                 form.setValue(name, selected.name);
             }
         }
@@ -52,11 +52,11 @@ const ProvinceFormItem: React.FC<ProvinceFormItemProps> = ({ name = "province", 
             label={t(i18n.translationKey.province)}
             render="autocomplete"
             options={toBaseOption<TProvince>(province, {
-                label: "normalizedName",
+                label: "name",
                 value: "name",
             })}
             onInputChange={handleChange}
-            readOnly
+            // readOnly
             {...props}
         />
     );

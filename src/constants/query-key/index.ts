@@ -32,6 +32,9 @@ const ProductsQueryKey = {
     GET_PRODUCT_BY_ID: "getProductById",
     GET_PRODUCT_BY_SLUG: "getProductBySlug",
 };
+const UsersQueryKey = {
+    UPDATE_PROFILE: "updateProfile",
+};
 
 export const QueryKey = {
     UPLOAD_FILE: UploadFileQueryKey,
@@ -39,4 +42,5 @@ export const QueryKey = {
     AUTH: AuthQueryKey,
     CATEGORIES: CategoriesQueryKey,
     PRODUCTS: ProductsQueryKey,
+    USERS: UsersQueryKey,
 };

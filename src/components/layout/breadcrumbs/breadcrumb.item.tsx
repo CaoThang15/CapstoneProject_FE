@@ -1,4 +1,5 @@
 import { Link, Typography } from "@mui/material";
+import classNames from "classnames";
 import React from "react";
 import { useNavigate } from "react-router";
 import { IBreadcrumbItem } from "~/configs/breadcrumbs.config";
@@ -22,17 +23,18 @@ export const BreadcrumbItem: React.FC<BreadcrumbItemProps> = ({ breadcrumb, isLa
     const content = (
         <span style={{ display: "flex", alignItems: "center", gap: 6 }}>
             {breadcrumb.icon}
-            {breadcrumb.label}
+            <span className={classNames("text-[14]", { "text-gray-500": !isActive, "text-black": isActive })}>
+                {breadcrumb.label}
+            </span>
         </span>
     );
 
     if (isLast || !breadcrumb.path) {
         return (
             <Typography
+                fontSize={14}
                 sx={{
                     fontWeight: isActive ? 600 : 500,
-                    fontSize: "0.875rem",
-                    color: isActive ? "primary.main" : "text.primary",
                     display: "flex",
                     alignItems: "center",
                 }}
@@ -47,9 +49,10 @@ export const BreadcrumbItem: React.FC<BreadcrumbItemProps> = ({ breadcrumb, isLa
             component="button"
             variant="body2"
             onClick={() => handleBreadcrumbClick(breadcrumb.path)}
+            fontSize={isManagerBreadcrumb ? 16 : 14}
+            className={classNames({ "text-gray-600": !isActive, "text-black": isActive })}
             sx={{
                 textDecoration: "none",
-                color: isActive ? "primary.main" : "text.secondary",
                 fontWeight: isActive ? 600 : 400,
                 "&:hover": {
                     textDecoration: "underline",
@@ -59,8 +62,6 @@ export const BreadcrumbItem: React.FC<BreadcrumbItemProps> = ({ breadcrumb, isLa
                 border: "none",
                 background: "transparent",
                 padding: 0,
-                font: "inherit",
-                fontSize: isManagerBreadcrumb ? "1rem" : "0.875rem",
                 display: "flex",
                 alignItems: "center",
             }}

@@ -1,17 +1,16 @@
-import { callApi } from "~/libs/axios/request";
-import { UploadedFile, UploadFileRequest } from "./types";
-import { HttpMethod } from "~/libs/axios/types";
 import { endpoints } from "~/constants/endpoints";
+import { callApi } from "~/libs/axios/request";
+import { HttpMethod } from "~/libs/axios/types";
+import { UploadFileRequest, UploadImageResponse } from "./types";
 
-const uploadFile = (request: UploadFileRequest) => {
+const uploadImage = (request: UploadFileRequest) => {
     const formData = new FormData();
     formData.append("file", request.file);
-    formData.append("department", request.department);
-    formData.append("type", request.type);
+    formData.append("folder", request.folder);
 
-    return callApi<UploadedFile>({
+    return callApi<UploadImageResponse>({
         method: HttpMethod.POST,
-        url: endpoints.uploadFile.uploadFile,
+        url: endpoints.uploadFile.uploadImage,
         data: formData,
     });
 };
@@ -24,15 +23,16 @@ const createDownloadUrl = (fileId: string) => {
     });
 };
 
-const deleteFile = (fileId: string) => {
+const deleteFile = (imageUrl: string) => {
     return callApi<boolean>({
         method: HttpMethod.DELETE,
-        url: endpoints.uploadFile.deleteFileById(fileId),
+        url: endpoints.uploadFile.deleteImage,
+        params: { imageUrl },
     });
 };
 
 export const uploadFileApi = {
-    uploadFile,
+    uploadImage,
     createDownloadUrl,
     deleteFile,
 };

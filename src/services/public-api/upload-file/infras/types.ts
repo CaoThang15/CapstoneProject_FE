@@ -1,16 +1,13 @@
 export interface UploadFileRequest {
     file: File;
-    department: string;
-    type: string;
+    folder: string;
 }
 
+export interface UploadImageResponse {
+    imageUrl: string;
+}
 export interface UploadedFile {
     id: string;
     fileName: string;
-    contentType: string;
-    size: number;
-    storagePath: string;
-    department: string;
-    createdAt: Date;
-    lastUpdatedAt: Date;
+    imageUrl: string;
 }

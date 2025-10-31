@@ -10,7 +10,7 @@ import { showToast } from "~/utils";
 import { useAuth } from "../contexts/auth.context";
 
 interface AuthenticatedGuardProps {
-    role: Role;
+    role?: Role;
 }
 
 const AuthenticatedGuard: React.FC<AuthenticatedGuardProps> = ({ role }) => {
@@ -35,7 +35,8 @@ const AuthenticatedGuard: React.FC<AuthenticatedGuardProps> = ({ role }) => {
             return;
         }
 
-        if (user?.roleId !== role) {
+        console.log(role);
+        if (role && user?.roleId !== role) {
             showToast.warning(t(i18n.translationKey.accessDenied));
             navigate("/");
             return;
