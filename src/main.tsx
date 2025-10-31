@@ -8,7 +8,6 @@ import { BrowserRouter } from "react-router";
 import { ToastContainer, Zoom } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "~/configs/i18n";
-import GlobalSpinnerQuery from "./components/layout/global-spinner-query";
 import { AuthContextProvider } from "./contexts/auth.context.tsx";
 import { HttpContextProvider } from "./contexts/http.context.tsx";
 import "./index.css";
@@ -25,7 +24,7 @@ createRoot(document.getElementById("root")!).render(
             <HttpContextProvider>
                 <AuthContextProvider>
                     <MaterialUIThemeProvider>
-                        <GlobalSpinnerQuery />
+                        {/* <GlobalSpinnerQuery /> */}
                         <ApplicationRoutes />
                         <ToastContainer
                             position="top-right"

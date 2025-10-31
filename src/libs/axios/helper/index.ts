@@ -8,7 +8,7 @@ export const getAxiosErrorMessageKey = (error: unknown): string => {
         if (!axiosError.response) {
             return i18n.translationKey.somethingWentWrong;
         }
-        return axiosError.response.data.MessageKey;
+        return axiosError.response.data.message;
     }
     return (error as Error).message;
 };

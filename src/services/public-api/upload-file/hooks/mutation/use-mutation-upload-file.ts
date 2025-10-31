@@ -7,7 +7,7 @@ export function useMutationUploadFile() {
         mutationKey: [QueryKey.UPLOAD_FILE.UPLOAD_FILE],
         mutationFn: async (request: UploadFileRequest) => {
             const response = await uploadFileApi.uploadFile(request);
-            return response.Data;
+            return response.data;
         },
         onSuccess: (file: UploadedFile) => {
             return file;
