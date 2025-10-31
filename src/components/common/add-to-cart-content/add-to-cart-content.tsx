@@ -2,11 +2,7 @@ import { Box, Typography, Button } from "@mui/material";
 import React from "react";
 import { useNavigate } from "react-router";
 
-interface Props {
-    product?: any;
-}
-
-const AddToCartToastContent: React.FC<Props> = () => {
+const AddToCartToastContent: React.FC = () => {
     const navigate = useNavigate();
 
     return (

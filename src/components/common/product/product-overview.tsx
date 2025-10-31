@@ -4,12 +4,16 @@ import { useNavigate } from "react-router";
 import { showToast } from "~/utils";
 import { AddToCartToastContent, ImageRenderer } from "..";
 import { Product } from "~/entities/product.entity";
+import { useLocalStorage } from "@uidotdev/usehooks";
+import { LocalStorageCartItems } from "~/pages/cart/types";
 
 interface Props {
     product: Product;
 }
 
 const ProductOverview: React.FC<Props> = ({ product }) => {
+    const [_, saveLocalCartProducts] = useLocalStorage("cart", {} as LocalStorageCartItems);
+
     const navigate = useNavigate();
 
     const handleNavigate = () => {
@@ -18,7 +22,17 @@ const ProductOverview: React.FC<Props> = ({ product }) => {
 
     const handleAddToCart = (e: React.MouseEvent) => {
         e.stopPropagation();
-        showToast.success(<AddToCartToastContent product={product} />);
+
+        saveLocalCartProducts((prev) => {
+            const currentQty = prev[product.id]?.quantity || 0;
+
+            return {
+                ...prev,
+                [product.id]: { quantity: currentQty + 1 },
+            };
+        });
+
+        showToast.success(<AddToCartToastContent />);
     };
 
     return (

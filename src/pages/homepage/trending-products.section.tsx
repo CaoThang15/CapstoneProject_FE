@@ -1,6 +1,6 @@
 import { Box, Grid, Typography } from "@mui/material";
 import React from "react";
-import ProductSummary from "~/components/product/product.summary";
+import ProductSummary from "~/components/common/product/product.summary";
 
 export const TrendingProductsSection: React.FC = () => {
     return (

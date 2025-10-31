@@ -1,10 +1,12 @@
 import { Category, Home, LoginOutlined, Recycling, ShoppingCart } from "@mui/icons-material";
 import { AppBar, Badge, Box, Button, IconButton, Stack, Typography } from "@mui/material";
+import { useLocalStorage } from "@uidotdev/usehooks";
 import classNames from "classnames";
 import React from "react";
+import { LocalStorageCartItems } from "~/pages/cart/types";
 
 const LandingHeader: React.FC = () => {
-    const [totalCartItems, _] = React.useState<number>(0);
+    const [localCartProducts] = useLocalStorage("cart", {} as LocalStorageCartItems);
 
     const handleNavigate = (href: string) => {
         window.location.href = href;
@@ -83,11 +85,11 @@ const LandingHeader: React.FC = () => {
                             }}
                             startIcon={
                                 <Badge
-                                    badgeContent={0}
+                                    badgeContent={Object.keys(localCartProducts).length}
                                     color="primary"
                                     overlap="circular"
                                     variant="standard"
-                                    className={classNames({ "me-3": totalCartItems > 0 })}
+                                    className={classNames({ "me-3": Object.keys(localCartProducts).length > 0 })}
                                     sx={{
                                         "& .MuiBadge-badge": { fontSize: 10, minWidth: 15, height: 15, right: -5 },
                                     }}
@@ -95,6 +97,7 @@ const LandingHeader: React.FC = () => {
                                     <ShoppingCart fontSize="small" />
                                 </Badge>
                             }
+                            onClick={() => (window.location.href = "/cart")}
                             className="h-9 border-none px-5 text-gray-600"
                         >
                             <Typography className="hidden whitespace-nowrap font-semibold md:inline">Cart</Typography>
