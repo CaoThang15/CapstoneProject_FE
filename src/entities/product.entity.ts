@@ -1,4 +1,5 @@
 import { BaseEntity } from "./base.entity";
+import { User } from "./person-info.entity";
 
 export interface SharedFile {
     name: string;
@@ -25,6 +26,7 @@ export interface Product extends BaseEntity {
     isAdminHide: boolean;
     isHide: boolean;
     sellerId: number;
+    seller: User;
     sharedFiles: SharedFile[];
     properties: ProductProperty[];
 }

@@ -1,12 +1,13 @@
 import { FilterAlt, Tune } from "@mui/icons-material";
 import { Box, Grid, IconButton, Stack } from "@mui/material";
 import React from "react";
-import { CategoryCard } from "~/components/common";
+import { CategoryCard, LoadingContainer } from "~/components/common";
 import LandingBreadcrumbs from "~/components/layout/breadcrumbs/landing.breadcrumbs";
 import { useQueryCategories } from "~/services/categories/hooks/queries";
 
 const CategoryPage: React.FC = () => {
-    const { data: listCategories } = useQueryCategories();
+    const { data: listCategories, isLoading } = useQueryCategories();
+
     return (
         <Box className="container mx-auto py-4">
             {/* Mobile filter trigger */}
@@ -20,24 +21,24 @@ const CategoryPage: React.FC = () => {
                     </IconButton>
                 </Stack>
             </Box>
-
             <LandingBreadcrumbs />
-
-            <Grid container spacing={3}>
-                {/* Main Content */}
-                <Grid size={{ xs: 12 }}>
-                    <Stack spacing={3}>
-                        {/* Categories Grid */}
-                        <Grid container spacing={2}>
-                            {listCategories.map((c) => (
-                                <Grid size={{ xs: 12, sm: 6, lg: 4 }} key={c.id}>
-                                    <CategoryCard category={c} />
-                                </Grid>
-                            ))}
-                        </Grid>
-                    </Stack>
+            <LoadingContainer isLoading={isLoading}>
+                <Grid container spacing={3}>
+                    {/* Main Content */}
+                    <Grid size={{ xs: 12 }}>
+                        <Stack spacing={3}>
+                            {/* Categories Grid */}
+                            <Grid container spacing={2}>
+                                {listCategories.map((c) => (
+                                    <Grid size={{ xs: 12, sm: 6, lg: 4 }} key={c.id}>
+                                        <CategoryCard category={c} />
+                                    </Grid>
+                                ))}
+                            </Grid>
+                        </Stack>
+                    </Grid>
                 </Grid>
-            </Grid>
+            </LoadingContainer>
         </Box>
     );
 };

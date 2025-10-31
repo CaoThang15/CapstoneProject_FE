@@ -11,6 +11,14 @@ const getListProducts = (params: Record<string, any>) => {
     });
 };
 
+const getProductBySlug = (slug: string) => {
+    return callApi<Product>({
+        url: endpoints.products.getProductBySlug(slug),
+        method: HttpMethod.GET,
+    });
+};
+
 export const productsApi = {
     getListProducts,
+    getProductBySlug,
 };

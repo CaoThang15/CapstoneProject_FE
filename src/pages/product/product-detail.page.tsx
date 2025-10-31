@@ -14,370 +14,327 @@ import {
 } from "@mui/icons-material";
 import { Avatar, Box, Button, Chip, Divider, Grid, Rating, Stack, TextField, Typography } from "@mui/material";
 import React from "react";
-import { AddToCartToastContent, BoxSection } from "~/components/common";
+import { useParams } from "react-router";
+import { HistogramBar, ReviewItem } from "~/components/comments";
+import { AddToCartToastContent, BoxSection, ImageRenderer, LoadingContainer } from "~/components/common";
+import { SlugPathParams } from "~/routes/types";
+import { useQueryGetProductBySlug } from "~/services/products/hooks/queries";
 import { showToast } from "~/utils";
-
-const thumbnails = [
-    "https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=1887&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=1935&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?q=80&w=1974&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1518779578993-ec3579fee39f?q=80&w=1932&auto=format&fit=crop",
-];
-
-const mainImage = "https://images.unsplash.com/photo-1518779578993-ec3579fee39f?q=80&w=1932&auto=format&fit=crop";
-
-const HistogramBar: React.FC<{ label: number; value: number }> = ({ label, value }) => (
-    <Box className="flex items-center gap-2">
-        <Typography className="w-4 text-sm">{label}</Typography>
-        <Box className="h-1.5 w-full rounded bg-gray-200">
-            <Box className="h-1.5 rounded bg-emerald-500" sx={{ width: `${Math.max(0, Math.min(100, value))}%` }} />
-        </Box>
-        <Typography className="w-10 text-right text-sm">{value}%</Typography>
-    </Box>
-);
-
-const ReviewItem: React.FC<{
-    name: string;
-    date: string;
-    rating: number;
-    text: string;
-    images?: string[];
-    verified?: boolean;
-}> = ({ name, date, rating, text, images = [], verified }) => (
-    <Box className="flex gap-3">
-        <Avatar sx={{ width: 36, height: 36 }}>{name[0]}</Avatar>
-        <Box className="flex-1">
-            <Stack direction="row" spacing={1} alignItems="center">
-                <Typography className="text-sm font-semibold">{name}</Typography>
-                {verified && (
-                    <Chip
-                        size="small"
-                        color="success"
-                        variant="outlined"
-                        label="Verified purchase"
-                        icon={<CheckCircle fontSize="small" />}
-                        sx={{ height: 20 }}
-                    />
-                )}
-            </Stack>
-            <Typography className="text-xs text-gray-500" mt={0.5}>
-                {date}
-            </Typography>
-            <Rating value={rating} readOnly size="small" sx={{ mt: 0.5 }} />
-            <Typography className="mt-1 text-sm">{text}</Typography>
-            {images.length > 0 && (
-                <Stack direction="row" spacing={1} mt={1.5}>
-                    {images.map((src, i) => (
-                        <img key={i} src={src} className="h-16 w-20 rounded border object-cover" alt={`review-${i}`} />
-                    ))}
-                </Stack>
-            )}
-        </Box>
-    </Box>
-);
+import { formatCurrencyVND } from "~/utils/currency";
 
 const ProductDetailPage: React.FC = () => {
+    const { slug } = useParams<SlugPathParams>();
+    const { data: product, isLoading, isError } = useQueryGetProductBySlug(slug);
+
     const handleAddToCart = () => {
         showToast.success(<AddToCartToastContent />);
     };
+
     return (
-        <Box className="container mx-auto">
-            <Grid container spacing={2}>
-                {/* Left: Gallery */}
-                <Grid size={{ xs: 12, md: 8 }}>
-                    <Stack direction="column" spacing={1}>
-                        <BoxSection className="p-2 md:p-3">
-                            <Box className="relative flex gap-2">
-                                <img
-                                    src={mainImage}
-                                    className="h-[420px] w-full rounded-lg object-cover md:h-[520px]"
-                                    alt="product"
-                                />
-                                <Stack spacing={1} className="hidden w-28 md:flex">
-                                    {thumbnails.map((t, i) => (
-                                        <img
-                                            key={i}
-                                            src={t}
-                                            className="h-24 w-28 cursor-pointer rounded border object-cover"
-                                            alt={`thumb-${i}`}
-                                        />
-                                    ))}
-                                </Stack>
-                            </Box>
-                        </BoxSection>
-
-                        <BoxSection className="mt-3 rounded-xl border border-gray-100 bg-white p-2 md:p-4">
-                            <Typography variant="h5" className="font-semibold">
-                                AirPods Pro (2nd gen) with MagSafe Case
-                            </Typography>
-                            <Stack direction="row" spacing={1} alignItems="center" mt={1}>
-                                <Rating value={4.7} readOnly size="small" />
-                                <Typography className="text-sm">4.7 out of 5</Typography>
-                                <Chip size="small" label="AI deal" color="primary" variant="outlined" />
-                                <Chip size="small" label="Case health 88%" variant="outlined" />
-                                <Chip size="small" label="Flagged as below market pricing" variant="outlined" />
-                            </Stack>
-                            <Stack direction="row" spacing={1} alignItems="center" mt={1}>
-                                <Typography variant="h5" fontWeight={700}>
-                                    $135
-                                </Typography>
-                                <Typography className="text-xs text-gray-500">Est. value $170</Typography>
-                            </Stack>
-                            <Grid container spacing={2} mt={3} mb={3}>
-                                <Grid size={6}>
-                                    <Stack direction="row" spacing={1} alignItems="center">
-                                        <CheckCircle color="action" fontSize="small" />
-                                        <Typography className="text-sm">Serial verified</Typography>
-                                    </Stack>
-                                </Grid>
-                                <Grid size={6}>
-                                    <Stack direction="row" spacing={1} alignItems="center">
-                                        <LocalShippingOutlined color="action" fontSize="small" />
-                                        <Typography className="text-sm">Ships in 24h</Typography>
-                                    </Stack>
-                                </Grid>
-                                <Grid size={6}>
-                                    <Stack direction="row" spacing={1} alignItems="center">
-                                        <Wifi color="action" fontSize="small" />
-                                        <Typography className="text-sm">MagSafe + Find My Phone</Typography>
-                                    </Stack>
-                                </Grid>
-                                <Grid size={6}>
-                                    <Stack direction="row" spacing={1} alignItems="center">
-                                        <Battery0Bar color="action" fontSize="small" />
-                                        <Typography className="text-sm">Case battery 88%</Typography>
-                                    </Stack>
-                                </Grid>
-                            </Grid>
-                        </BoxSection>
-
-                        {/* Seller */}
-                        <Box className="mb-2 rounded-xl bg-white p-3 md:p-4">
-                            <Typography variant="h5" className="font-semibold">
-                                Seller
-                            </Typography>
-                            <Stack direction="row" spacing={2} alignItems="center" mt={2}>
-                                <Avatar>AC</Avatar>
-                                <Box className="flex-1">
-                                    <Typography className="font-medium">Alex Chen</Typography>
-                                    <Typography className="text-sm text-gray-600">
-                                        4.9 (182 sales) • Verified
-                                    </Typography>
-                                </Box>
-                                <Chip color="primary" size="small" label="Joined 2023" />
-                            </Stack>
-                        </Box>
-
-                        <BoxSection className="p-3 md:p-4">
-                            <Typography variant="h6" className="font-semibold">
-                                What’s included
-                            </Typography>
-
-                            <Stack spacing={3} className="ps-3" mt={1.5}>
-                                <Stack direction="row" justifyContent="space-between">
-                                    <Typography className="text-sm">AirPods Pro (2nd gen) earbuds</Typography>
-                                    <Typography className="text-sm text-gray-500">Both L/R</Typography>
-                                </Stack>
-                                <Stack direction="row" justifyContent="space-between">
-                                    <Typography className="text-sm">MagSafe Charging Case</Typography>
-                                    <Typography className="text-sm text-gray-500">Battery 88%</Typography>
-                                </Stack>
-                                <Stack direction="row" justifyContent="space-between">
-                                    <Typography className="text-sm">USB-C cable</Typography>
-                                    <Typography className="text-sm text-gray-500">Aftermarket</Typography>
-                                </Stack>
-                                <Stack direction="row" justifyContent="space-between">
-                                    <Typography className="text-sm">Silicone ear tips</Typography>
-                                    <Typography className="text-sm text-gray-500">S/M/L</Typography>
-                                </Stack>
-                            </Stack>
-                        </BoxSection>
-
-                        <BoxSection className="p-3 md:p-4">
-                            <Typography variant="h6" className="font-semibold">
-                                Shipping & returns
-                            </Typography>
-                            <Grid container spacing={2} mt={0.5}>
-                                <Grid size={6}>
-                                    <Typography className="text-xs text-gray-500">Shipping</Typography>
-                                    <Typography className="text-sm">Standard 3–5 days</Typography>
-                                    <Typography className="text-xs text-gray-500">
-                                        Carrier selected at checkout
-                                    </Typography>
-                                </Grid>
-                                <Grid size={6}>
-                                    <Typography className="text-xs text-gray-500">Returns</Typography>
-                                    <Typography className="text-sm">7-day return window</Typography>
-                                    <Typography className="text-xs text-gray-500">
-                                        AI fraud protection included
-                                    </Typography>
-                                </Grid>
-                            </Grid>
-                        </BoxSection>
-                        <Box>
-                            {/* AI insights */}
-                            <Stack direction="row" spacing={2}>
-                                <BoxSection className="basis-1/2 p-3 md:p-4">
-                                    <Typography className="text-sm font-semibold">AI price insight</Typography>
-                                    <Stack spacing={1} mt={1}>
-                                        <Typography className="text-sm text-gray-600">
-                                            <span>
-                                                <ShowChartOutlined />{" "}
-                                            </span>
-                                            Current listing is 21% below market
-                                        </Typography>
-                                        <Typography className="text-sm text-gray-600">
-                                            <span>
-                                                <ScheduleOutlined />{" "}
-                                            </span>{" "}
-                                            Typical sell time: 2 days
-                                        </Typography>
-                                    </Stack>
+        <LoadingContainer isLoading={isLoading}>
+            {!product || isError ? (
+                <Box className="container mx-auto py-20 text-center">
+                    <Typography variant="h6" color="text.secondary">
+                        Product not found
+                    </Typography>
+                </Box>
+            ) : (
+                <Box className="container mx-auto">
+                    <Grid container spacing={2}>
+                        {/* Left: Gallery */}
+                        <Grid size={{ xs: 12, md: 8 }}>
+                            <Stack direction="column" spacing={1}>
+                                <BoxSection className="p-2 md:p-3">
+                                    <Box className="relative flex gap-2">
+                                        <Box className="h-[420px] flex-1 rounded-lg object-cover md:h-[520px]">
+                                            <ImageRenderer
+                                                src={product.sharedFiles?.[0]?.path}
+                                                className="rounded-xl"
+                                            />
+                                        </Box>
+                                        {product.sharedFiles?.length > 1 ? (
+                                            <Stack spacing={1} className="hidden w-28 md:flex">
+                                                {product.sharedFiles.slice(1, 6).map((image) => (
+                                                    <Box
+                                                        key={image.path}
+                                                        className="h-24 w-28 cursor-pointer rounded rounded-lg border border-gray-100 object-cover"
+                                                    >
+                                                        <ImageRenderer src={image.path} alt={image.name} />
+                                                    </Box>
+                                                ))}
+                                            </Stack>
+                                        ) : (
+                                            <></>
+                                        )}
+                                    </Box>
                                 </BoxSection>
-                                <BoxSection className="basis-1/2 p-3 md:p-4">
-                                    <Typography className="text-sm font-semibold">AI fraud check</Typography>
+
+                                <BoxSection className="mt-3 rounded-xl border border-gray-100 bg-white p-2 md:p-4">
+                                    <Typography variant="h5" className="font-semibold">
+                                        {product.name}
+                                    </Typography>
                                     <Stack direction="row" spacing={1} alignItems="center" mt={1}>
-                                        <Chip size="small" color="success" label="Low risk" />
-                                        <Typography className="text-sm text-gray-600">
-                                            No mismatch in photos/metadata
-                                        </Typography>
+                                        <Rating value={4.7} readOnly size="small" />
+                                        <Typography className="text-sm">4.7 out of 5</Typography>
+                                        <Chip size="small" label="AI deal" color="primary" variant="outlined" />
+                                        <Chip size="small" label="Case health 88%" variant="outlined" />
+                                        <Chip size="small" label="Flagged as below market pricing" variant="outlined" />
                                     </Stack>
-                                    <Typography className="mt-1 text-sm">
-                                        <span>
-                                            <ShieldOutlined />{" "}
-                                        </span>
-                                        Escrow eligible
+                                    <Stack direction="row" spacing={1} alignItems="center" mt={1}>
+                                        <Typography variant="h5" fontWeight={700}>
+                                            {formatCurrencyVND(product.price)}
+                                        </Typography>
+                                        {/* <Typography className="text-xs text-gray-500">Est. value $170</Typography> */}
+                                    </Stack>
+                                    <Grid container spacing={2} mt={3} mb={3}>
+                                        <Grid size={6}>
+                                            <Stack direction="row" spacing={1} alignItems="center">
+                                                <CheckCircle color="action" fontSize="small" />
+                                                <Typography className="text-sm">Serial verified</Typography>
+                                            </Stack>
+                                        </Grid>
+                                        <Grid size={6}>
+                                            <Stack direction="row" spacing={1} alignItems="center">
+                                                <LocalShippingOutlined color="action" fontSize="small" />
+                                                <Typography className="text-sm">Ships in 24h</Typography>
+                                            </Stack>
+                                        </Grid>
+                                        <Grid size={6}>
+                                            <Stack direction="row" spacing={1} alignItems="center">
+                                                <Wifi color="action" fontSize="small" />
+                                                <Typography className="text-sm">MagSafe + Find My Phone</Typography>
+                                            </Stack>
+                                        </Grid>
+                                        <Grid size={6}>
+                                            <Stack direction="row" spacing={1} alignItems="center">
+                                                <Battery0Bar color="action" fontSize="small" />
+                                                <Typography className="text-sm">Case battery 88%</Typography>
+                                            </Stack>
+                                        </Grid>
+                                    </Grid>
+                                </BoxSection>
+
+                                {/* Seller */}
+                                <Box className="mb-2 rounded-xl bg-white p-3 md:p-4">
+                                    <Typography variant="h5" className="font-semibold">
+                                        Seller
                                     </Typography>
+                                    <Stack direction="row" spacing={2} alignItems="center" mt={2}>
+                                        <Avatar src={product.seller.avatar} />
+                                        <Box className="flex-1">
+                                            <Typography className="font-medium">{product.seller.name}</Typography>
+                                            <Typography className="text-sm text-gray-600">
+                                                4.9 (182 sales) • Verified
+                                            </Typography>
+                                        </Box>
+                                        <Chip color="primary" size="small" label="Joined 2023" />
+                                    </Stack>
+                                </Box>
+
+                                <BoxSection className="p-3 md:p-4">
+                                    <Typography variant="h6" className="font-semibold">
+                                        What’s included
+                                    </Typography>
+
+                                    <Stack spacing={3} className="ps-3" mt={1.5}>
+                                        {product.properties.map((p) => (
+                                            <Stack direction="row" justifyContent="space-between">
+                                                <Typography className="text-sm">{p.propertyName}</Typography>
+                                                <Typography className="text-sm text-gray-500">{p.value}</Typography>
+                                            </Stack>
+                                        ))}
+                                    </Stack>
+                                </BoxSection>
+
+                                <BoxSection className="p-3 md:p-4">
+                                    <Typography variant="h6" className="font-semibold">
+                                        Shipping & returns
+                                    </Typography>
+                                    <Grid container spacing={2} mt={0.5}>
+                                        <Grid size={6}>
+                                            <Typography className="text-xs text-gray-500">Shipping</Typography>
+                                            <Typography className="text-sm">Standard 3–5 days</Typography>
+                                            <Typography className="text-xs text-gray-500">
+                                                Carrier selected at checkout
+                                            </Typography>
+                                        </Grid>
+                                        <Grid size={6}>
+                                            <Typography className="text-xs text-gray-500">Returns</Typography>
+                                            <Typography className="text-sm">7-day return window</Typography>
+                                            <Typography className="text-xs text-gray-500">
+                                                AI fraud protection included
+                                            </Typography>
+                                        </Grid>
+                                    </Grid>
+                                </BoxSection>
+                                <Box>
+                                    {/* AI insights */}
+                                    <Stack direction="row" spacing={2}>
+                                        <BoxSection className="basis-1/2 p-3 md:p-4">
+                                            <Typography className="text-sm font-semibold">AI price insight</Typography>
+                                            <Stack spacing={1} mt={1}>
+                                                <Typography className="text-sm text-gray-600">
+                                                    <span>
+                                                        <ShowChartOutlined />{" "}
+                                                    </span>
+                                                    Current listing is 21% below market
+                                                </Typography>
+                                                <Typography className="text-sm text-gray-600">
+                                                    <span>
+                                                        <ScheduleOutlined />{" "}
+                                                    </span>{" "}
+                                                    Typical sell time: 2 days
+                                                </Typography>
+                                            </Stack>
+                                        </BoxSection>
+                                        <BoxSection className="basis-1/2 p-3 md:p-4">
+                                            <Typography className="text-sm font-semibold">AI fraud check</Typography>
+                                            <Stack direction="row" spacing={1} alignItems="center" mt={1}>
+                                                <Chip size="small" color="success" label="Low risk" />
+                                                <Typography className="text-sm text-gray-600">
+                                                    No mismatch in photos/metadata
+                                                </Typography>
+                                            </Stack>
+                                            <Typography className="mt-1 text-sm">
+                                                <span>
+                                                    <ShieldOutlined />{" "}
+                                                </span>
+                                                Escrow eligible
+                                            </Typography>
+                                        </BoxSection>
+                                    </Stack>
+                                </Box>
+                                <BoxSection className="p-3 md:p-4">
+                                    <Typography variant="h6" className="font-semibold">
+                                        Ratings & feedback
+                                    </Typography>
+
+                                    <Grid container spacing={2} mt={1}>
+                                        <Grid size={{ xs: 12, sm: 4 }}>
+                                            <Stack spacing={1}>
+                                                <Stack direction="row" spacing={1} alignItems="center">
+                                                    <Star color="warning" />
+                                                    <Typography variant="h5" fontWeight={700}>
+                                                        4.7
+                                                    </Typography>
+                                                    <Typography className="text-sm text-gray-500">out of 5</Typography>
+                                                </Stack>
+                                                <HistogramBar label={5} value={72} />
+                                                <HistogramBar label={4} value={18} />
+                                                <HistogramBar label={3} value={6} />
+                                                <HistogramBar label={2} value={3} />
+                                                <HistogramBar label={1} value={1} />
+                                            </Stack>
+                                        </Grid>
+
+                                        <Grid size={{ xs: 12, sm: 8 }}>
+                                            <Typography className="text-sm font-medium">Leave a comment</Typography>
+                                            <TextField
+                                                size="small"
+                                                placeholder="Share your experience with this item..."
+                                                fullWidth
+                                                multiline
+                                                minRows={2}
+                                                sx={{ mt: 1 }}
+                                            />
+                                            <Stack direction="row" spacing={1} mt={1}>
+                                                <Button startIcon={<CameraAlt />} variant="outlined" color="inherit">
+                                                    Add photos
+                                                </Button>
+                                                <Button startIcon={<Send />} variant="contained">
+                                                    Post comment
+                                                </Button>
+                                            </Stack>
+                                        </Grid>
+                                    </Grid>
+
+                                    <Divider sx={{ my: 2 }} />
+
+                                    <Stack spacing={2}>
+                                        <ReviewItem
+                                            name="Alex"
+                                            date="Sep 14, 2025"
+                                            rating={5}
+                                            verified
+                                            text="Great deal. Battery at 88% is accurate, noise cancellation works perfectly. Arrived in 2 days."
+                                            images={[
+                                                "https://images.unsplash.com/photo-1585386959984-a41552231658?q=80&w=1887&auto=format&fit=crop",
+                                                "https://images.unsplash.com/photo-1585386959880-e5d9f3f4042d?q=80&w=1887&auto=format&fit=crop",
+                                            ]}
+                                        />
+                                        <ReviewItem
+                                            name="Jenny"
+                                            date="Sep 10, 2025"
+                                            rating={4}
+                                            text="Everything matched the description. Case had a few scratches but nothing major. Would buy again."
+                                        />
+                                        <ReviewItem
+                                            name="Mina"
+                                            date="Aug 29, 2025"
+                                            rating={5}
+                                            verified
+                                            text="Paired instantly with my iPhone. ANC and transparency mode feel like new."
+                                            images={[
+                                                "https://images.unsplash.com/photo-1545239351-1141bd82e8a6?q=80&w=1887&auto=format&fit=crop",
+                                            ]}
+                                        />
+                                    </Stack>
                                 </BoxSection>
                             </Stack>
-                        </Box>
-                        <BoxSection className="p-3 md:p-4">
-                            <Typography variant="h6" className="font-semibold">
-                                Ratings & feedback
-                            </Typography>
+                        </Grid>
 
-                            <Grid container spacing={2} mt={1}>
-                                <Grid size={{ xs: 12, sm: 4 }}>
+                        {/* Right: Price card */}
+                        <Grid size={{ xs: 12, md: 4 }}>
+                            <BoxSection className="h-full p-3 md:p-4">
+                                <Stack spacing={1}>
+                                    <Typography variant="h5" fontWeight={700}>
+                                        $135
+                                    </Typography>
+                                    <Typography className="text-xs text-gray-500">Est. $170</Typography>
+                                    <Button
+                                        startIcon={<ShoppingCart />}
+                                        variant="contained"
+                                        size="large"
+                                        fullWidth
+                                        onClick={handleAddToCart}
+                                    >
+                                        Add to cart
+                                    </Button>
+
+                                    <Divider sx={{ my: 1.5 }} />
+
                                     <Stack spacing={1}>
                                         <Stack direction="row" spacing={1} alignItems="center">
-                                            <Star color="warning" />
-                                            <Typography variant="h5" fontWeight={700}>
-                                                4.7
+                                            <LocalShippingOutlined fontSize="small" className="text-gray-500" />
+                                            <Typography className="text-sm text-gray-500">
+                                                Free shipping over $100
                                             </Typography>
-                                            <Typography className="text-sm text-gray-500">out of 5</Typography>
                                         </Stack>
-                                        <HistogramBar label={5} value={72} />
-                                        <HistogramBar label={4} value={18} />
-                                        <HistogramBar label={3} value={6} />
-                                        <HistogramBar label={2} value={3} />
-                                        <HistogramBar label={1} value={1} />
+                                        <Stack direction="row" spacing={1} alignItems="center">
+                                            <LockPersonOutlined fontSize="small" className="text-gray-500" />
+                                            <Typography className="text-sm text-gray-500">
+                                                Protected by AI fraud detection
+                                            </Typography>
+                                        </Stack>
                                     </Stack>
-                                </Grid>
 
-                                <Grid size={{ xs: 12, sm: 8 }}>
-                                    <Typography className="text-sm font-medium">Leave a comment</Typography>
-                                    <TextField
-                                        size="small"
-                                        placeholder="Share your experience with this item..."
-                                        fullWidth
-                                        multiline
-                                        minRows={2}
-                                        sx={{ mt: 1 }}
-                                    />
-                                    <Stack direction="row" spacing={1} mt={1}>
-                                        <Button startIcon={<CameraAlt />} variant="outlined" color="inherit">
-                                            Add photos
-                                        </Button>
-                                        <Button startIcon={<Send />} variant="contained">
-                                            Post comment
-                                        </Button>
+                                    <Divider sx={{ my: 1.5 }} />
+
+                                    <Stack spacing={1}>
+                                        <Typography className="text-sm">
+                                            <b>Payment</b>: Card • Apple Pay • PayPal
+                                        </Typography>
+                                        <Typography className="text-sm">
+                                            <b>Warranty</b>: 90-day limited warranty
+                                        </Typography>
                                     </Stack>
-                                </Grid>
-                            </Grid>
-
-                            <Divider sx={{ my: 2 }} />
-
-                            <Stack spacing={2}>
-                                <ReviewItem
-                                    name="Alex"
-                                    date="Sep 14, 2025"
-                                    rating={5}
-                                    verified
-                                    text="Great deal. Battery at 88% is accurate, noise cancellation works perfectly. Arrived in 2 days."
-                                    images={[
-                                        "https://images.unsplash.com/photo-1585386959984-a41552231658?q=80&w=1887&auto=format&fit=crop",
-                                        "https://images.unsplash.com/photo-1585386959880-e5d9f3f4042d?q=80&w=1887&auto=format&fit=crop",
-                                    ]}
-                                />
-                                <ReviewItem
-                                    name="Jenny"
-                                    date="Sep 10, 2025"
-                                    rating={4}
-                                    text="Everything matched the description. Case had a few scratches but nothing major. Would buy again."
-                                />
-                                <ReviewItem
-                                    name="Mina"
-                                    date="Aug 29, 2025"
-                                    rating={5}
-                                    verified
-                                    text="Paired instantly with my iPhone. ANC and transparency mode feel like new."
-                                    images={[
-                                        "https://images.unsplash.com/photo-1545239351-1141bd82e8a6?q=80&w=1887&auto=format&fit=crop",
-                                    ]}
-                                />
-                            </Stack>
-                        </BoxSection>
-                    </Stack>
-                </Grid>
-
-                {/* Right: Price card */}
-                <Grid size={{ xs: 12, md: 4 }}>
-                    <BoxSection className="h-full p-3 md:p-4">
-                        <Stack spacing={1}>
-                            <Typography variant="h5" fontWeight={700}>
-                                $135
-                            </Typography>
-                            <Typography className="text-xs text-gray-500">Est. $170</Typography>
-                            <Button
-                                startIcon={<ShoppingCart />}
-                                variant="contained"
-                                size="large"
-                                fullWidth
-                                onClick={handleAddToCart}
-                            >
-                                Add to cart
-                            </Button>
-
-                            <Divider sx={{ my: 1.5 }} />
-
-                            <Stack spacing={1}>
-                                <Stack direction="row" spacing={1} alignItems="center">
-                                    <LocalShippingOutlined fontSize="small" className="text-gray-500" />
-                                    <Typography className="text-sm text-gray-500">Free shipping over $100</Typography>
                                 </Stack>
-                                <Stack direction="row" spacing={1} alignItems="center">
-                                    <LockPersonOutlined fontSize="small" className="text-gray-500" />
-                                    <Typography className="text-sm text-gray-500">
-                                        Protected by AI fraud detection
-                                    </Typography>
-                                </Stack>
-                            </Stack>
-
-                            <Divider sx={{ my: 1.5 }} />
-
-                            <Stack spacing={1}>
-                                <Typography className="text-sm">
-                                    <b>Payment</b>: Card • Apple Pay • PayPal
-                                </Typography>
-                                <Typography className="text-sm">
-                                    <b>Warranty</b>: 90-day limited warranty
-                                </Typography>
-                            </Stack>
-                        </Stack>
-                    </BoxSection>
-                </Grid>
-            </Grid>
-        </Box>
+                            </BoxSection>
+                        </Grid>
+                    </Grid>
+                </Box>
+            )}
+        </LoadingContainer>
     );
 };
 
