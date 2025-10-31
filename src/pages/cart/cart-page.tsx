@@ -7,11 +7,15 @@ import { BoxSection, LoadingContainer } from "~/components/common";
 import { useAuth } from "~/contexts/auth.context";
 import { useQueryGetProductCart } from "~/services/carts/hooks";
 import { formatCurrencyVND } from "~/utils/currency";
+import { useCheckout } from "../checkout/checkout.context";
+import ApplyVoucherPopup from "./apply-voucher.popup";
 import { LocalStorageCartItems } from "./types";
 
 const CartPage: React.FC = () => {
     const { user } = useAuth();
     const [localCartProducts, saveLocalCartProducts] = useLocalStorage("cart", {} as LocalStorageCartItems);
+    const [isVoucherPopupOpen, setIsVoucherPopupOpen] = React.useState(false);
+    const { voucher, setVoucher } = useCheckout();
 
     const productCart = useQueryGetProductCart(localCartProducts);
 
@@ -153,7 +157,11 @@ const CartPage: React.FC = () => {
                                                 >
                                                     Promo code
                                                 </Button>
-                                                <Button variant="outlined" color="inherit">
+                                                <Button
+                                                    variant="outlined"
+                                                    color="inherit"
+                                                    onClick={() => setIsVoucherPopupOpen(true)}
+                                                >
                                                     Apply
                                                 </Button>
                                             </BoxSection>
@@ -193,6 +201,15 @@ const CartPage: React.FC = () => {
                             </Stack>
                         </BoxSection>
                     </Grid>
+                    {isVoucherPopupOpen && (
+                        <ApplyVoucherPopup
+                            onClose={() => setIsVoucherPopupOpen(false)}
+                            open={isVoucherPopupOpen}
+                            cartItems={productCart.map((product) => product.data)}
+                            appliedVoucher={voucher}
+                            onApply={(voucher) => setVoucher(voucher)}
+                        />
+                    )}
                 </Grid>
             </Box>
         </LoadingContainer>

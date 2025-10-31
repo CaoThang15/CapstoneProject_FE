@@ -1,6 +1,8 @@
 import { Route } from "react-router";
 import { Role } from "~/constants/roles";
 import AuthenticatedGuard from "~/guards/authenticated.guard";
+import CartPage from "~/pages/cart/cart-page";
+import { CheckoutProvider } from "~/pages/checkout/checkout.context";
 import CheckoutPage from "~/pages/checkout/checkout.page";
 import LandingBackground from "~/pages/landing";
 import { ProfilePage } from "~/pages/profile";
@@ -17,6 +19,14 @@ export const AuthenticatedRoutes = (
     <Route>
         <Route element={<AuthenticatedGuard />}>
             <Route element={<AppWrapper />}>
+                <Route
+                    path="cart"
+                    element={
+                        <CheckoutProvider>
+                            <CartPage />
+                        </CheckoutProvider>
+                    }
+                />
                 <Route path="checkout" element={<CheckoutPage />} />
             </Route>
             <Route element={<ProfileWrapper />}>
