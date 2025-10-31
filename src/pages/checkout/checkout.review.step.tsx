@@ -42,8 +42,8 @@ export const ReviewStep: React.FC<Props> = ({ productCart }) => {
     const fullAddress = [ward, province, shippingAddress].filter(Boolean).join(", ");
 
     const handleSubmit = async () => {
-        const orderData = checkoutForm.getValues();
-        await createOrder(orderData);
+        const { shippingAddress, ward, province, ...orderData } = checkoutForm.getValues();
+        await createOrder({ ...orderData, shippingAddress: `${shippingAddress}, ${ward}, ${province}` });
         showToast.success("Order placed successfully!");
         saveLocalCartProducts({});
         navigate("/");

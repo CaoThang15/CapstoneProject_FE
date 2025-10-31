@@ -174,13 +174,42 @@ const ProfilePage: React.FC = () => {
                         <Box className="space-y-3">
                             <Grid container spacing={2}>
                                 <Grid size={{ xs: 12, md: 6 }}>
-                                    <ProvinceFormItem required />
+                                    {isEditing ? (
+                                        <ProvinceFormItem required />
+                                    ) : (
+                                        <BoxSection className="!p-3">
+                                            <Typography variant="subtitle2" color="text.secondary" className="">
+                                                Province
+                                            </Typography>
+                                            <Typography>{form.watch("province")}</Typography>
+                                        </BoxSection>
+                                    )}
                                 </Grid>
                                 <Grid size={{ xs: 12, md: 6 }}>
-                                    <WardFormItem required />
+                                    {isEditing ? (
+                                        <WardFormItem required />
+                                    ) : (
+                                        <BoxSection className="!p-3">
+                                            <Typography variant="subtitle2" color="text.secondary" className="">
+                                                Ward
+                                            </Typography>
+                                            <Typography>{form.watch("ward")}</Typography>
+                                        </BoxSection>
+                                    )}
+                                </Grid>
+                                <Grid size={{ xs: 12 }}>
+                                    {isEditing ? (
+                                        <FormItem render="text-input" name="address" required label="Địa chỉ" />
+                                    ) : (
+                                        <BoxSection className="!p-3">
+                                            <Typography variant="subtitle2" color="text.secondary" className="">
+                                                Address
+                                            </Typography>
+                                            <Typography>{form.watch("address")}</Typography>
+                                        </BoxSection>
+                                    )}
                                 </Grid>
                             </Grid>
-                            <FormItem render="text-input" name="address" required label="Địa chỉ" />
                         </Box>
                     </BoxSection>
                     {/* AI & Security Section */}
@@ -225,7 +254,7 @@ const ProfilePage: React.FC = () => {
                                 className="h-10 w-10 object-cover"
                             />
                             <Stack spacing={1} className="flex-1 px-3">
-                                <Typography>{order.orderDetails[0].productName}</Typography>
+                                <Typography fontWeight={600}>{order.orderDetails[0].productName}</Typography>
                                 <Typography>
                                     Order #{order.id} - {order.statusName}
                                 </Typography>

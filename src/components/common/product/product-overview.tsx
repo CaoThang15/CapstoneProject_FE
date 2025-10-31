@@ -7,12 +7,14 @@ import { Product } from "~/entities/product.entity";
 import { useLocalStorage } from "@uidotdev/usehooks";
 import { LocalStorageCartItems } from "~/pages/cart/types";
 import { formatCurrencyVND } from "~/utils/currency";
+import { useAuth } from "~/contexts/auth.context";
 
 interface Props {
     product: Product;
 }
 
 const ProductOverview: React.FC<Props> = ({ product }) => {
+    const { user } = useAuth();
     const [_, saveLocalCartProducts] = useLocalStorage("cart", {} as LocalStorageCartItems);
 
     const navigate = useNavigate();
@@ -23,13 +25,19 @@ const ProductOverview: React.FC<Props> = ({ product }) => {
 
     const handleAddToCart = (e: React.MouseEvent) => {
         e.stopPropagation();
+        if (user) {
+            if (user.id === product?.seller.id) {
+                showToast.error("You cannot add your own product to the cart.");
+                return;
+            }
+        }
 
         saveLocalCartProducts((prev) => {
             const currentQty = prev[product.id]?.quantity || 0;
 
             return {
                 ...prev,
-                [product.id]: { quantity: currentQty + 1 },
+                [product.id]: { quantity: currentQty + 1, sellerId: product.seller.id },
             };
         });
 

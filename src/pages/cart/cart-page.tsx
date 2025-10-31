@@ -23,6 +23,7 @@ const CartPage: React.FC = () => {
         saveLocalCartProducts((prev) => ({
             ...prev,
             [productId]: {
+                sellerId: prev[productId]?.sellerId,
                 quantity: (prev[productId]?.quantity ?? 0) + 1,
             },
         }));
@@ -37,6 +38,7 @@ const CartPage: React.FC = () => {
                 ...prev,
                 [productId]: {
                     quantity: currentQty - 1,
+                    sellerId: prev[productId]?.sellerId,
                 },
             };
         });

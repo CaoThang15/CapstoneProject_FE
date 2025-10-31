@@ -36,7 +36,7 @@ export const DeliveryStep: React.FC = () => {
                     ></FormItem>
                 </Grid>
                 <Grid size={{ xs: 12 }}>
-                    <FormItem render="text-input" name="addressLine1" label="Address" required></FormItem>
+                    <FormItem render="text-input" name="shippingAddress" label="Address" required></FormItem>
                 </Grid>
                 <Grid size={{ xs: 12, md: 4 }}>
                     <ProvinceFormItem required />

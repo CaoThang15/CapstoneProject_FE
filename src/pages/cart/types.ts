@@ -6,6 +6,7 @@ export interface LocalStorageCartItems {
 
 export interface LocalStorageCartItem {
     quantity: number;
+    sellerId?: number;
 }
 
 export interface ProductCartItem extends Product {
