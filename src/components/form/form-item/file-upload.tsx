@@ -5,10 +5,10 @@ import { Accept, ErrorCode, useDropzone } from "react-dropzone";
 import { useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import i18n from "~/configs/i18n";
+import { UploadedFile } from "~/services/public-api/upload-file/infras";
 import { showToast } from "~/utils";
 import { ControllerWrapper, FormErrorMessage } from "../common";
 import { BaseFormItemProps } from "../types/form-item";
-import { UploadedFile } from "~/services/public-api/upload-file/infras";
 
 export type FileUploadFormItemProps = BaseFormItemProps & {
     multiple?: boolean;
@@ -41,9 +41,6 @@ const DefaultFileUpload: React.FC<{ index: number; file: UploadedFile; onDelete:
         >
             <Typography variant="body2">{file.fileName}</Typography>
             <Box ml={2}>
-                <Typography variant="caption" sx={{ color: "gray", ml: 1 }}>
-                    {(file.size / 1024 / 1024).toFixed(2)} MB
-                </Typography>
                 <IconButton size="small" onClick={() => onDelete(index)}>
                     <Delete fontSize="small" />
                 </IconButton>

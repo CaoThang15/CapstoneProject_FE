@@ -2,7 +2,7 @@ import React from "react";
 import { useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import i18n from "~/configs/i18n";
-import { getWardsByDistrict } from "~/services/vn-public-api";
+import { getWardsByProvince } from "~/services/vn-public-api";
 import { TWard } from "~/services/vn-public-api/types";
 import FormItem from "../form-item";
 import { AutocompleteFieldFormItemProps } from "../form-item/auto-complete";
@@ -19,15 +19,15 @@ const WardFormItem: React.FC<WardFormItemProps> = ({ ...props }) => {
     const [wards, setWards] = React.useState<TWard[]>([]);
 
     const getWards = async () => {
-        const selectedDistrict = form.watch("districtCode");
+        const selectedProvince = form.watch("provinceCode");
 
-        if (!selectedDistrict) {
+        if (!selectedProvince) {
             setWards([]);
             return;
         }
 
         try {
-            const response = await getWardsByDistrict(selectedDistrict);
+            const response = await getWardsByProvince(selectedProvince);
             setWards(response ?? []);
         } catch (error) {
             console.error("Failed to fetch districts:", error);
@@ -36,7 +36,7 @@ const WardFormItem: React.FC<WardFormItemProps> = ({ ...props }) => {
 
     React.useEffect(() => {
         getWards();
-    }, [form.watch("districtCode")]);
+    }, [form.watch("provinceCode")]);
 
     return (
         <FormItem

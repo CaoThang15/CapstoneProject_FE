@@ -45,16 +45,6 @@ export const SidebarTabItem: React.FC<SidebarTabProps> = ({
 
         if (pathName) {
             navigate(pathName);
-            // const buildBreadcrumbs = (item: SidebarTabProps, parent?: SidebarTabProps[]): IBreadcrumbItem[] => {
-            //     const parents = parent || [];
-            //     return [
-            //         breadcrumbs[0],
-            //         ...parents.map((p) => ({ label: p.labelKey, path: p.pathName })),
-            //         { label: item.labelKey, path: item.pathName },
-            //     ];
-            // };
-
-            // setBreadcrumbs(buildBreadcrumbs({ icon, labelKey, pathName, children }));
         }
 
         if (hasChildren) {

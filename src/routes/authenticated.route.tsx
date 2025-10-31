@@ -2,18 +2,22 @@ import { Route } from "react-router";
 import { Role } from "~/constants/roles";
 import AuthenticatedGuard from "~/guards/authenticated.guard";
 import LandingBackground from "~/pages/landing";
-import ManagerWrapper from "~/wrapper/manager.wrapper";
+import { ProfilePage } from "~/pages/profile";
+import { ManagerWrapper, ProfileWrapper } from "~/wrapper";
 
 export const AuthenticatedRoutes = (
     <Route>
-        <Route path="/seller" element={<AuthenticatedGuard role={Role.Seller} />}>
-            <Route element={<ManagerWrapper />}>
+        <Route element={<AuthenticatedGuard />}>
+            <Route element={<ProfileWrapper />}>
+                <Route path="profile" element={<ProfilePage />} />
+            </Route>
+        </Route>
+        <Route element={<ManagerWrapper />}>
+            <Route path="/seller" element={<AuthenticatedGuard role={Role.Seller} />}>
                 <Route index element={<LandingBackground />} />
                 <Route path="dashboard" element={<LandingBackground />} />
             </Route>
-        </Route>
-        <Route path="/admin" element={<AuthenticatedGuard role={Role.Admin} />}>
-            <Route element={<ManagerWrapper />}>
+            <Route path="/admin" element={<AuthenticatedGuard role={Role.Admin} />}>
                 <Route index element={<div>Admin Page</div>} />
             </Route>
         </Route>

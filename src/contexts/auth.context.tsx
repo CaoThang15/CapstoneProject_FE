@@ -19,6 +19,7 @@ export type AuthContextProps = {
     verifyLoginOtp: (params: TVerifyOtpRequest) => Promise<void>;
     register: (params: TRegisterRequest) => Promise<void>;
     verifyRegisterOtp: (params: TVerifyOtpRequest) => Promise<void>;
+    loadUserInfor: () => Promise<void>;
 };
 
 const defaultProvider: AuthContextProps = {
@@ -30,6 +31,7 @@ const defaultProvider: AuthContextProps = {
     verifyLoginOtp: () => Promise.resolve(),
     verifyRegisterOtp: () => Promise.resolve(),
     register: () => Promise.resolve(),
+    loadUserInfor: () => Promise.resolve(),
 };
 
 export const AuthContext = React.createContext(defaultProvider);
@@ -144,6 +146,7 @@ export const AuthContextProvider: React.FC<PropsWithChildren> = ({ children }) =
             verifyLoginOtp: handleVerifyLoginOtp,
             verifyRegisterOtp: handleVerifyRegisterOtp,
             register: handleRegister,
+            loadUserInfor,
         }),
         [
             isLoading,
@@ -154,6 +157,7 @@ export const AuthContextProvider: React.FC<PropsWithChildren> = ({ children }) =
             handleVerifyLoginOtp,
             handleVerifyRegisterOtp,
             handleRegister,
+            loadUserInfor,
         ],
     );
 

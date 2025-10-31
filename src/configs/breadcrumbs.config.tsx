@@ -1,4 +1,4 @@
-import { Home, Category, Person } from "@mui/icons-material";
+import { Category, Home, Person, PersonOutline, Recycling } from "@mui/icons-material";
 import { ReactNode } from "react";
 
 export interface IBreadcrumbItem {
@@ -6,6 +6,17 @@ export interface IBreadcrumbItem {
     path?: string;
     icon?: ReactNode;
 }
+
+export const DEFAULT_FIRST_BREADCRUMB_MANAGER: IBreadcrumbItem = {
+    label: "SMarket",
+    path: "/seller",
+    icon: <Recycling />,
+};
+
+export const DEFAULT_FIRST_BREADCRUMB_PROFILE = {
+    label: "My Account",
+    icon: <PersonOutline />,
+};
 
 // Mapping of known paths → labels & icons
 const breadcrumbMapping: Record<string, IBreadcrumbItem> = {

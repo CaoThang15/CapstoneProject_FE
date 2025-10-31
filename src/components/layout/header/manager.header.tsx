@@ -2,7 +2,7 @@ import { NotificationsOutlined } from "@mui/icons-material";
 import { AppBar, Badge, Box, IconButton, Stack, Tooltip } from "@mui/material";
 import classNames from "classnames";
 import React from "react";
-import HeaderBreadcrumbs from "../breadcrumbs/manager.breadcrumb";
+import HeaderBreadcrumbs from "../breadcrumbs/breadcrumb";
 
 const ManagerHeader: React.FC = () => {
     return (

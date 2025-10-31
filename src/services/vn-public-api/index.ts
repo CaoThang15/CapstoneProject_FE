@@ -1,6 +1,6 @@
 import { endpoints } from "~/constants/endpoints";
 import { vnPublicApiAxios } from "~/libs/axios/public-api/vn.axios-instance";
-import { TDistrict, TOApiProvinceResponse, TProvince, TWard } from "./types";
+import { TProvince, TWard } from "./types";
 
 const queryParams = {
     page: 0,
@@ -8,47 +8,21 @@ const queryParams = {
 };
 
 const getAllProvinces = async () => {
-    const response = await vnPublicApiAxios.get<TOApiProvinceResponse<TProvince>>(endpoints.publicApi.getAllProvinces, {
+    const response = await vnPublicApiAxios.get<TProvince[]>(endpoints.publicApi.getAllProvinces, {
         params: queryParams,
     });
 
-    const provinces =
-        response.data?.data.map((item) => ({
-            id: item.id,
-            name: item.name,
-            type: item.type,
-            normalizedName: `${item.typeText} ${item.name}`,
-            typeText: item.typeText,
-            slug: item.slug,
-        })) || [];
-
-    return provinces;
+    return response.data;
 };
 
-const getDistrictsByProvince = async (provinceId: string): Promise<TDistrict[]> => {
-    const response = await vnPublicApiAxios.get<TOApiProvinceResponse<TDistrict>>(
-        `${endpoints.publicApi.getDistrictsByProvince(provinceId)}`,
-    );
+const getWardsByProvince = async (province: string): Promise<TWard[]> => {
+    const response = await vnPublicApiAxios.get<TWard[]>(endpoints.publicApi.getWards, {
+        params: {
+            province,
+        },
+    });
 
-    return (
-        response.data?.data.map((item) => ({
-            ...item,
-            normalizedName: `${item.typeText} ${item.name}`,
-        })) || []
-    );
+    return response.data;
 };
 
-const getWardsByDistrict = async (districtId: string): Promise<TWard[]> => {
-    const response = await vnPublicApiAxios.get<TOApiProvinceResponse<TWard>>(
-        `${endpoints.publicApi.getWardsByDistrict(districtId)}`,
-    );
-
-    return (
-        response.data?.data.map((item) => ({
-            ...item,
-            normalizedName: `${item.typeText} ${item.name}`,
-        })) || []
-    );
-};
-
-export { getAllProvinces, getDistrictsByProvince, getWardsByDistrict };
+export { getAllProvinces, getWardsByProvince };

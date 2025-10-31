@@ -1,3 +1,3 @@
 export { default as LandingBreadcrumbs } from "./landing.breadcrumbs";
-export { default as ManagerBreadcrumbs } from "./manager.breadcrumb";
-export { BreadcrumbProvider, useManagerBreadcrumb } from "./manager-breadcrumb.context";
+export { default as AuthenticateBreadcrumbs } from "./breadcrumb";
+export { BreadcrumbProvider, useBreadcrumb } from "./manager-breadcrumb.context";

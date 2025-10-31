@@ -52,7 +52,7 @@ export const AutocompleteFieldFormItem: React.FC<AutocompleteFieldFormItemProps>
                             renderInput={(params) => (
                                 <TextField
                                     {...params}
-                                    label={label}
+                                    label={""}
                                     placeholder={placeholder}
                                     error={!!error}
                                     size={size}

@@ -9,6 +9,12 @@ interface ImageRendererProps extends React.ImgHTMLAttributes<HTMLImageElement> {
 const ImageRenderer: React.FC<ImageRendererProps> = ({ src, ...props }) => {
     return (
         <Box
+            sx={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                transition: "opacity 0.3s ease",
+            }}
             {...props}
             component="img"
             src={src || DefaultImage}
@@ -17,12 +23,6 @@ const ImageRenderer: React.FC<ImageRendererProps> = ({ src, ...props }) => {
             }}
             loading="lazy"
             decoding="async"
-            sx={{
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
-                transition: "opacity 0.3s ease",
-            }}
         />
     );
 };

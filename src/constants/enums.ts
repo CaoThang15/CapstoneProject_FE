@@ -46,3 +46,8 @@ export enum PaymentStatus {
     ADJUSTED,
     PENDING,
 }
+
+export enum CloudinaryFolder {
+    PROFILE = "profile",
+    CATEGORY = "category",
+}

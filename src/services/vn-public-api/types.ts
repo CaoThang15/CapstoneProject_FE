@@ -1,33 +1,15 @@
-export type TOApiProvinceResponse<T> = {
-    code: "success";
-    message: null;
-    total: 63;
-    data: T[];
-};
-
 export type TProvince = {
-    id: string;
+    code: number;
+    codename: string;
+    division_type: string;
     name: string;
-    type: number;
-    normalizedName: string;
-    typeText: string;
-    slug: string;
-};
-
-export type TDistrict = {
-    id: string;
-    name: string;
-    provinceId: string;
-    normalizedName: string;
-    type: number;
-    typeText: string;
+    phone_code: number;
 };
 
 export type TWard = {
-    id: string;
+    code: number;
+    codename: string;
+    division_type: string;
     name: string;
-    districtId: string;
-    normalizedName: string;
-    type: number;
-    typeText: string;
+    district_code: number;
 };

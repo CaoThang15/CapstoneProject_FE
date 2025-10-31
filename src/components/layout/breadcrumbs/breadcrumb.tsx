@@ -1,10 +1,10 @@
-import { Breadcrumbs, Stack } from "@mui/material";
+import { BoxProps, Breadcrumbs, Stack } from "@mui/material";
 import React from "react";
 import { BreadcrumbItem } from "./breadcrumb.item";
-import { useManagerBreadcrumb } from "./manager-breadcrumb.context";
+import { useBreadcrumb } from "./manager-breadcrumb.context";
 
-const HeaderBreadcrumbs: React.FC = () => {
-    const { breadcrumbs } = useManagerBreadcrumb();
+const AuthenticatedBreadcrumbs: React.FC<BoxProps> = () => {
+    const { breadcrumbs } = useBreadcrumb();
 
     return (
         <Stack direction="row" spacing={1} alignItems="center">
@@ -17,4 +17,4 @@ const HeaderBreadcrumbs: React.FC = () => {
     );
 };
 
-export default HeaderBreadcrumbs;
+export default AuthenticatedBreadcrumbs;

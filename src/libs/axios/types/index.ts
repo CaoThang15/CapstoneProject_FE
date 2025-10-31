@@ -22,10 +22,13 @@ export interface IMutationRequest extends IBaseApiRequest {
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type, @typescript-eslint/no-explicit-any
 export interface IApiRequestBody extends Record<string, any> {}
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-object-type
+export interface IApiRequestParams extends Record<string, any> {}
+
 export interface IQueryRequest extends IBaseApiRequest {
     method: HttpMethod.GET | HttpMethod.DELETE;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    params?: Record<string, any>;
+
+    params?: IApiRequestParams;
 }
 
 export interface IBaseApiResponse<T> {
