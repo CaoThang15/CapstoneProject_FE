@@ -3,9 +3,11 @@ import React from "react";
 import { useNavigate } from "react-router";
 import { showToast } from "~/utils";
 import { AddToCartToastContent } from "..";
+import { Product } from "~/entities/product.entity";
+import DefaultImage from "~/assets/images/default_image.webp";
 
 interface Props {
-    product: any;
+    product: Product;
 }
 
 const ProductOverview: React.FC<Props> = ({ product }) => {
@@ -29,19 +31,31 @@ const ProductOverview: React.FC<Props> = ({ product }) => {
             {/* Product Image */}
             <Box
                 sx={{
+                    position: "relative",
                     width: "100%",
                     height: 200,
-                    bgcolor: "#f5f5f5",
+                    overflow: "hidden",
                     borderRadius: 2,
                     mb: 2,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
+                    bgcolor: "#f5f5f5",
                 }}
             >
-                <Typography variant="body2" color="text.secondary">
-                    Product Image
-                </Typography>
+                <Box
+                    component="img"
+                    src={product.sharedFiles?.[0]?.path || DefaultImage}
+                    alt={product.sharedFiles?.[0]?.name || product.name || "Product image"}
+                    onError={(e: React.SyntheticEvent<HTMLImageElement>) => {
+                        (e.target as HTMLImageElement).src = DefaultImage;
+                    }}
+                    loading="lazy"
+                    decoding="async"
+                    sx={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                        transition: "opacity 0.3s ease",
+                    }}
+                />
             </Box>
 
             {/* Product Info */}
@@ -50,13 +64,13 @@ const ProductOverview: React.FC<Props> = ({ product }) => {
             </Typography>
 
             <Typography variant="body2" color="text.secondary" className="mb-2">
-                {product.condition}
+                {product.note}
             </Typography>
 
             {/* Features/Tags */}
             <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap className="mb-2">
-                {product.features.map((feature: any) => (
-                    <Chip key={feature} label={feature} size="small" variant="outlined" />
+                {product.properties.map((property) => (
+                    <Chip key={property.id} label={property.value} size="small" variant="outlined" />
                 ))}
             </Stack>
 
@@ -65,9 +79,9 @@ const ProductOverview: React.FC<Props> = ({ product }) => {
                 <Typography variant="h6" fontWeight={600}>
                     ${product.price}
                 </Typography>
-                <Typography variant="body2" color="text.secondary" sx={{ textDecoration: "line-through" }}>
+                {/* <Typography variant="body2" color="text.secondary" sx={{ textDecoration: "line-through" }}>
                     ${product.originalPrice}
-                </Typography>
+                </Typography> */}
             </Stack>
 
             {/* Add to Cart Button */}

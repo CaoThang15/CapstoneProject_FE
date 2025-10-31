@@ -1,12 +1,11 @@
 import { useIsFetching, useIsMutating } from "@tanstack/react-query";
 import { CircularProgress, Backdrop } from "@mui/material";
 import React from "react";
-import { QueryKey } from "~/constants/query-key";
 
 const GlobalSpinnerQuery: React.FC = () => {
     const isFetching = useIsFetching({
         predicate: (query) => {
-            return query.queryKey[0] !== QueryKey.HOSPITAL_FEE.CHECK_PAYMENT_STATUS;
+            return query.queryKey[0] !== true;
         },
     });
 

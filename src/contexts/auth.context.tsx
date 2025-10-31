@@ -61,7 +61,7 @@ export const AuthContextProvider: React.FC<PropsWithChildren> = ({ children }) =
                 showToast.error(t(i18n.translationKey.somethingWentWrong));
                 return;
             }
-            showToast.error(t(axiosError.response.data.MessageKey));
+            showToast.error(t(axiosError.response.data.message));
         } finally {
             setIsLoading(false);
         }

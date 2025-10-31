@@ -12,10 +12,10 @@ export const useMutationConfirmPassword = () => {
     return useMutation<IBaseApiResponse<ConfirmPasswordResponse>, Error, ConfirmPasswordRequest>({
         mutationFn: (payload) => authenticationApi.confirmPassword(payload),
         onSuccess: (res) => {
-            if (res.Data?.isSuccess) {
+            if (res.data?.isSuccess) {
                 showToast.success(t(i18n.translationKey.passwordConfirmSuccess));
             } else {
-                showToast.error(res?.Data?.message ?? t(i18n.translationKey.passwordIncorrect));
+                showToast.error(res.data?.message);
             }
         },
         onError: () => {

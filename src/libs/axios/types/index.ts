@@ -1,5 +1,3 @@
-import { HttpStatusCode } from "axios";
-
 export enum HttpMethod {
     GET = "get",
     POST = "post",
@@ -31,24 +29,30 @@ export interface IQueryRequest extends IBaseApiRequest {
 }
 
 export interface IBaseApiResponse<T> {
-    StatusCode: HttpStatusCode;
-    MessageKey: string;
-    Data: T;
+    message: string;
+    data: T;
 }
-
+// export interface IBaseApiResponse<T> {
+//     statusCode: HttpStatusCode;
+//     message: string;
+//     data: T;
+// }
 export interface IPaginationRequest {
     pageIndex?: number;
     pageSize?: number;
 }
 
-export interface IPagination<T> {
-    pageIndex: number;
+export interface IPaginationMetadata {
+    page: number;
     pageSize: number;
     totalItems: number;
     totalPages: number;
-    hasPreviousPage: boolean;
-    hasNextPage: boolean;
-    data: T[];
+    hasMoreRecords: boolean;
+}
+
+export interface IPagination<T> {
+    metadata: IPaginationMetadata;
+    items: T[];
 }
 
 export interface IDateRangeRequest {

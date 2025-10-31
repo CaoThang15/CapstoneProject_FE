@@ -7,7 +7,7 @@ export function useMutationDeleteFile() {
         mutationKey: [QueryKey.UPLOAD_FILE.DELETE_FILE],
         mutationFn: async (fileId: string) => {
             const response = await uploadFileApi.deleteFile(fileId);
-            return response.Data;
+            return response.data;
         },
         onSuccess: (status) => {
             return status;

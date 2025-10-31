@@ -7,7 +7,7 @@ export function useMutationCreateDownloadFileUrl() {
         mutationKey: [QueryKey.UPLOAD_FILE.CREATE_DOWNLOAD_URL],
         mutationFn: async (fileId: string) => {
             const response = await uploadFileApi.createDownloadUrl(fileId);
-            return response.Data;
+            return response.data;
         },
         onSuccess: (fileUrl: string) => {
             return fileUrl;
