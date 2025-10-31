@@ -1,24 +1,24 @@
-import { IconButton, Stack } from "@mui/material";
+import { Button, ButtonProps } from "@mui/material";
+import classNames from "classnames";
 import React from "react";
 
-interface HighlightCardProps {
+interface HighlightCardProps extends ButtonProps {
     startIcon?: React.ReactNode;
     typography?: React.ReactNode;
 }
 
-const HighlightCard: React.FC<HighlightCardProps> = ({ startIcon, typography }) => {
+const HighlightCard: React.FC<HighlightCardProps> = ({ startIcon, typography, className, ...props }) => {
     return (
-        <IconButton
-            className="cursor-default rounded-xl"
+        <Button
+            className={classNames("cursor-default justify-start rounded-xl border-none px-4 py-2", className)}
             // color="light"
             disableRipple
             sx={{ bgcolor: "primary.light", color: "primary.main" }}
+            startIcon={startIcon}
+            {...props}
         >
-            <Stack direction="row" spacing={1} alignItems="center" className="me-2">
-                {startIcon}
-                {typography}
-            </Stack>
-        </IconButton>
+            {typography}
+        </Button>
     );
 };
 

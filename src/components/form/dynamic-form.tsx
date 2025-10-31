@@ -5,9 +5,10 @@ interface Props<T extends FieldValues = FieldValues> extends React.PropsWithChil
     form: UseFormReturn<T>;
     direction?: "row" | "column";
     onSubmit?: (data: T) => void;
+    submitOnEnter?: boolean;
 }
 
-const DynamicForm = <T extends FieldValues = FieldValues>({ form, children, onSubmit }: Props<T>) => {
+const DynamicForm = <T extends FieldValues = FieldValues>({ form, children, onSubmit, submitOnEnter }: Props<T>) => {
     const { handleSubmit } = form;
 
     const handleSubmitForm = (e: React.FormEvent<HTMLFormElement>) => {
@@ -18,9 +19,23 @@ const DynamicForm = <T extends FieldValues = FieldValues>({ form, children, onSu
         }
     };
 
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLFormElement>) => {
+        if (!submitOnEnter) return;
+
+        if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (onSubmit) {
+                handleSubmit(onSubmit)();
+            }
+        }
+    };
+
     return (
         <FormProvider {...form}>
-            <form onSubmit={handleSubmitForm}>{children}</form>
+            <form onSubmit={handleSubmitForm} onKeyDown={handleKeyDown}>
+                {children}
+            </form>
         </FormProvider>
     );
 };

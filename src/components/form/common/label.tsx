@@ -1,4 +1,5 @@
 import { FormLabelProps as FormLabelMUIProps, FormLabel as FormLabelMUI, Typography } from "@mui/material";
+import classNames from "classnames";
 import React from "react";
 
 interface FormLabelProps extends FormLabelMUIProps {
@@ -13,7 +14,7 @@ const FormLabel: React.FC<FormLabelProps> = ({ required = false, label = "", ...
 
     return (
         <FormLabelMUI {...props}>
-            <Typography variant="body1" component="span">
+            <Typography variant="body1" component="span" className={classNames("text-sm text-gray-500")}>
                 {label}
             </Typography>
             {required && <span style={{ color: "red" }}> *</span>}

@@ -6,6 +6,7 @@ import { DateRangePickerFormItemProps } from "../form-item/date-range-picker";
 import { DateTimePickerFormItemProps } from "../form-item/date-time-picker";
 import { FileUploadFormItemProps } from "../form-item/file-upload";
 import { InputNumberFormItemProps } from "../form-item/input-number";
+import { OtpFormItemProps } from "../form-item/otp-code";
 import { RadioGroupFormItemProps } from "../form-item/radio-group";
 import { SelectFieldFormItemProps } from "../form-item/select";
 import { AgGridDropdownFormItemProps } from "../form-item/select-data-grid";
@@ -29,7 +30,8 @@ export type FormItemProps =
     | ({ render: "input-number" } & InputNumberFormItemProps)
     | ({ render: "date-time-picker" } & DateTimePickerFormItemProps)
     | ({ render: "autocomplete" } & AutocompleteFieldFormItemProps)
-    | ({ render: "file-upload" } & FileUploadFormItemProps);
+    | ({ render: "file-upload" } & FileUploadFormItemProps)
+    | ({ render: "otp-code" } & OtpFormItemProps);
 
 export type BaseFormItemUIProps = {
     name: string;
