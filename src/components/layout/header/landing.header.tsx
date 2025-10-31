@@ -1,5 +1,5 @@
-import { Category, Home, LoginOutlined, LogoutOutlined, Person, Recycling, ShoppingCart } from "@mui/icons-material";
-import { AppBar, Badge, Box, Button, IconButton, Stack, Tooltip, Typography } from "@mui/material";
+import { Category, LoginOutlined, LogoutOutlined, Person, Recycling, ShoppingCart } from "@mui/icons-material";
+import { AppBar, Badge, Box, IconButton, Stack, Tooltip, Typography } from "@mui/material";
 import { useLocalStorage } from "@uidotdev/usehooks";
 import classNames from "classnames";
 import React from "react";

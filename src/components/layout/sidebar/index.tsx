@@ -1,1 +1,1 @@
-export { AdminSidebar } from "./admin.sidebar";
+export { ManagerSidebar } from "./manager.sidebar";

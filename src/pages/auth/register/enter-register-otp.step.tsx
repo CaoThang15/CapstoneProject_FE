@@ -21,7 +21,7 @@ const EnterRegisterOtpStep: React.FC = () => {
     const navigate = useNavigate();
     const form = useForm<OtpCodeFormValue>();
 
-    const [secondsLeft, setSecondsLeft] = React.useState<number>(60);
+    const [_, setSecondsLeft] = React.useState<number>(60);
     const [isActive, setIsActive] = React.useState<boolean>(true);
     const [failedCounter, setFailedCounter] = React.useState<number>(0);
     const [isLocked, setIsLocked] = React.useState<boolean>(false);
