@@ -1,4 +1,4 @@
-import { FormControl, InputLabel, MenuItem, Select, SelectProps } from "@mui/material";
+import { FormControl, MenuItem, Select, SelectProps } from "@mui/material";
 import React from "react";
 import { ControllerWrapper } from "../common";
 import FormErrorMessage from "../common/error";

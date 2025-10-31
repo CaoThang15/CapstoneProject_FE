@@ -163,6 +163,9 @@ const CartPage: React.FC = () => {
                                             variant="contained"
                                             fullWidth
                                             className="!mt-3"
+                                            onClick={() => {
+                                                window.location.href = "/checkout";
+                                            }}
                                             startIcon={<LockOutline />}
                                         >
                                             Proceed to checkout

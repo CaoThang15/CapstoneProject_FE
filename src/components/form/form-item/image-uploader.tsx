@@ -1,5 +1,6 @@
-import { AddAPhotoOutlined, Delete, UploadFile, WallpaperOutlined } from "@mui/icons-material";
+import { Delete, WallpaperOutlined } from "@mui/icons-material";
 import { Box, Button, IconButton, Typography } from "@mui/material";
+import classNames from "classnames";
 import React from "react";
 import { Accept, ErrorCode, useDropzone } from "react-dropzone";
 import { useFormContext } from "react-hook-form";
@@ -10,7 +11,6 @@ import { UploadedFile } from "~/services/public-api/upload-file/infras";
 import { showToast } from "~/utils";
 import { ControllerWrapper, FormErrorMessage } from "../common";
 import { BaseFormItemProps } from "../types/form-item";
-import classNames from "classnames";
 
 export type ImageUploaderFormItemProps = BaseFormItemProps & {
     readOnly?: boolean;

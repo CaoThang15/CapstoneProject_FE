@@ -65,7 +65,7 @@ const ProductManagementPage: React.FC = () => {
         },
         {
             headerName: "Actions",
-            cellRenderer: (params: ICellRendererParams<Product>) => {
+            cellRenderer: () => {
                 return (
                     <Stack direction={"row"} spacing={1} className="justify-center">
                         <Button variant="contained">Edit</Button>

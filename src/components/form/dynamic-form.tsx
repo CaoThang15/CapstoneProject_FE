@@ -25,10 +25,11 @@ const DynamicForm = <T extends FieldValues = FieldValues>({
         e.preventDefault();
         e.stopPropagation();
 
-        if (formState.isDirty) {
-            setPendingAction("submit");
-            setOpenConfirmDialog(true);
-        } else if (onSubmit) {
+        // if (onSubmit) {
+        //     handleSubmit(onSubmit)();
+        // }
+
+        if (onSubmit) {
             handleSubmit(onSubmit)();
         }
     };
@@ -40,10 +41,7 @@ const DynamicForm = <T extends FieldValues = FieldValues>({
             e.preventDefault();
             e.stopPropagation();
 
-            if (formState.isDirty) {
-                setPendingAction("submit");
-                setOpenConfirmDialog(true);
-            } else if (onSubmit) {
+            if (onSubmit) {
                 handleSubmit(onSubmit)();
             }
         }

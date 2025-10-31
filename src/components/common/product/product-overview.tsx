@@ -6,6 +6,7 @@ import { AddToCartToastContent, ImageRenderer } from "..";
 import { Product } from "~/entities/product.entity";
 import { useLocalStorage } from "@uidotdev/usehooks";
 import { LocalStorageCartItems } from "~/pages/cart/types";
+import { formatCurrencyVND } from "~/utils/currency";
 
 interface Props {
     product: Product;
@@ -75,11 +76,8 @@ const ProductOverview: React.FC<Props> = ({ product }) => {
             {/* Price */}
             <Stack direction="row" spacing={1} alignItems="center" className="mb-3">
                 <Typography variant="h6" fontWeight={600}>
-                    ${product.price}
+                    {formatCurrencyVND(product.price)}
                 </Typography>
-                {/* <Typography variant="body2" color="text.secondary" sx={{ textDecoration: "line-through" }}>
-                    ${product.originalPrice}
-                </Typography> */}
             </Stack>
 
             {/* Add to Cart Button */}
