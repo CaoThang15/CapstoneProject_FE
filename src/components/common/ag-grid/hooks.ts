@@ -40,9 +40,6 @@ export const useAgGrid = <T>({
             sortable: false,
             filter: false,
             resizable: true,
-            cellStyle: {
-                height: GRID_STYLE_CONFIG.GRID_DIMENSIONS.ROW_HEIGHT,
-            },
             headerClass: "ag-header-cell-center",
             headerStyle: {
                 height: GRID_STYLE_CONFIG.GRID_DIMENSIONS.HEADER_HEIGHT,

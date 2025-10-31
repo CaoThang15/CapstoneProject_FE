@@ -35,7 +35,6 @@ const AuthenticatedGuard: React.FC<AuthenticatedGuardProps> = ({ role }) => {
             return;
         }
 
-        console.log(role);
         if (role && user?.roleId !== role) {
             showToast.warning(t(i18n.translationKey.accessDenied));
             navigate("/");

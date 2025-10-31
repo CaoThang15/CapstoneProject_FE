@@ -34,34 +34,30 @@ const AgDataGrid: React.FC<AgDataGridProps> = ({
     pageIndex = 1,
     maxRows = GRID_STYLE_CONFIG.GRID_DIMENSIONS.MAX_ROWS,
     pageSizeOptions = DEFAULT_PAGINATION_PARAMS.PAGE_SIZE_OPTIONS,
-    isFullHeight = false,
     ...props
 }) => {
     const { t } = useTranslation();
 
-    const getHeightDataGrid = () => {
-        const { MIN_HEIGHT, HEADER_HEIGHT, ROW_HEIGHT, SCROLLBAR_HEIGHT } = GRID_STYLE_CONFIG.GRID_DIMENSIONS;
+    // const getHeightDataGrid = () => {
+    //     const { MIN_HEIGHT, HEADER_HEIGHT, SCROLLBAR_HEIGHT } = GRID_STYLE_CONFIG.GRID_DIMENSIONS;
 
-        const pinnedBottomRowData = props.pinnedBottomRowData ?? [];
-        const pinnedHeight = pinnedBottomRowData.length * ROW_HEIGHT;
+    //     const pinnedBottomRowData = props.pinnedBottomRowData ?? [];
+    //     const pinnedHeight = pinnedBottomRowData.length * ROW_HEIGHT;
 
-        const dataRowCount = Array.isArray(rowData) ? rowData.length : 0;
-        const visibleRows = Math.min(dataRowCount, maxRows);
+    //     const dataRowCount = Array.isArray(rowData) ? rowData.length : 0;
+    //     const visibleRows = Math.min(dataRowCount, maxRows);
 
-        const hasPinnedRow = pinnedBottomRowData.length > 0;
-        const forcedBodyHeight = hasPinnedRow ? 96 : visibleRows * ROW_HEIGHT;
+    //     const hasPinnedRow = pinnedBottomRowData.length > 0;
+    //     const forcedBodyHeight = hasPinnedRow ? 96 : visibleRows * ROW_HEIGHT;
 
-        const calculatedHeight = HEADER_HEIGHT + forcedBodyHeight + pinnedHeight + SCROLLBAR_HEIGHT;
+    //     const calculatedHeight = HEADER_HEIGHT + forcedBodyHeight + pinnedHeight + SCROLLBAR_HEIGHT;
 
-        return Math.max(calculatedHeight, MIN_HEIGHT);
-    };
+    //     return Math.max(calculatedHeight, MIN_HEIGHT);
+    // };
 
     return (
         <Grid className="h-full">
-            <Box
-                className={classNames("ag-data-grid", className)}
-                sx={{ height: isFullHeight ? "100%" : getHeightDataGrid() }}
-            >
+            <Box className={classNames("ag-data-grid rounded-xl", className)} sx={{ height: 350 }}>
                 <AgGridReact
                     {...gridOptions}
                     columnDefs={columnDefs}
@@ -69,7 +65,7 @@ const AgDataGrid: React.FC<AgDataGridProps> = ({
                     rowData={rowData}
                     defaultColDef={defaultColDef}
                     ensureDomOrder
-                    rowHeight={GRID_STYLE_CONFIG.GRID_DIMENSIONS.ROW_HEIGHT}
+                    rowHeight={42}
                     headerHeight={GRID_STYLE_CONFIG.GRID_DIMENSIONS.HEADER_HEIGHT}
                     overlayNoRowsTemplate={undefined}
                     noRowsOverlayComponent={NoRowsOverlay}
