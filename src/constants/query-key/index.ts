@@ -45,6 +45,13 @@ const OrdersQueryKey = {
     GET_ORDER_BY_ID: "getOrderById",
     UPDATE_ORDER_STATUS: "updateOrderStatus",
 };
+
+const VoucherQueryKey = {
+    VALIDATE_VOUCHER: "validateVoucher",
+    GET_VOUCHER_BY_CODE: "getVoucherByCode",
+    GET_MY_VOUCHERS: "getMyVouchers",
+};
+
 export const QueryKey = {
     UPLOAD_FILE: UploadFileQueryKey,
     USER: UserQueryKey,
@@ -53,4 +60,5 @@ export const QueryKey = {
     ORDERS: OrdersQueryKey,
     PRODUCTS: ProductsQueryKey,
     USERS: UsersQueryKey,
+    VOUCHER: VoucherQueryKey,
 };

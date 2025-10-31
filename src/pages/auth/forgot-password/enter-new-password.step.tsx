@@ -17,12 +17,20 @@ import { useForm } from "~/components/form/hooks/use-form";
 import { PASSWORD_PATTERN } from "~/components/form/validation/pattern";
 import { useForgotPassword } from "~/contexts/forgot-password.context";
 import { ForgotPasswordStepper } from "./forgot-password-stepper";
+import { useMutationResetPassword } from "~/services/auth/mutations";
 
 const EnterNewPasswordStep: React.FC = () => {
     const form = useForm();
-    const { nextStep } = useForgotPassword();
+    const { nextStep, resetToken } = useForgotPassword();
+    const { mutateAsync: resetPassword, isPending: isResettingPassword } = useMutationResetPassword();
 
     const handleSubmit = async () => {
+        const values = form.getValues();
+        await resetPassword({
+            resetToken,
+            newPassword: values.newPassword,
+            confirmPassword: values.confirmPassword,
+        });
         nextStep();
     };
 
@@ -103,6 +111,8 @@ const EnterNewPasswordStep: React.FC = () => {
                         type="submit"
                         className="!py-3"
                         disabled={form.formState.isSubmitting || !form.formState.isValid}
+                        loading={isResettingPassword}
+                        loadingPosition="start"
                     >
                         <Typography className="text-[16px] text-base font-semibold">Save new password</Typography>
                     </Button>
