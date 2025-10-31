@@ -16,8 +16,8 @@ const ManagerWrapper: React.FC = () => {
                         <ManagerSidebar />
                     </Box>
 
-                    <Box className="h-full flex-1 overflow-hidden">
-                        <Box className="h-full w-full overflow-y-auto">
+                    <Box className="h-full flex-1 overflow-hidden bg-[#f6fbfa]">
+                        <Box className="no-scrollbar h-full w-full overflow-y-auto">
                             <Outlet />
                         </Box>
                     </Box>

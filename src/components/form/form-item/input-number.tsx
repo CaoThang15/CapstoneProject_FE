@@ -52,7 +52,7 @@ export const InputNumberFormItem: React.FC<InputNumberFormItemProps> = ({
                         variant="outlined"
                         disabled={disabled}
                         margin="normal"
-                        label={label}
+                        label={""}
                         {...props}
                     />
                     <FormErrorMessage errorMessage={error} label={label} />

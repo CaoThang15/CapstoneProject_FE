@@ -4,4 +4,5 @@ export const productsEndpoints = {
     getAllProducts: `${productEndpointPrefix}`,
     getProductById: (productId: number) => `${productEndpointPrefix}/get/${productId}`,
     getProductBySlug: (slug: string) => `${productEndpointPrefix}/${slug}`,
+    createProduct: `${productEndpointPrefix}`,
 };

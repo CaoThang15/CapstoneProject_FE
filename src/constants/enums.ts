@@ -28,7 +28,7 @@ export enum UploadedFileType {
     CONTRACT = "Contract",
 }
 
-export enum MedicineBatchExpiredFormStatus {
+export enum ProductStatus {
     PENDING,
     APPROVED,
     REJECTED,
@@ -50,4 +50,10 @@ export enum PaymentStatus {
 export enum CloudinaryFolder {
     PROFILE = "profile",
     CATEGORY = "category",
+    PRODUCT = "product",
+}
+
+export enum PaginationOrderBy {
+    ASC = "asc",
+    DESC = "desc",
 }

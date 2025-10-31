@@ -41,7 +41,7 @@ export const TextAreaFormItem: React.FC<TextAreaFormItemProps> = ({
                 <Box className="w-full">
                     <TextField
                         {...field}
-                        label={label || placeholder}
+                        label={""}
                         required={required}
                         placeholder={placeholder}
                         fullWidth={fullWidth}

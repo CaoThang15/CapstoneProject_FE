@@ -16,6 +16,10 @@ import { MaterialUIThemeProvider } from "./libs/material-ui/theme.provider.tsx";
 import { ReactQueryProvider } from "./libs/query-client/provider.tsx";
 import { ApplicationRoutes } from "./routes/index.tsx";
 import "~/utils/string.exts.ts";
+import relativeTime from "dayjs/plugin/relativeTime.js";
+import dayjs from "dayjs";
+
+dayjs.extend(relativeTime);
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
