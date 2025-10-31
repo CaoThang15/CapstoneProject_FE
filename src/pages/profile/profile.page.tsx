@@ -1,7 +1,7 @@
-import { CancelOutlined, Delete, Edit, Save, Settings, Shield, Upload } from "@mui/icons-material";
+import { CancelOutlined, Edit, Save, Settings, Shield } from "@mui/icons-material";
 import { Box, Button, Grid, Stack, Switch, Typography } from "@mui/material";
 import React from "react";
-import { BoxSection } from "~/components/common";
+import { BoxSection, ImageRenderer } from "~/components/common";
 import { ProvinceFormItem, WardFormItem } from "~/components/form/custom";
 import DynamicForm from "~/components/form/dynamic-form";
 import FormItem from "~/components/form/form-item";
@@ -9,10 +9,11 @@ import { useForm } from "~/components/form/hooks/use-form";
 import { EMAIL_PATTERN, PHONE_NUMBER_PATTERN } from "~/components/form/validation/pattern";
 import { CloudinaryFolder } from "~/constants/enums";
 import { useAuth } from "~/contexts/auth.context";
-import { useMutationDeleteFile, useMutationUploadImage } from "~/services/public-api/upload-file/hooks/mutation";
+import { useMutationUploadImage } from "~/services/public-api/upload-file/hooks/mutation";
 import { UploadedFile } from "~/services/public-api/upload-file/infras";
 import { UpdateProfileRequest } from "~/services/users/infras";
 import { useMutationUpdateProfile } from "~/services/users/infras/hooks/mutation";
+import { showToast } from "~/utils";
 
 type UpdateProfileFormValue = UpdateProfileRequest & {
     uploadedFile: UploadedFile;
@@ -22,15 +23,18 @@ const ProfilePage: React.FC = () => {
     const { user, loadUserInfor } = useAuth();
     const [isEditing, setIsEditing] = React.useState<boolean>(false);
     const { mutateAsync: uploadImage } = useMutationUploadImage();
-    const { mutateAsync: deleteImage } = useMutationDeleteFile();
-    const { mutateAsync: updateProfile } = useMutationUpdateProfile();
+    const { mutateAsync: updateProfile, isPending } = useMutationUpdateProfile();
 
     const form = useForm<UpdateProfileFormValue>({
         defaultValues: {
             ...user,
-            uploadedFile: {
-                imageUrl: user.avatar,
-            },
+            uploadedFile: user.avatar
+                ? {
+                      id: user.avatar,
+                      fileName: "avatar",
+                      imageUrl: user.avatar,
+                  }
+                : null,
         },
     });
 
@@ -41,25 +45,29 @@ const ProfilePage: React.FC = () => {
                 <BoxSection className="mb-6">
                     <Box className="flex justify-between">
                         <Stack spacing={3} direction="row">
-                            <FormItem
-                                render="image-uploader"
-                                name="uploadedFile"
-                                readOnly={!isEditing}
-                                onDelete={async (file) => {
-                                    await deleteImage(file.imageUrl);
-                                }}
-                                onUpload={async (file) => {
-                                    const response = await uploadImage({ file, folder: CloudinaryFolder.PROFILE });
-                                    return {
-                                        fileName: file.name,
-                                        imageUrl: response.imageUrl,
-                                        id: response.imageUrl,
-                                    } as UploadedFile;
-                                }}
-                            />
+                            {isEditing ? (
+                                <FormItem
+                                    render="image-uploader"
+                                    name="uploadedFile"
+                                    readOnly={!isEditing}
+                                    onDelete={async () => {
+                                        // await deleteImage(file.imageUrl);
+                                    }}
+                                    onUpload={async (file) => {
+                                        const response = await uploadImage({ file, folder: CloudinaryFolder.PROFILE });
+                                        return {
+                                            fileName: file.name,
+                                            imageUrl: response.imageUrl,
+                                            id: response.imageUrl,
+                                        } as UploadedFile;
+                                    }}
+                                />
+                            ) : (
+                                <ImageRenderer src={user.avatar} alt="User Avatar" className="h-[150px] w-[200px]" />
+                            )}
                             <Stack direction="column" className="flex-1" spacing={0.5}>
                                 {isEditing ? (
-                                    <FormItem name="name" render="text-input" label="Full name" />
+                                    <FormItem name="name" render="text-input" label="Full name" required />
                                 ) : (
                                     <Box>
                                         <Typography variant="subtitle2" color="text.secondary">
@@ -69,7 +77,19 @@ const ProfilePage: React.FC = () => {
                                     </Box>
                                 )}
                                 {isEditing ? (
-                                    <FormItem name="email" render="text-input" label="Email" pattern={EMAIL_PATTERN} />
+                                    <FormItem
+                                        name="email"
+                                        render="text-input"
+                                        required
+                                        label="Email"
+                                        pattern={EMAIL_PATTERN}
+                                        disabled
+                                        slotProps={{
+                                            input: {
+                                                readOnly: true,
+                                            },
+                                        }}
+                                    />
                                 ) : (
                                     <Box>
                                         <Typography variant="subtitle2" color="text.secondary" className="mt-2">
@@ -84,6 +104,7 @@ const ProfilePage: React.FC = () => {
                                         name="phone"
                                         render="text-input"
                                         label="Phone number"
+                                        required
                                         pattern={PHONE_NUMBER_PATTERN}
                                     />
                                 ) : (
@@ -95,7 +116,7 @@ const ProfilePage: React.FC = () => {
                                     </Box>
                                 )}
 
-                                <Box className="mt-4 flex gap-2">
+                                {/* <Box className="mt-4 flex gap-2">
                                     <Button variant="contained" startIcon={<Upload />}>
                                         Upload new photo
                                     </Button>
@@ -107,7 +128,7 @@ const ProfilePage: React.FC = () => {
                                     >
                                         Remove
                                     </Button>
-                                </Box>
+                                </Box> */}
                             </Stack>
                         </Stack>
 
@@ -116,24 +137,21 @@ const ProfilePage: React.FC = () => {
                                 variant={!isEditing ? "outlined" : "contained"}
                                 startIcon={isEditing ? <Edit /> : <Save />}
                                 size="small"
+                                loading={isPending}
+                                loadingPosition="start"
                                 onClick={async () => {
                                     if (isEditing) {
-                                        if (form.formState.isDirty) {
-                                            const { address, uploadedFile, name, phone, province, ward } = form.watch();
-                                            await updateProfile({
-                                                address,
-                                                avatar: uploadedFile.imageUrl,
-                                                name,
-                                                phone,
-                                                province,
-                                                ward,
-                                            });
-                                            await loadUserInfor();
-                                        }
-                                    } else {
-                                        if (!form.formState.isDirty) {
-                                            // TODO: do something confirm
-                                        }
+                                        const { address, uploadedFile, name, phone, province, ward } = form.watch();
+                                        await updateProfile({
+                                            address,
+                                            avatar: uploadedFile?.imageUrl,
+                                            name,
+                                            phone,
+                                            province,
+                                            ward,
+                                        });
+                                        await loadUserInfor();
+                                        showToast.success("Profile updated successfully");
                                     }
                                     setIsEditing(!isEditing);
                                 }}
@@ -165,20 +183,13 @@ const ProfilePage: React.FC = () => {
                         <Box className="space-y-3">
                             <Grid container spacing={2}>
                                 <Grid size={{ xs: 12, md: 6 }}>
-                                    <ProvinceFormItem />
+                                    <ProvinceFormItem required />
                                 </Grid>
                                 <Grid size={{ xs: 12, md: 6 }}>
-                                    <WardFormItem />
+                                    <WardFormItem required />
                                 </Grid>
                             </Grid>
-                            <FormItem
-                                render="text-input"
-                                name="address"
-                                label="Địa chỉ"
-                                slotProps={{
-                                    input: {},
-                                }}
-                            />
+                            <FormItem render="text-input" name="address" required label="Địa chỉ" />
                         </Box>
                     </BoxSection>
                     {/* AI & Security Section */}

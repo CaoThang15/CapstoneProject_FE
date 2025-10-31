@@ -6,6 +6,7 @@ import LandingBackground from "~/pages/landing";
 import { ProfilePage } from "~/pages/profile";
 import CreateProductPage from "~/pages/seller/product-management/create-product.page";
 import ProductManagementPage from "~/pages/seller/product-management/product-management.page";
+import UpdateProductPage from "~/pages/seller/product-management/update-product.page";
 import { AppWrapper, ManagerWrapper, ProfileWrapper } from "~/wrapper";
 
 export const AuthenticatedRoutes = (
@@ -25,6 +26,7 @@ export const AuthenticatedRoutes = (
                 <Route path="products">
                     <Route index element={<ProductManagementPage />} />
                     <Route path="create" element={<CreateProductPage />} />
+                    <Route path="update/:id" element={<UpdateProductPage />} />
                 </Route>
             </Route>
             <Route path="/admin" element={<AuthenticatedGuard role={Role.Admin} />}>
