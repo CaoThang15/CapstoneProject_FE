@@ -8,20 +8,30 @@ import { showToast } from "~/utils";
 import { formatCurrencyVND } from "~/utils/currency";
 import { AddToCartToastContent, ImageRenderer } from "..";
 import { useNavigate } from "react-router";
+import { useAuth } from "~/contexts/auth.context";
 
 interface ProductSummaryProps {
     product?: Product;
 }
 const ProductSummary: React.FC<ProductSummaryProps> = ({ product }) => {
+    const { user } = useAuth();
     const [_, saveLocalCartProducts] = useLocalStorage("cart", {} as LocalStorageCartItems);
     const navigate = useNavigate();
-    const handleAddToCart = () => {
+    const handleAddToCart = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.stopPropagation();
+        if (user) {
+            if (user.id === product?.seller.id) {
+                showToast.error("You cannot add your own product to the cart.");
+                return;
+            }
+        }
+
         saveLocalCartProducts((prev) => {
             const currentQty = prev[product.id]?.quantity || 0;
 
             return {
                 ...prev,
-                [product.id]: { quantity: currentQty + 1 },
+                [product.id]: { quantity: currentQty + 1, sellerId: product.seller.id },
             };
         });
 

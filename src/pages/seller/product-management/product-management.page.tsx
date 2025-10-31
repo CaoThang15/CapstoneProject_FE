@@ -43,10 +43,12 @@ const ProductManagementPage: React.FC = () => {
 
     const colDefs: ColDef<Product>[] = [
         {
-            headerName: "Product ID",
-            field: "id",
-            flex: 0.5,
+            width: 80,
             cellClass: "ag-cell-center",
+            cellRenderer: (params: ICellRendererParams<Product>) => {
+                const rowNumber = params.node.rowIndex + 1 + pageIndex * pageSize;
+                return <Typography>{rowNumber}</Typography>;
+            },
         },
 
         {

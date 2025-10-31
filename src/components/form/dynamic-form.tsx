@@ -1,7 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
 import { FieldValues, FormProvider, UseFormReturn } from "react-hook-form";
-import { useBlocker } from "~/hooks";
-import { UnchangeConfirmationDiaglog } from "./common";
 
 interface Props<T extends FieldValues = FieldValues> extends React.PropsWithChildren {
     form: UseFormReturn<T>;
@@ -42,16 +40,6 @@ const DynamicForm = <T extends FieldValues = FieldValues>({
         }
     };
 
-    // Intercept navigation
-    // useBlocker((tx) => {
-    //     if (formState.isDirty) {
-    //         setPendingTx(tx);
-    //         setOpenConfirmDialog(true);
-    //     } else {
-    //         tx.retry();
-    //     }
-    // }, formState.isDirty);
-
     React.useEffect(() => {
         const handleBeforeUnload = (event: BeforeUnloadEvent) => {
             if (formState.isDirty) {
@@ -71,29 +59,11 @@ const DynamicForm = <T extends FieldValues = FieldValues>({
         };
     }, [formState.isDirty]);
 
-    // const handleConfirmClose = () => {
-    //     setOpenConfirmDialog(false);
-    //     setPendingTx(null);
-    // };
-
-    // const handleConfirmProceed = () => {
-    //     setOpenConfirmDialog(false);
-    //     if (pendingTx) {
-    //         pendingTx.retry();
-    //     }
-    //     setPendingTx(null);
-    // };
-
     return (
         <FormProvider {...form}>
             <form noValidate onSubmit={handleSubmitForm} onKeyDown={handleKeyDown}>
                 {children}
             </form>
-            {/* <UnchangeConfirmationDiaglog
-                handleClose={handleConfirmClose}
-                handleProceed={handleConfirmProceed}
-                open={openConfirmDialog}
-            /> */}
         </FormProvider>
     );
 };
