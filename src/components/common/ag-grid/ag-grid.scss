@@ -1,4 +1,11 @@
 .ag-data-grid {
+    .ag-header-container {
+        background-color: #e6fdf7;
+
+        & .ag-header-cell-label {
+            color: #0b8f7b;
+        }
+    }
     .ag-header-cell-center {
         .ag-header-cell-label {
             justify-content: center;
@@ -6,7 +13,7 @@
     }
 
     .ag-cell {
-        border-right: 1px solid #e0e0e0;
+        // border-right: 1px solid #e0e0e0;
         border-bottom: 1px solid #e0e0e0;
 
         &.ag-selection-checkbox-center {
@@ -20,7 +27,9 @@
         }
 
         &.ag-cell-center {
-            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         &.ag-cell-end {

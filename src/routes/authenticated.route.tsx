@@ -4,6 +4,10 @@ import AuthenticatedGuard from "~/guards/authenticated.guard";
 import CheckoutPage from "~/pages/checkout/checkout.page";
 import LandingBackground from "~/pages/landing";
 import { ProfilePage } from "~/pages/profile";
+import OrderDetailPage from "~/pages/profile/order-management/order-detail.page";
+import OrderManagementPage from "~/pages/profile/order-management/order-management.page";
+import SellerOrderDetailPage from "~/pages/seller/order-management/order-detail.page";
+import SellerOrderManagementPage from "~/pages/seller/order-management/order-management.page";
 import CreateProductPage from "~/pages/seller/product-management/create-product.page";
 import ProductManagementPage from "~/pages/seller/product-management/product-management.page";
 import UpdateProductPage from "~/pages/seller/product-management/update-product.page";
@@ -17,12 +21,20 @@ export const AuthenticatedRoutes = (
             </Route>
             <Route element={<ProfileWrapper />}>
                 <Route path="profile" element={<ProfilePage />} />
+                <Route path="orders">
+                    <Route index element={<OrderManagementPage />} />
+                    <Route path=":id" element={<OrderDetailPage />} />
+                </Route>
             </Route>
         </Route>
         <Route element={<ManagerWrapper />}>
             <Route path="/seller" element={<AuthenticatedGuard role={Role.Seller} />}>
                 <Route index element={<LandingBackground />} />
                 <Route path="dashboard" element={<LandingBackground />} />
+                <Route path="orders">
+                    <Route index element={<SellerOrderManagementPage />} />
+                    <Route path=":id" element={<SellerOrderDetailPage />} />
+                </Route>
                 <Route path="products">
                     <Route index element={<ProductManagementPage />} />
                     <Route path="create" element={<CreateProductPage />} />

@@ -40,6 +40,10 @@ const UsersQueryKey = {
 
 const OrdersQueryKey = {
     CREATE: "createOrder",
+    GET_ORDERS: "getOrders",
+    GET_MY_ORDERS: "getMyOrders",
+    GET_ORDER_BY_ID: "getOrderById",
+    UPDATE_ORDER_STATUS: "updateOrderStatus",
 };
 export const QueryKey = {
     UPLOAD_FILE: UploadFileQueryKey,
