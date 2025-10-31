@@ -40,16 +40,15 @@ const UsersQueryKey = {
 
 const OrdersQueryKey = {
     CREATE: "createOrder",
-    GET_ORDERS: "getOrders",
-    GET_MY_ORDERS: "getMyOrders",
-    GET_ORDER_BY_ID: "getOrderById",
-    UPDATE_ORDER_STATUS: "updateOrderStatus",
 };
 
-const VoucherQueryKey = {
-    VALIDATE_VOUCHER: "validateVoucher",
-    GET_VOUCHER_BY_CODE: "getVoucherByCode",
-    GET_MY_VOUCHERS: "getMyVouchers",
+const NotificationQueryKey = {
+    GET_NOTIFICATIONS: "getNotifications",
+    MARK_AS_READ: "markAsRead",
+    MARK_ALL_AS_READ: "markAllAsRead",
+    DELETE_NOTIFICATION: "deleteNotification",
+    GET_UNREAD_COUNT: "getUnreadCount",
+    STREAM: "notificationStream",
 };
 
 export const QueryKey = {
@@ -60,5 +59,5 @@ export const QueryKey = {
     ORDERS: OrdersQueryKey,
     PRODUCTS: ProductsQueryKey,
     USERS: UsersQueryKey,
-    VOUCHER: VoucherQueryKey,
+    NOTIFICATIONS: NotificationQueryKey,
 };

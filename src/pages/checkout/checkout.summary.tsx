@@ -1,7 +1,6 @@
 import { Chip, Divider, Stack, Typography } from "@mui/material";
 import { BoxSection } from "~/components/common";
 import { formatCurrencyVND } from "~/utils/currency";
-import { useCheckout } from "./checkout.context";
 
 interface CheckoutSummaryProps {
     subtotal: number;
@@ -10,7 +9,6 @@ interface CheckoutSummaryProps {
 }
 
 export const CheckoutSummary: React.FC<CheckoutSummaryProps> = ({ subtotal, shipping = 0, discount = 0 }) => {
-    const { voucher } = useCheckout();
     const total = subtotal + shipping - discount;
 
     return (
@@ -41,7 +39,7 @@ export const CheckoutSummary: React.FC<CheckoutSummaryProps> = ({ subtotal, ship
                 </Stack>
                 <Stack direction="row" justifyContent="space-between">
                     <Typography color="text.secondary">Discount</Typography>
-                    <Typography>-{formatCurrencyVND(voucher?.getDiscount(subtotal) || 0)}</Typography>
+                    <Typography>-{formatCurrencyVND(discount)}</Typography>
                 </Stack>
                 <Divider sx={{ my: 1 }} />
                 <Stack direction="row" justifyContent="space-between">

@@ -17,7 +17,7 @@ export const ProfileSidebar: React.FC = () => {
         (items: SidebarTabProps[], targetPath: string, parents: SidebarTabProps[] = []): SidebarTabProps[] | null => {
             for (const item of items) {
                 const currentPath = [...parents, item];
-                if (targetPath.includes(item.pathName)) {
+                if (item.pathName === targetPath) {
                     return currentPath;
                 }
                 if (item.children) {

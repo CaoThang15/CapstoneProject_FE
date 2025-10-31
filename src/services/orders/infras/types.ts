@@ -1,9 +1,7 @@
 import { OrderPaymentMethod, OrderStatus } from "~/constants/enums";
-import { IPaginationRequest, ISearchKeywordRequest } from "~/libs/axios/types";
 
 export interface CreateOrderRequest {
-    name: string;
-    note?: string;
+    fullName: string;
     orderDate: Date;
     deliveryDate?: Date;
     shippingAddress: string;
@@ -25,9 +23,4 @@ export interface OrderDetailRequest {
     quantity: number;
     unitPrice: number;
     discount?: number;
-}
-
-export interface GetOrdersRequest extends ISearchKeywordRequest, IPaginationRequest {
-    paymentMethodCode?: number;
-    statusId?: OrderStatus;
 }
