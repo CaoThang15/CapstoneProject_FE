@@ -18,9 +18,10 @@ import { useParamFilter } from "~/hooks";
 import { useQueryCategoryBySlug } from "~/services/categories/hooks/queries";
 import { useQueryGetListProducts } from "~/services/products/hooks/queries";
 import ProductFilter from "./product-filter";
+import { SlugPathParams } from "~/routes/types";
 
 const ProductCategoryPage: React.FC = () => {
-    const { slug } = useParams<{ slug: string }>();
+    const { slug } = useParams<SlugPathParams>();
     const { data: category, isLoading: isLoadingCategory } = useQueryCategoryBySlug({ slug });
 
     const { params, onChange } = useParamFilter();

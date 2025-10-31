@@ -2,9 +2,8 @@ import { Box, Typography, Stack, Chip, Button } from "@mui/material";
 import React from "react";
 import { useNavigate } from "react-router";
 import { showToast } from "~/utils";
-import { AddToCartToastContent } from "..";
+import { AddToCartToastContent, ImageRenderer } from "..";
 import { Product } from "~/entities/product.entity";
-import DefaultImage from "~/assets/images/default_image.webp";
 
 interface Props {
     product: Product;
@@ -14,7 +13,7 @@ const ProductOverview: React.FC<Props> = ({ product }) => {
     const navigate = useNavigate();
 
     const handleNavigate = () => {
-        navigate(`/product/${product.id}`);
+        navigate(`/product/${product.slug}`);
     };
 
     const handleAddToCart = (e: React.MouseEvent) => {
@@ -40,22 +39,7 @@ const ProductOverview: React.FC<Props> = ({ product }) => {
                     bgcolor: "#f5f5f5",
                 }}
             >
-                <Box
-                    component="img"
-                    src={product.sharedFiles?.[0]?.path || DefaultImage}
-                    alt={product.sharedFiles?.[0]?.name || product.name || "Product image"}
-                    onError={(e: React.SyntheticEvent<HTMLImageElement>) => {
-                        (e.target as HTMLImageElement).src = DefaultImage;
-                    }}
-                    loading="lazy"
-                    decoding="async"
-                    sx={{
-                        width: "100%",
-                        height: "100%",
-                        objectFit: "cover",
-                        transition: "opacity 0.3s ease",
-                    }}
-                />
+                <ImageRenderer src={product.sharedFiles?.[0]?.path} alt={product.name} />
             </Box>
 
             {/* Product Info */}

@@ -1,6 +1,5 @@
 export enum Role {
-    Administrator,
-    User,
-    Guest,
-    Salesman,
+    Admin,
+    Buyer,
+    Seller,
 }

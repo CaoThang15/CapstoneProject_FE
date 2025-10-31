@@ -30,7 +30,7 @@ export const PublicRoutes = (
                 <Route path=":slug" element={<ProductCategoryPage />} />
             </Route>
             <Route path="product">
-                <Route path=":id" element={<ProductDetailPage />} />
+                <Route path=":slug" element={<ProductDetailPage />} />
             </Route>
         </Route>
         <Route path="*" element={<div>Developing</div>} />
