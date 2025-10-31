@@ -35,10 +35,10 @@ export const SelectFieldFormItem: React.FC<SelectFieldFormItemProps> = ({
             defaultValue={defaultValue}
             render={({ field, error }) => (
                 <FormControl fullWidth margin="normal" size={size} error={!!error} required={required}>
-                    <InputLabel id={labelId} shrink>
+                    {/* <InputLabel id={labelId} shrink>
                         {label}
-                    </InputLabel>
-                    <Select size={size} labelId={labelId} label={label} displayEmpty {...field} {...props}>
+                    </InputLabel> */}
+                    <Select size={size} labelId={labelId} label={""} displayEmpty {...field} {...props}>
                         {options.map((opt) => (
                             <MenuItem key={opt.value} value={opt.value}>
                                 {opt.label}

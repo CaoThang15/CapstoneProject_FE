@@ -31,7 +31,7 @@ export const useAgGrid = <T>({
     defaultSortModel = [],
     onRowDataChanged,
     isRowSelectable,
-}: UseAgGridProps<T>): UseAgGridResult<T> => {
+}: UseAgGridProps<T> = {}): UseAgGridResult<T> => {
     const gridApi = React.useRef<GridApi | null>(null);
 
     // Default column definitions

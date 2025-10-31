@@ -31,6 +31,7 @@ const ProductsQueryKey = {
     GET_LIST_PRODUCTS: "getListProducts",
     GET_PRODUCT_BY_ID: "getProductById",
     GET_PRODUCT_BY_SLUG: "getProductBySlug",
+    CREATE: "createProduct",
 };
 const UsersQueryKey = {
     UPDATE_PROFILE: "updateProfile",

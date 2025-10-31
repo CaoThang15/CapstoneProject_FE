@@ -46,7 +46,7 @@ const UserInfoSummary: React.FC = () => {
 export const ManagerSidebar: React.FC = () => {
     const { logout, user } = useAuth();
     const { pathname } = useLocation();
-    const { breadcrumbs, setBreadcrumbs } = useBreadcrumb();
+    const { setBreadcrumbs } = useBreadcrumb();
     const [isOpen, setIsOpen] = React.useState(false);
 
     const handleLogout = () => {

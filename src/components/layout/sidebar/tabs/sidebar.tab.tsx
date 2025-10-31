@@ -28,7 +28,7 @@ export const SidebarTabItem: React.FC<SidebarTabProps> = ({
     const [isExpanded, setIsExpanded] = React.useState<boolean>(false);
 
     const active = React.useMemo(() => {
-        return location.pathname === pathName;
+        return location.pathname.includes(pathName);
     }, [location.pathname, pathName]);
 
     const hasChildren = React.useMemo(() => {
