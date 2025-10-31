@@ -171,5 +171,3 @@ export const OtpFormItem: React.FC<OtpFormItemProps> = ({
         />
     );
 };
-
-export default OtpFormItem;

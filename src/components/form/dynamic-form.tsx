@@ -8,7 +8,12 @@ interface Props<T extends FieldValues = FieldValues> extends React.PropsWithChil
     submitOnEnter?: boolean;
 }
 
-const DynamicForm = <T extends FieldValues = FieldValues>({ form, children, onSubmit, submitOnEnter }: Props<T>) => {
+const DynamicForm = <T extends FieldValues = FieldValues>({
+    form,
+    children,
+    onSubmit,
+    submitOnEnter = true,
+}: Props<T>) => {
     const { handleSubmit } = form;
 
     const handleSubmitForm = (e: React.FormEvent<HTMLFormElement>) => {
@@ -33,7 +38,7 @@ const DynamicForm = <T extends FieldValues = FieldValues>({ form, children, onSu
 
     return (
         <FormProvider {...form}>
-            <form onSubmit={handleSubmitForm} onKeyDown={handleKeyDown}>
+            <form noValidate onSubmit={handleSubmitForm} onKeyDown={handleKeyDown}>
                 {children}
             </form>
         </FormProvider>

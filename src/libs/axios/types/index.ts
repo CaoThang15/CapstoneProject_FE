@@ -32,6 +32,14 @@ export interface IBaseApiResponse<T> {
     message: string;
     data: T;
 }
+
+export interface IProblemDetailErrorResponse {
+    title?: string;
+    detail?: string;
+    status?: number;
+    type?: string;
+}
+
 // export interface IBaseApiResponse<T> {
 //     statusCode: HttpStatusCode;
 //     message: string;

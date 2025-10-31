@@ -9,21 +9,24 @@ import {
 } from "@mui/icons-material";
 import { Box, Button, Stack, Typography } from "@mui/material";
 import React from "react";
-import EnterOTPCodeImage from "~/assets/images/enter-otp-code-image.png";
 import { HighlightCard } from "~/components/common";
 import DynamicForm from "~/components/form/dynamic-form";
 import FormItem from "~/components/form/form-item";
 import { useForm } from "~/components/form/hooks/use-form";
-import { useForgotPassword } from "~/contexts/forgot-password.context";
-import { showToast } from "~/utils";
-import { ForgotPasswordStepper } from "./forgot-password-stepper";
 import { OtpCodeFormValue } from "~/components/form/types/form-value";
+import { useLoginStep } from "~/pages/auth/login/login-context";
+import { showToast } from "~/utils";
+import EnterOTPCodeImage from "~/assets/images/enter-otp-code-image.png";
+import { useAuth } from "~/contexts/auth.context";
+import { useNavigate } from "react-router";
 
 const MAX_SUBMIT_OTP_FAILED = 5;
 const LOCK_DURATION = 5 * 60;
 
-const EnterOTPCodeStep: React.FC = () => {
-    const { nextStep, prevStep } = useForgotPassword();
+const EnterLoginOtpStep: React.FC = () => {
+    const { email } = useLoginStep();
+    const { verifyLoginOtp } = useAuth();
+    const navigate = useNavigate();
     const form = useForm<OtpCodeFormValue>();
 
     const [secondsLeft, setSecondsLeft] = React.useState<number>(60);
@@ -36,9 +39,9 @@ const EnterOTPCodeStep: React.FC = () => {
         if (isLocked) return;
 
         try {
-            // TODO: call verify OTP API
-            nextStep();
-            throw new Error("Invalid OTP");
+            await verifyLoginOtp({ email, otp: form.getValues().otpCode });
+            showToast.success("Login successful");
+            navigate("/");
         } catch (error) {
             const message = (error as Error).message;
             setFailedCounter((prev) => prev + 1);
@@ -48,12 +51,6 @@ const EnterOTPCodeStep: React.FC = () => {
             });
             showToast.error(message);
         }
-    };
-
-    const handleResend = () => {
-        // TODO: call API for resend
-        setSecondsLeft(60);
-        setIsActive(true);
     };
 
     // Countdown for resend
@@ -140,17 +137,6 @@ const EnterOTPCodeStep: React.FC = () => {
             </Box>
 
             <Box className="my-auto hidden basis-0 rounded-2xl border border-gray-200 bg-white p-6 md:block md:basis-1/2">
-                <Button
-                    startIcon={<ChevronLeftOutlined />}
-                    className="mb-3 text-gray-400"
-                    onClick={() => prevStep()}
-                    variant="text"
-                >
-                    Back
-                </Button>
-                <Box className="mb-3">
-                    <ForgotPasswordStepper />
-                </Box>
                 <Typography className="mb-6 text-xl font-bold">Enter verification code</Typography>
                 <Typography className="mb-3 text-sm text-gray-400">6-digit code</Typography>
                 <DynamicForm form={form} onSubmit={handleSubmit}>
@@ -158,7 +144,7 @@ const EnterOTPCodeStep: React.FC = () => {
                     <Typography className="mb-3 text-sm text-gray-400">
                         Didn't get it? Check spam or try another method.
                     </Typography>
-                    <Box
+                    {/* <Box
                         className="mb-3 flex items-center justify-between rounded-xl px-4 py-3"
                         sx={{
                             bgcolor: "primary.light",
@@ -178,7 +164,7 @@ const EnterOTPCodeStep: React.FC = () => {
                         >
                             Resend code
                         </Button>
-                    </Box>
+                    </Box> */}
                     {isLocked ? (
                         <HighlightCard
                             startIcon={<ShieldOutlined />}
@@ -218,4 +204,4 @@ const EnterOTPCodeStep: React.FC = () => {
     );
 };
 
-export default EnterOTPCodeStep;
+export default EnterLoginOtpStep;

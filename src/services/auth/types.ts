@@ -1,5 +1,8 @@
+import { Role } from "~/constants/roles";
+import { User } from "~/entities";
+
 export type TLoginRequest = {
-    userName: string;
+    email: string;
     password: string;
 };
 
@@ -9,15 +12,29 @@ export type TLoginResponse = {
 };
 
 export type TRegisterRequest = {
-    firstName: string;
-    lastName: string;
     email: string;
     password: string;
     confirmPassword: string;
-    userName: string;
-    phone: string;
-    location: string;
+    role: Role;
 };
+
+export type TRegisterResponse = null;
+
+export type TVerifyOtpRequest = {
+    email: string;
+    otp: string;
+};
+
+export type TVerifyLoginOtpResponse = {
+    accessToken: string;
+    userDto: User;
+};
+
+export type TVerifyRegisterOtpResponse = {
+    accessToken: string;
+    userDto: User;
+};
+
 export type RefreshTokenRequest = {
     refreshToken: string;
 };

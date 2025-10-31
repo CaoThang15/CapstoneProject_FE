@@ -9,7 +9,7 @@ import { DateRangePickerFormItem } from "./date-range-picker";
 import { DateTimePickerFormItem } from "./date-time-picker";
 import { FileUploadFormItem } from "./file-upload";
 import { InputNumberFormItem } from "./input-number";
-import OtpFormItem from "./otp-code";
+import { OtpFormItem } from "./otp-code";
 import { RadioGroupFormItem } from "./radio-group";
 import { SelectFieldFormItem } from "./select";
 import { AgGridDropdownFormItem } from "./select-data-grid";
@@ -24,37 +24,37 @@ const FormItem: React.FC<FormItemProps> = (props) => {
     const getFormComponent = () => {
         switch (props.render) {
             case "text-input":
-                return <TextFieldFormItem {...props} label={""} />;
+                return <TextFieldFormItem {...props} />;
             case "select":
-                return <SelectFieldFormItem {...props} label={""} />;
+                return <SelectFieldFormItem {...props} />;
             case "data-grid":
-                return <AgGridDropdownFormItem {...props} label={""} />;
+                return <AgGridDropdownFormItem {...props} />;
             case "checkbox":
-                return <CheckboxFormItem {...props} label={""} />;
+                return <CheckboxFormItem {...props} />;
             case "checkbox-group":
-                return <CheckboxGroupFormItem {...props} label={""} />;
+                return <CheckboxGroupFormItem {...props} />;
             case "date-picker":
-                return <DatePickerFormItem {...props} label={""} />;
+                return <DatePickerFormItem {...props} />;
             case "switch":
-                return <SwitchFormItem {...props} label={""} />;
+                return <SwitchFormItem {...props} />;
             case "radio-group":
-                return <RadioGroupFormItem {...props} label={""} />;
+                return <RadioGroupFormItem {...props} />;
             case "text-area":
-                return <TextAreaFormItem {...props} label={""} />;
+                return <TextAreaFormItem {...props} />;
             case "input-number":
-                return <InputNumberFormItem {...props} label={""} />;
+                return <InputNumberFormItem {...props} />;
             case "date-range-picker":
-                return <DateRangePickerFormItem {...props} label={""} />;
+                return <DateRangePickerFormItem {...props} />;
             case "date-time-picker":
-                return <DateTimePickerFormItem {...props} label={""} />;
+                return <DateTimePickerFormItem {...props} />;
             case "autocomplete":
-                return <AutocompleteFieldFormItem {...props} label={""} />;
+                return <AutocompleteFieldFormItem {...props} />;
             case "text-input-no-clear":
-                return <TextFieldNoClearFormItem {...props} label={""} />;
+                return <TextFieldNoClearFormItem {...props} />;
             case "file-upload":
-                return <FileUploadFormItem {...props} label={""} />;
+                return <FileUploadFormItem {...props} />;
             case "otp-code":
-                return <OtpFormItem {...props} label={""} />;
+                return <OtpFormItem {...props} />;
             default:
                 return null;
         }
