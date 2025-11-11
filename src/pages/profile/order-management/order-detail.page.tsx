@@ -87,7 +87,7 @@ const OrderDetailPage: React.FC = () => {
                                     <Stack spacing={0.5} className="mt-1">
                                         <Typography>{order.customer.name}</Typography>
                                         <Typography variant="body2" color="text.secondary">
-                                            {order.shippingAddress && "N/A"}
+                                            {order.shippingAddress ?? "N/A"}
                                         </Typography>
                                         <Typography variant="body2" color="text.secondary">
                                             {order.phoneNumber}
@@ -169,7 +169,7 @@ const OrderDetailPage: React.FC = () => {
                                             <Typography fontWeight={300} fontSize={15} color="text.secondary">
                                                 Voucher
                                             </Typography>
-                                            <Typography>- {formatCurrencyVND(10000)}</Typography>
+                                            <Typography>- {formatCurrencyVND(order?.discountAmount ?? 0)}</Typography>
                                         </Box>
                                     </Stack>
                                     <Divider className="!my-2" />
@@ -179,7 +179,7 @@ const OrderDetailPage: React.FC = () => {
                                                 Total
                                             </Typography>
                                             <Typography fontWeight={600} color="text.secondary">
-                                                {formatCurrencyVND(order.totalAmount)}
+                                                {formatCurrencyVND(order.totalAmount - order.discountAmount)}
                                             </Typography>
                                         </Box>
                                     </Stack>

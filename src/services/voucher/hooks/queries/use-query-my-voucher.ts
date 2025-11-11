@@ -6,7 +6,7 @@ import { IBaseApiResponse } from "~/libs/axios/types";
 import { voucherApi } from "../../infras";
 
 const transformData = (response: IBaseApiResponse<Voucher[]>): Voucher[] => {
-    return response.data;
+    return response.data.map((item) => Voucher.fromJson(item));
 };
 
 export function useQueryGetMyVoucher() {

@@ -2,7 +2,7 @@ import { ChevronRight } from "@mui/icons-material";
 import { Box, Button, Stack, Typography } from "@mui/material";
 import { useNavigate } from "react-router";
 import { Category } from "~/entities";
-import DefaultImage from "~/assets/images/default_image.webp";
+import ImageRenderer from "../image-renderer/image-renderer";
 interface Props {
     category: Category;
 }
@@ -39,24 +39,11 @@ const CategoryCard: React.FC<Props> = ({ category }) => {
                         bgcolor: "#fafafa",
                     }}
                 >
-                    {category.imageUrl ? (
-                        <img
-                            src={category.imageUrl}
-                            alt={category.name}
-                            className="h-full w-full object-cover"
-                            loading="lazy"
-                            decoding="async"
-                        />
-                    ) : (
-                        <Box
-                            component="img"
-                            src={DefaultImage}
-                            alt="default"
-                            className="h-full w-full object-cover"
-                            loading="lazy"
-                            decoding="async"
-                        />
-                    )}
+                    <ImageRenderer
+                        src={category.thumbnail.path}
+                        alt={category.name}
+                        className="h-full w-full object-cover"
+                    />
                 </Box>
                 <Stack spacing={0.2} flex={1}>
                     <Typography className="text-sm font-semibold">{category.name}</Typography>
