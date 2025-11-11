@@ -10,9 +10,12 @@ import { formatCurrencyVND } from "~/utils/currency";
 import { useCheckout } from "../checkout/checkout.context";
 import ApplyVoucherPopup from "./apply-voucher.popup";
 import { LocalStorageCartItems } from "./types";
+import { useNavigate } from "react-router";
 
 const CartPage: React.FC = () => {
     const { user } = useAuth();
+    const navigate = useNavigate();
+
     const [localCartProducts, saveLocalCartProducts] = useLocalStorage("cart", {} as LocalStorageCartItems);
     const [isVoucherPopupOpen, setIsVoucherPopupOpen] = React.useState(false);
     const { voucher, setVoucher } = useCheckout();
@@ -136,14 +139,18 @@ const CartPage: React.FC = () => {
 
                                 <Stack direction="row" justifyContent="space-between">
                                     <Typography color="text.secondary">Discount</Typography>
-                                    <Typography>{formatCurrencyVND(0)}</Typography>
+                                    <Typography>
+                                        {formatCurrencyVND(voucher ? voucher.getDiscount(subtotal) : 0)}
+                                    </Typography>
                                 </Stack>
 
                                 <Divider sx={{ my: 1 }} />
 
                                 <Stack direction="row" justifyContent="space-between" alignItems="center">
                                     <Typography fontWeight={800}>Total</Typography>
-                                    <Typography fontWeight={800}>{formatCurrencyVND(total)}</Typography>
+                                    <Typography fontWeight={800}>
+                                        {formatCurrencyVND(total - (voucher ? voucher.getDiscount(total) : 0))}
+                                    </Typography>
                                 </Stack>
 
                                 {user ? (
@@ -162,6 +169,7 @@ const CartPage: React.FC = () => {
                                                 <Button
                                                     variant="outlined"
                                                     color="inherit"
+                                                    disabled={!allLoaded}
                                                     onClick={() => setIsVoucherPopupOpen(true)}
                                                 >
                                                     Apply
@@ -174,7 +182,7 @@ const CartPage: React.FC = () => {
                                             fullWidth
                                             className="!mt-3"
                                             onClick={() => {
-                                                window.location.href = "/checkout";
+                                                navigate("/checkout");
                                             }}
                                             startIcon={<LockOutline />}
                                         >

@@ -208,7 +208,7 @@ const OrderManagementPage: React.FC = () => {
                                                 <Typography fontSize={14}>
                                                     Total:{" "}
                                                     <span className="text-primary text-xl font-semibold">
-                                                        {formatCurrencyVND(order.totalAmount)}
+                                                        {formatCurrencyVND(order.totalAmount - order.discountAmount)}
                                                     </span>
                                                 </Typography>
                                             </BoxSection>

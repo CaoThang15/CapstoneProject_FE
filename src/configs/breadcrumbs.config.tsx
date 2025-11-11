@@ -9,7 +9,7 @@ export interface IBreadcrumbItem {
 
 export const DEFAULT_FIRST_BREADCRUMB_MANAGER: IBreadcrumbItem = {
     label: "SMarket",
-    path: "/seller",
+    path: "/",
     icon: <Recycling />,
 };
 

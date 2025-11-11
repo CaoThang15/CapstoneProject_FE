@@ -3,21 +3,21 @@ import { useLocalStorage } from "@uidotdev/usehooks";
 import React from "react";
 import DynamicForm from "~/components/form/dynamic-form";
 import { useForm } from "~/components/form/hooks/use-form";
+import { OrderPaymentMethod, OrderStatus } from "~/constants/enums";
 import { useAuth } from "~/contexts/auth.context";
 import { useQueryGetProductCart } from "~/services/carts/hooks";
 import { addDaysToDate } from "~/utils/date-time";
 import { LocalStorageCartItems } from "../cart/types";
-import { CheckoutProvider, useCheckout } from "./checkout.context";
+import { useCheckout } from "./checkout.context";
 import { DeliveryStep } from "./checkout.delivery.step";
 import { PaymentStep } from "./checkout.payment.step";
 import { ReviewStep } from "./checkout.review.step";
 import { CheckoutSidebar } from "./checkout.sidebar";
 import { CheckoutSummary } from "./checkout.summary";
 import { CreateOrderRequestFormValue } from "./types";
-import { OrderPaymentMethod, OrderStatus } from "~/constants/enums";
 
 const CheckoutContent: React.FC = () => {
-    const { step } = useCheckout();
+    const { step, voucher } = useCheckout();
     const { user } = useAuth();
 
     const [localCartProducts] = useLocalStorage("cart", {} as LocalStorageCartItems);
@@ -77,6 +77,12 @@ const CheckoutContent: React.FC = () => {
         checkoutForm.setValue("totalAmount", subtotal);
     }, [subtotal]);
 
+    React.useEffect(() => {
+        const discountAmount = voucher ? voucher.getDiscount(subtotal) : 0;
+        checkoutForm.setValue("totalAmount", subtotal - discountAmount);
+        checkoutForm.setValue("voucherId", voucher?.id || null);
+    }, [subtotal, voucher]);
+
     return (
         <DynamicForm form={checkoutForm}>
             <Grid container spacing={3}>
@@ -89,17 +95,13 @@ const CheckoutContent: React.FC = () => {
                     {step === "review" && <ReviewStep productCart={productCart} />}
                 </Grid>
                 <Grid size={{ xs: 12, md: 3 }}>
-                    <CheckoutSummary subtotal={subtotal} shipping={0} discount={0} />
+                    <CheckoutSummary subtotal={subtotal} />
                 </Grid>
             </Grid>
         </DynamicForm>
     );
 };
 
-const CheckoutPage: React.FC = () => (
-    <CheckoutProvider>
-        <CheckoutContent />
-    </CheckoutProvider>
-);
+const CheckoutPage: React.FC = () => <CheckoutContent />;
 
 export default CheckoutPage;

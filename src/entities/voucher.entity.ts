@@ -1,8 +1,8 @@
 import { BaseEntity } from "./base.entity";
 
 export enum VoucherDiscountType {
-    Percentage,
-    Fixed,
+    Percentage = "Percentage",
+    Fixed = "Fixed",
 }
 
 export class Voucher extends BaseEntity {

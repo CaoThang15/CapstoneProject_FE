@@ -1,4 +1,4 @@
-import { Route } from "react-router";
+import { Outlet, Route } from "react-router";
 import { Role } from "~/constants/roles";
 import AuthenticatedGuard from "~/guards/authenticated.guard";
 import CartPage from "~/pages/cart/cart-page";
@@ -20,14 +20,15 @@ export const AuthenticatedRoutes = (
         <Route element={<AuthenticatedGuard />}>
             <Route element={<AppWrapper />}>
                 <Route
-                    path="cart"
                     element={
                         <CheckoutProvider>
-                            <CartPage />
+                            <Outlet />
                         </CheckoutProvider>
                     }
-                />
-                <Route path="checkout" element={<CheckoutPage />} />
+                >
+                    <Route path="cart" element={<CartPage />} />
+                    <Route path="checkout" element={<CheckoutPage />} />
+                </Route>
             </Route>
             <Route element={<ProfileWrapper />}>
                 <Route path="profile" element={<ProfilePage />} />

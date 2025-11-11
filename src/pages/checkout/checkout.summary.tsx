@@ -2,16 +2,16 @@ import { Chip, Divider, Stack, Typography } from "@mui/material";
 import { BoxSection } from "~/components/common";
 import { formatCurrencyVND } from "~/utils/currency";
 import { useCheckout } from "./checkout.context";
+import { useFormContext } from "react-hook-form";
+import { CreateOrderRequestFormValue } from "./types";
 
 interface CheckoutSummaryProps {
     subtotal: number;
-    shipping?: number;
-    discount?: number;
 }
 
-export const CheckoutSummary: React.FC<CheckoutSummaryProps> = ({ subtotal, shipping = 0, discount = 0 }) => {
+export const CheckoutSummary: React.FC<CheckoutSummaryProps> = ({ subtotal }) => {
     const { voucher } = useCheckout();
-    const total = subtotal + shipping - discount;
+    const form = useFormContext<CreateOrderRequestFormValue>();
 
     return (
         <BoxSection>
@@ -37,7 +37,7 @@ export const CheckoutSummary: React.FC<CheckoutSummaryProps> = ({ subtotal, ship
                 </Stack>
                 <Stack direction="row" justifyContent="space-between">
                     <Typography color="text.secondary">Shipping</Typography>
-                    <Typography>{shipping ? formatCurrencyVND(shipping) : "Free"}</Typography>
+                    <Typography>{"Free"}</Typography>
                 </Stack>
                 <Stack direction="row" justifyContent="space-between">
                     <Typography color="text.secondary">Discount</Typography>
@@ -46,7 +46,7 @@ export const CheckoutSummary: React.FC<CheckoutSummaryProps> = ({ subtotal, ship
                 <Divider sx={{ my: 1 }} />
                 <Stack direction="row" justifyContent="space-between">
                     <Typography fontWeight={700}>Total</Typography>
-                    <Typography fontWeight={700}>{formatCurrencyVND(total)}</Typography>
+                    <Typography fontWeight={700}>{formatCurrencyVND(form.getValues("totalAmount"))}</Typography>
                 </Stack>
             </Stack>
         </BoxSection>

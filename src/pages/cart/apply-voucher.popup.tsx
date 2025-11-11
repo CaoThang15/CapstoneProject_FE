@@ -7,7 +7,7 @@ import { IBaseDialogProps } from "~/components/common/dialog/types";
 import DynamicForm from "~/components/form/dynamic-form";
 import FormItem from "~/components/form/form-item";
 import { useForm } from "~/components/form/hooks/use-form";
-import { Voucher, VoucherDiscountType } from "~/entities";
+import { Voucher } from "~/entities";
 import { useMutationApplyVoucher } from "~/services/voucher/hooks/mutation";
 import { useQueryGetMyVoucher } from "~/services/voucher/hooks/queries";
 import { formatCurrencyVND } from "~/utils/currency";
@@ -18,6 +18,7 @@ interface ApplyVoucherPopupProps extends IBaseDialogProps {
     appliedVoucher?: Voucher | null;
     onApply?: (voucher: Voucher) => void;
 }
+
 const ApplyVoucherPopup: React.FC<ApplyVoucherPopupProps> = ({
     cartItems = [],
     appliedVoucher = null,
@@ -149,11 +150,7 @@ const ApplyVoucherPopup: React.FC<ApplyVoucherPopupProps> = ({
                                 </Typography>
 
                                 <Typography>
-                                    {draftVoucher && draftVoucher?.discountType == VoucherDiscountType.Percentage ? (
-                                        <span>- {draftVoucher?.discountAmount}%</span>
-                                    ) : (
-                                        <span>- {formatCurrencyVND(draftVoucher?.discountAmount || 0)}</span>
-                                    )}
+                                    - {formatCurrencyVND(draftVoucher ? draftVoucher.getDiscount(subTotal) : 0)}
                                 </Typography>
                             </Box>
                             <Box className="flex items-center justify-between">
@@ -161,7 +158,9 @@ const ApplyVoucherPopup: React.FC<ApplyVoucherPopupProps> = ({
                                     Estimated total
                                 </Typography>
                                 <Typography>
-                                    {formatCurrencyVND(subTotal - (draftVoucher?.discountAmount || 0))}
+                                    {formatCurrencyVND(
+                                        subTotal - (draftVoucher ? draftVoucher.getDiscount(subTotal) : 0),
+                                    )}
                                 </Typography>
                             </Box>
                         </Stack>
