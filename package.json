@@ -30,6 +30,7 @@
     "ag-grid-react": "^33.2.4",
     "axios": "^1.9.0",
     "dayjs": "^1.11.13",
+    "framer-motion": "^12.23.24",
     "highcharts": "^12.3.0",
     "i18next": "^25.2.1",
     "i18next-browser-languagedetector": "^8.1.0",

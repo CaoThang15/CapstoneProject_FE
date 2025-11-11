@@ -2,6 +2,7 @@ import { Box } from "@mui/material";
 import { useLocalStorage } from "@uidotdev/usehooks";
 import React from "react";
 import { Outlet } from "react-router";
+import { ChatBox } from "~/components/common/chatbox";
 import { LandingFooter } from "~/components/layout/footer";
 import { LandingHeader } from "~/components/layout/header";
 import { useAuth } from "~/contexts/auth.context";
@@ -32,6 +33,7 @@ const AppWrapper: React.FC = () => {
                 <Outlet />
             </main>
             <LandingFooter />
+            <ChatBox />
         </Box>
     );
 };
