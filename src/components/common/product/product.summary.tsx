@@ -48,11 +48,6 @@ const ProductSummary: React.FC<ProductSummaryProps> = ({ product }) => {
                 alt={product.name}
                 className="h-[300px] w-full object-cover"
             />
-            {/* <img
-                src="https://cdn2.cellphones.com.vn/x/media/catalog/product/m/a/macbook-air-gold-select-201810_4_3_1_1_1_1.jpg"
-                alt="Product"
-                className="h-[300px] w-full object-cover"
-            /> */}
             <Box className="flex justify-between py-2" gap={1}>
                 <Typography className="text-lg font-semibold">{product.name}</Typography>
                 <Typography className="text-right text-lg font-semibold text-red-500">

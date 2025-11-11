@@ -63,6 +63,10 @@ const NotificationQueryKey = {
     STREAM: "notificationStream",
 };
 
+const MessageQueryKey = {
+    GENERATE_CHATBOX_MESSAGE: "generateChatboxMessage",
+};
+
 export const QueryKey = {
     UPLOAD_FILE: UploadFileQueryKey,
     USER: UserQueryKey,
@@ -73,4 +77,5 @@ export const QueryKey = {
     USERS: UsersQueryKey,
     VOUCHER: VoucherQueryKey,
     NOTIFICATIONS: NotificationQueryKey,
+    MESSAGE: MessageQueryKey,
 };
