@@ -1,6 +1,11 @@
 import { Outlet, Route } from "react-router";
 import { Role } from "~/constants/roles";
 import AuthenticatedGuard from "~/guards/authenticated.guard";
+import CategoryManagementPage from "~/pages/admin/category/category-mangement.page";
+import AdminOrderDetailPage from "~/pages/admin/orders/order-detail.page";
+import AdminOrderManagementPage from "~/pages/admin/orders/order-management.page";
+import AdminProductManagementPage from "~/pages/admin/product/product-management.page";
+import AdminVoucherManagementPage from "~/pages/admin/voucher/voucher-management.page";
 import CartPage from "~/pages/cart/cart-page";
 import { CheckoutProvider } from "~/pages/checkout/checkout.context";
 import CheckoutPage from "~/pages/checkout/checkout.page";
@@ -8,6 +13,7 @@ import LandingBackground from "~/pages/landing";
 import { ProfilePage } from "~/pages/profile";
 import OrderDetailPage from "~/pages/profile/order-management/order-detail.page";
 import OrderManagementPage from "~/pages/profile/order-management/order-management.page";
+import VoucherManagementPage from "~/pages/profile/voucher-management/voucher-management.page";
 import SellerOrderDetailPage from "~/pages/seller/order-management/order-detail.page";
 import SellerOrderManagementPage from "~/pages/seller/order-management/order-management.page";
 import CreateProductPage from "~/pages/seller/product-management/create-product.page";
@@ -30,11 +36,14 @@ export const AuthenticatedRoutes = (
                     <Route path="checkout" element={<CheckoutPage />} />
                 </Route>
             </Route>
-            <Route element={<ProfileWrapper />}>
+            <Route path="user" element={<ProfileWrapper />}>
                 <Route path="profile" element={<ProfilePage />} />
                 <Route path="orders">
                     <Route index element={<OrderManagementPage />} />
                     <Route path=":id" element={<OrderDetailPage />} />
+                </Route>
+                <Route path="vouchers">
+                    <Route index element={<VoucherManagementPage />} />
                 </Route>
             </Route>
         </Route>
@@ -54,6 +63,15 @@ export const AuthenticatedRoutes = (
             </Route>
             <Route path="/admin" element={<AuthenticatedGuard role={Role.Admin} />}>
                 <Route index element={<div>Admin Page</div>} />
+                <Route path="categorys" element={<CategoryManagementPage />} />
+                <Route path="users" element={<div>Admin Page</div>} />
+                <Route path="products" element={<AdminProductManagementPage />} />
+                <Route path="orders">
+                    <Route index element={<AdminOrderManagementPage />} />
+                    <Route path=":id" element={<AdminOrderDetailPage />} />
+                </Route>
+
+                <Route path="vouchers" element={<AdminVoucherManagementPage />} />
             </Route>
         </Route>
     </Route>

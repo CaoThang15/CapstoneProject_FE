@@ -180,7 +180,7 @@ const OrderManagementPage: React.FC = () => {
                                                         key={orderDetail.id}
                                                         className="mb-2 flex cursor-pointer items-center"
                                                         onClick={() => {
-                                                            window.location.href = `/orders/${order.id}`;
+                                                            window.location.href = `/user/orders/${order.id}`;
                                                         }}
                                                     >
                                                         <ImageRenderer

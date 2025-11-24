@@ -18,6 +18,7 @@ import { TextAreaFormItem } from "./text-area";
 import { TextFieldFormItem } from "./text-field";
 import { TextFieldNoClearFormItem } from "./text-field-no-clear";
 import { ImageUploaderFormItem } from "./image-uploader";
+import { RatingFormItem } from "./rating";
 
 const FormItem: React.FC<FormItemProps> = (props) => {
     // TODO: move the controller wrapper logic to a common place
@@ -58,6 +59,8 @@ const FormItem: React.FC<FormItemProps> = (props) => {
                 return <OtpFormItem {...props} />;
             case "image-uploader":
                 return <ImageUploaderFormItem {...props} />;
+            case "rating":
+                return <RatingFormItem {...props} />;
             default:
                 return null;
         }

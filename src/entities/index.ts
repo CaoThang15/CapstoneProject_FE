@@ -3,3 +3,4 @@ export * from "./category.entity";
 export * from "./product.entity";
 export * from "./order.entity";
 export * from "./voucher.entity";
+export * from "./shared-file.entity";

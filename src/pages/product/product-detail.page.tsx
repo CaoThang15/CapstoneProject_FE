@@ -12,7 +12,19 @@ import {
     Star,
     Wifi,
 } from "@mui/icons-material";
-import { Avatar, Box, Button, Chip, Divider, Grid, Rating, Stack, TextField, Typography } from "@mui/material";
+import {
+    Avatar,
+    Box,
+    Button,
+    Chip,
+    Divider,
+    Grid,
+    Pagination,
+    Rating,
+    Stack,
+    TextField,
+    Typography,
+} from "@mui/material";
 import { useLocalStorage } from "@uidotdev/usehooks";
 import React from "react";
 import { useParams } from "react-router";
@@ -26,14 +38,25 @@ import { LocalStorageCartItems } from "../cart/types";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { useAuth } from "~/contexts/auth.context";
+import { usePagination } from "~/hooks";
+import { useQueryGetProductFeedbacksWithPagination } from "~/services/feedbacks/hooks/queries";
 
 const ProductDetailPage: React.FC = () => {
     const { user } = useAuth();
     const [_, saveLocalCartProducts] = useLocalStorage("cart", {} as LocalStorageCartItems);
-
+    const { pageIndex: currentFeedbackPage, pageSize: feedbackPageSize, handlePageChange } = usePagination();
     const { slug } = useParams<SlugPathParams>();
-    const { data: product, isLoading, isError } = useQueryGetProductBySlug(slug);
 
+    const { data: product, isLoading, isError } = useQueryGetProductBySlug(slug);
+    const {
+        data: { items: feedbacks, total: feedbackCount },
+    } = useQueryGetProductFeedbacksWithPagination({
+        page: currentFeedbackPage,
+        pageSize: feedbackPageSize,
+        productId: product?.id,
+    });
+
+    // TODO: handle pagination for feedbacks and test at case have feedback content
     const handleAddToCart = (e: React.MouseEvent) => {
         e.stopPropagation();
         if (user) {
@@ -287,34 +310,18 @@ const ProductDetailPage: React.FC = () => {
                                     <Divider sx={{ my: 2 }} />
 
                                     <Stack spacing={2}>
-                                        <ReviewItem
-                                            name="Alex"
-                                            date="Sep 14, 2025"
-                                            rating={5}
-                                            verified
-                                            text="Great deal. Battery at 88% is accurate, noise cancellation works perfectly. Arrived in 2 days."
-                                            images={[
-                                                "https://images.unsplash.com/photo-1585386959984-a41552231658?q=80&w=1887&auto=format&fit=crop",
-                                                "https://images.unsplash.com/photo-1585386959880-e5d9f3f4042d?q=80&w=1887&auto=format&fit=crop",
-                                            ]}
-                                        />
-                                        <ReviewItem
-                                            name="Jenny"
-                                            date="Sep 10, 2025"
-                                            rating={4}
-                                            text="Everything matched the description. Case had a few scratches but nothing major. Would buy again."
-                                        />
-                                        <ReviewItem
-                                            name="Mina"
-                                            date="Aug 29, 2025"
-                                            rating={5}
-                                            verified
-                                            text="Paired instantly with my iPhone. ANC and transparency mode feel like new."
-                                            images={[
-                                                "https://images.unsplash.com/photo-1545239351-1141bd82e8a6?q=80&w=1887&auto=format&fit=crop",
-                                            ]}
-                                        />
+                                        {feedbacks.map((fb) => (
+                                            <ReviewItem key={fb.id} feedback={fb} />
+                                        ))}
                                     </Stack>
+
+                                    <Box className="mt-3 flex justify-center">
+                                        <Pagination
+                                            count={feedbackCount}
+                                            page={currentFeedbackPage}
+                                            onChange={(_, newPage) => handlePageChange(newPage, feedbackPageSize)}
+                                        />
+                                    </Box>
                                 </BoxSection>
                             </Stack>
                         </Grid>

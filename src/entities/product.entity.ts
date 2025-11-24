@@ -1,11 +1,7 @@
 import { ProductStatus } from "~/constants/enums";
 import { BaseEntity } from "./base.entity";
 import { User } from "./person-info.entity";
-
-export interface SharedFile {
-    name: string;
-    path: string;
-}
+import { SharedFile } from "./shared-file.entity";
 
 export interface ProductProperty {
     id: number;

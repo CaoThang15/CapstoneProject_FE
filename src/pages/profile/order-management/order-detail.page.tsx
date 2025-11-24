@@ -16,11 +16,14 @@ import { BoxSection, ImageRenderer, LoadingContainer } from "~/components/common
 import { IdPathParams } from "~/routes/types";
 import { useQueryGetOrderById } from "~/services/orders/hooks/queries";
 import { formatCurrencyVND } from "~/utils/currency";
+import { OrderFeedbackDialog } from "./order-feedback.dialog";
+import { OrderStatus } from "~/constants/enums";
 
 const OrderDetailPage: React.FC = () => {
     const { id } = useParams<IdPathParams>();
     const navigate = useNavigate();
     const { data: order, isLoading } = useQueryGetOrderById(Number(id));
+    const [openFeedback, setOpenFeedback] = React.useState(false);
 
     if (!order) {
         return null;
@@ -183,6 +186,16 @@ const OrderDetailPage: React.FC = () => {
                                             </Typography>
                                         </Box>
                                     </Stack>
+                                    {order.statusId === OrderStatus.Delivered ? (
+                                        <Button
+                                            variant="contained"
+                                            color="primary"
+                                            onClick={() => setOpenFeedback(true)}
+                                            startIcon={<StarBorderRounded />}
+                                        >
+                                            Leave Feedback
+                                        </Button>
+                                    ) : null}
                                 </Stack>
                             </BoxSection>
                         </BoxSection>
@@ -223,6 +236,11 @@ const OrderDetailPage: React.FC = () => {
                     </Grid>
                 </Grid>
             </Stack>
+            <OrderFeedbackDialog
+                onClose={() => setOpenFeedback(false)}
+                open={openFeedback}
+                orderDetails={order.orderDetails}
+            />
         </LoadingContainer>
     );
 };

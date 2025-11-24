@@ -20,7 +20,7 @@ export default function UserSection() {
 
     const handleNavigateProfile = () => {
         handleCloseMenu();
-        navigate("/profile");
+        navigate("/user/profile");
     };
 
     const handleLogout = () => {

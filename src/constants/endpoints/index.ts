@@ -1,5 +1,6 @@
 import { authEndpoints } from "./auth";
 import { categoriesEndpoints } from "./categories";
+import { feedbackEndpoints } from "./feedback";
 import { notificationsEndpoints } from "./notifications";
 import { ordersEndpoints } from "./orders";
 import { productsEndpoints } from "./products";
@@ -18,4 +19,5 @@ export const endpoints = {
     orders: ordersEndpoints,
     vouchers: voucherEndpoints,
     notifications: notificationsEndpoints,
+    feedback: feedbackEndpoints,
 };
