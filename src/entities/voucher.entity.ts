@@ -28,4 +28,21 @@ export class Voucher extends BaseEntity {
         // Fixed discount
         return Math.min(this.discountAmount, amount);
     }
+
+    getUsagePercentage(): number {
+        if (this.usageLimit === 0) return 0;
+        return (this.usageCount / this.usageLimit) * 100;
+    }
+
+    getUsageLeftPercentage(): number {
+        return 100 - this.getUsagePercentage();
+    }
+
+    getDiscountLabel(): string {
+        if (this.discountType === VoucherDiscountType.Percentage) {
+            return `${this.discountAmount}% off`;
+        } else {
+            return `$${this.discountAmount} off`;
+        }
+    }
 }

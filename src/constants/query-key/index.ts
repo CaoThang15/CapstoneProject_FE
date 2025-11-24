@@ -51,7 +51,11 @@ const OrdersQueryKey = {
 const VoucherQueryKey = {
     VALIDATE_VOUCHER: "validateVoucher",
     GET_VOUCHER_BY_CODE: "getVoucherByCode",
+    GET_ALL_VOUCHERS: "getAllVouchers",
     GET_MY_VOUCHERS: "getMyVouchers",
+    GET_ACTIVE_VOUCHERS: "getActiveVouchers",
+    ASSIGN_VOUCHER: "assignVoucher",
+    REMOVE_ASSIGN_VOUCHER: "removeAssignVoucher",
 };
 
 const NotificationQueryKey = {
@@ -67,6 +71,11 @@ const MessageQueryKey = {
     GENERATE_CHATBOX_MESSAGE: "generateChatboxMessage",
 };
 
+const FeedbackQueryKey = {
+    PUBLISH_FEEDBACK: "publishFeedback",
+    GET_PRODUCT_FEEDBACKS: "getProductFeedbacks",
+};
+
 export const QueryKey = {
     UPLOAD_FILE: UploadFileQueryKey,
     USER: UserQueryKey,
@@ -78,4 +87,5 @@ export const QueryKey = {
     VOUCHER: VoucherQueryKey,
     NOTIFICATIONS: NotificationQueryKey,
     MESSAGE: MessageQueryKey,
+    FEEDBACK: FeedbackQueryKey,
 };

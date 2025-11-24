@@ -9,6 +9,7 @@ import { ImageUploaderFormItemProps } from "../form-item/image-uploader";
 import { InputNumberFormItemProps } from "../form-item/input-number";
 import { OtpFormItemProps } from "../form-item/otp-code";
 import { RadioGroupFormItemProps } from "../form-item/radio-group";
+import { RatingFormItemProps } from "../form-item/rating";
 import { SelectFieldFormItemProps } from "../form-item/select";
 import { AgGridDropdownFormItemProps } from "../form-item/select-data-grid";
 import { SwitchFormItemProps } from "../form-item/switch";
@@ -33,7 +34,8 @@ export type FormItemProps =
     | ({ render: "autocomplete" } & AutocompleteFieldFormItemProps)
     | ({ render: "file-upload" } & FileUploadFormItemProps)
     | ({ render: "otp-code" } & OtpFormItemProps)
-    | ({ render: "image-uploader" } & ImageUploaderFormItemProps);
+    | ({ render: "image-uploader" } & ImageUploaderFormItemProps)
+    | ({ render: "rating" } & RatingFormItemProps);
 
 export type BaseFormItemUIProps = {
     name: string;
