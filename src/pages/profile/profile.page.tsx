@@ -12,8 +12,8 @@ import { useAuth } from "~/contexts/auth.context";
 import { useQueryGetInfinityOrders } from "~/services/orders/hooks/queries";
 import { useMutationUploadImage } from "~/services/public-api/upload-file/hooks/mutation";
 import { UploadedFile } from "~/services/public-api/upload-file/infras";
+import { useMutationUpdateProfile } from "~/services/users/hooks/mutations";
 import { UpdateProfileRequest } from "~/services/users/infras";
-import { useMutationUpdateProfile } from "~/services/users/infras/hooks/mutation";
 import { showToast } from "~/utils";
 import { formatCurrencyVND } from "~/utils/currency";
 

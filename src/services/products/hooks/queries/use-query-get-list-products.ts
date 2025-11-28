@@ -13,8 +13,8 @@ export function useQueryGetListProducts(params: Record<string, any>) {
     >({
         queryKey: [QueryKey.PRODUCTS.GET_LIST_PRODUCTS, params],
         initialPageParam: DEFAULT_PAGINATION_PARAMS.PAGE_INDEX,
-        queryFn: async () => {
-            return await productsApi.getListProducts(params);
+        queryFn: async ({ pageParam }) => {
+            return await productsApi.getListProducts({ ...params, page: pageParam, pageSize: 15 });
         },
         getNextPageParam: (lastPage) => {
             if (lastPage.data.metadata.hasMoreRecords) {

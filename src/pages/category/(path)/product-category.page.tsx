@@ -59,7 +59,7 @@ const ProductCategoryPage: React.FC = () => {
             <Grid container spacing={3}>
                 {/* Sidebar Filters */}
                 <Grid size={{ xs: 12, md: 3 }}>
-                    <ProductFilter onChange={onChange} />
+                    <ProductFilter onChange={onChange} categoryId={category?.id} />
                 </Grid>
 
                 {/* Main Content */}

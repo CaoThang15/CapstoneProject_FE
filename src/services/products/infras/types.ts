@@ -1,6 +1,6 @@
 import { PaginationOrderBy } from "~/constants/enums";
+import { SharedFile } from "~/entities";
 import { Product } from "~/entities/product.entity";
-import { SharedFile } from "../../../entities/product.entity";
 
 export interface GetListProductsResponse {
     items: Product[];
@@ -71,4 +71,12 @@ export interface GenerateProductDescriptionRequest {
         value: string;
         name: string;
     }[];
+}
+
+export interface ProductAttributeFilterRequest {
+    categoryId?: number;
+}
+export interface ProductAttributeFiltersResponse {
+    minPrice: number;
+    maxPrice: number;
 }

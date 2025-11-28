@@ -2,12 +2,10 @@ import {
     ArrowDropDown,
     ArrowDropUp,
     Battery0Bar,
-    CameraAlt,
     CheckCircle,
     LocalShippingOutlined,
     LockPersonOutlined,
     ScheduleOutlined,
-    Send,
     ShieldOutlined,
     ShoppingCart,
     ShowChartOutlined,
@@ -25,24 +23,26 @@ import {
     Pagination,
     Rating,
     Stack,
-    TextField,
     Typography,
 } from "@mui/material";
 import { useLocalStorage } from "@uidotdev/usehooks";
 import React from "react";
+import ReactMarkdown from "react-markdown";
 import { useParams } from "react-router";
+import remarkGfm from "remark-gfm";
 import { HistogramBar, ReviewItem } from "~/components/comments";
 import { AddToCartToastContent, BoxSection, ImageRenderer, LoadingContainer } from "~/components/common";
+import { useAuth } from "~/contexts/auth.context";
+import { usePagination } from "~/hooks";
 import { SlugPathParams } from "~/routes/types";
+import {
+    useQueryGetProductFeedbackStatistic,
+    useQueryGetProductFeedbacksWithPagination,
+} from "~/services/feedbacks/hooks/queries";
 import { useQueryGetProductBySlug } from "~/services/products/hooks/queries";
 import { showToast } from "~/utils";
 import { formatCurrencyVND } from "~/utils/currency";
 import { LocalStorageCartItems } from "../cart/types";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
-import { useAuth } from "~/contexts/auth.context";
-import { usePagination } from "~/hooks";
-import { useQueryGetProductFeedbacksWithPagination } from "~/services/feedbacks/hooks/queries";
 
 const ProductDetailPage: React.FC = () => {
     const { user } = useAuth();
@@ -58,9 +58,12 @@ const ProductDetailPage: React.FC = () => {
         pageSize: feedbackPageSize,
         productId: product?.id,
     });
+    const { data: productFeedbackStatistic, isLoading: isLoadingFeedbackStatistic } =
+        useQueryGetProductFeedbackStatistic(product?.id);
 
     const [selectedImageIndex, setSelectedImageIndex] = React.useState(0);
     const [thumbnailStartIndex, setThumbnailStartIndex] = React.useState(0);
+
     const images = product?.sharedFiles ?? [];
     const visibleThumbnails = images.slice(thumbnailStartIndex, thumbnailStartIndex + 5);
 
@@ -325,66 +328,54 @@ const ProductDetailPage: React.FC = () => {
                                         </BoxSection>
                                     </Stack>
                                 </Box>
-                                <BoxSection className="p-3 md:p-4">
-                                    <Typography variant="h6" className="font-semibold">
-                                        Ratings & feedback
-                                    </Typography>
+                                <LoadingContainer isLoading={isLoadingFeedbackStatistic}>
+                                    <BoxSection className="p-3 md:p-4">
+                                        <Typography variant="h6" className="font-semibold">
+                                            Ratings & feedback
+                                        </Typography>
 
-                                    <Grid container spacing={2} mt={1}>
-                                        <Grid size={{ xs: 12, sm: 4 }}>
-                                            <Stack spacing={1}>
-                                                <Stack direction="row" spacing={1} alignItems="center">
-                                                    <Star color="warning" />
-                                                    <Typography variant="h5" fontWeight={700}>
-                                                        4.7
-                                                    </Typography>
-                                                    <Typography className="text-sm text-gray-500">out of 5</Typography>
-                                                </Stack>
-                                                <HistogramBar label={5} value={72} />
-                                                <HistogramBar label={4} value={18} />
-                                                <HistogramBar label={3} value={6} />
-                                                <HistogramBar label={2} value={3} />
-                                                <HistogramBar label={1} value={1} />
+                                        <Stack spacing={1}>
+                                            <Stack direction="row" spacing={1} alignItems="center">
+                                                <Star color="warning" />
+                                                <Typography variant="h5" fontWeight={700}>
+                                                    {productFeedbackStatistic.averageRating}
+                                                </Typography>
+                                                <Typography className="text-sm text-gray-500">out of 5</Typography>
                                             </Stack>
-                                        </Grid>
+                                            {[5, 4, 3, 2, 1].map((label) => (
+                                                <HistogramBar
+                                                    key={label}
+                                                    label={label}
+                                                    value={
+                                                        (productFeedbackStatistic?.ratingStatistic?.[label] /
+                                                            productFeedbackStatistic?.totalFeedbacks) *
+                                                        100
+                                                    }
+                                                />
+                                            ))}
+                                        </Stack>
 
-                                        <Grid size={{ xs: 12, sm: 8 }}>
-                                            <Typography className="text-sm font-medium">Leave a comment</Typography>
-                                            <TextField
-                                                size="small"
-                                                placeholder="Share your experience with this item..."
-                                                fullWidth
-                                                multiline
-                                                minRows={2}
-                                                sx={{ mt: 1 }}
+                                        <Divider sx={{ my: 2 }} />
+
+                                        <Stack spacing={2}>
+                                            {feedbacks.length > 0 ? (
+                                                feedbacks.map((fb) => <ReviewItem key={fb.id} feedback={fb} />)
+                                            ) : (
+                                                <Typography className="text-center text-sm text-gray-500">
+                                                    No feedback available
+                                                </Typography>
+                                            )}
+                                        </Stack>
+
+                                        <Box className="mt-3 flex justify-center">
+                                            <Pagination
+                                                count={feedbackCount}
+                                                page={currentFeedbackPage}
+                                                onChange={(_, newPage) => handlePageChange(newPage, feedbackPageSize)}
                                             />
-                                            <Stack direction="row" spacing={1} mt={1}>
-                                                <Button startIcon={<CameraAlt />} variant="outlined" color="inherit">
-                                                    Add photos
-                                                </Button>
-                                                <Button startIcon={<Send />} variant="contained">
-                                                    Post comment
-                                                </Button>
-                                            </Stack>
-                                        </Grid>
-                                    </Grid>
-
-                                    <Divider sx={{ my: 2 }} />
-
-                                    <Stack spacing={2}>
-                                        {feedbacks.map((fb) => (
-                                            <ReviewItem key={fb.id} feedback={fb} />
-                                        ))}
-                                    </Stack>
-
-                                    <Box className="mt-3 flex justify-center">
-                                        <Pagination
-                                            count={feedbackCount}
-                                            page={currentFeedbackPage}
-                                            onChange={(_, newPage) => handlePageChange(newPage, feedbackPageSize)}
-                                        />
-                                    </Box>
-                                </BoxSection>
+                                        </Box>
+                                    </BoxSection>
+                                </LoadingContainer>
                             </Stack>
                         </Grid>
 

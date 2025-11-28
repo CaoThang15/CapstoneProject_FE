@@ -1,3 +1,5 @@
+import { IPaginationRequest } from "~/libs/axios/types";
+
 export interface UpdateProfileRequest {
     name: string;
     phone: string;
@@ -5,4 +7,8 @@ export interface UpdateProfileRequest {
     ward: string;
     address: string;
     avatar: string;
+}
+
+export interface GetUsersWithPaginationRequest extends IPaginationRequest {
+    searchTerm?: string;
 }

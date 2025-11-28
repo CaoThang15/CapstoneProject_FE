@@ -1,13 +1,12 @@
-import { Box, Typography, Stack, Chip, Button } from "@mui/material";
-import React from "react";
-import { useNavigate } from "react-router";
-import { showToast } from "~/utils";
-import { AddToCartToastContent, ImageRenderer } from "..";
-import { Product } from "~/entities/product.entity";
+import { Box, Button, Chip, Stack, Typography } from "@mui/material";
 import { useLocalStorage } from "@uidotdev/usehooks";
-import { LocalStorageCartItems } from "~/pages/cart/types";
-import { formatCurrencyVND } from "~/utils/currency";
+import React from "react";
 import { useAuth } from "~/contexts/auth.context";
+import { Product } from "~/entities/product.entity";
+import { LocalStorageCartItems } from "~/pages/cart/types";
+import { showToast } from "~/utils";
+import { formatCurrencyVND } from "~/utils/currency";
+import { AddToCartToastContent, ImageRenderer } from "..";
 
 interface Props {
     product: Product;
@@ -16,12 +15,6 @@ interface Props {
 const ProductOverview: React.FC<Props> = ({ product }) => {
     const { user } = useAuth();
     const [_, saveLocalCartProducts] = useLocalStorage("cart", {} as LocalStorageCartItems);
-
-    const navigate = useNavigate();
-
-    const handleNavigate = () => {
-        navigate(`/product/${product.slug}`);
-    };
 
     const handleAddToCart = (e: React.MouseEvent) => {
         e.stopPropagation();
@@ -47,7 +40,7 @@ const ProductOverview: React.FC<Props> = ({ product }) => {
     return (
         <Box
             className="rounded-xl border border-gray-200 bg-white p-4"
-            onClick={handleNavigate}
+            onClick={() => (window.location.href = `/product/${product.slug}`)}
             sx={{ cursor: "pointer" }}
         >
             {/* Product Image */}
@@ -76,9 +69,12 @@ const ProductOverview: React.FC<Props> = ({ product }) => {
 
             {/* Features/Tags */}
             <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap className="mb-2">
-                {product.properties.map((property) => (
+                {product.properties.slice(0, 3).map((property) => (
                     <Chip key={property.id} label={property.value} size="small" variant="outlined" />
                 ))}
+                {product.properties.length > 3 && (
+                    <Chip label={`+${product.properties.length - 3} more`} size="small" variant="outlined" />
+                )}
             </Stack>
 
             {/* Price */}

@@ -9,17 +9,19 @@ import { useForm } from "~/components/form/hooks/use-form";
 import { CloudinaryFolder } from "~/constants/enums";
 import { useAuth } from "~/contexts/auth.context";
 import { OrderDetail } from "~/entities";
-import { PublishFeedbackRequest } from "~/services/feedbacks/infras";
 import { useMutationPublishFeedback } from "~/services/feedbacks/hooks/mutations/use-mutation-publish-feedback";
+import { PublishFeedbackRequest } from "~/services/feedbacks/infras";
 import { useMutationDeleteFile, useMutationUploadFile } from "~/services/public-api/upload-file/hooks/mutation";
 import { UploadedFile } from "~/services/public-api/upload-file/infras/types";
-import { FeedbackFormData } from "./types";
 import { showToast } from "~/utils";
+import { FeedbackFormData } from "../types";
 
 interface OrderFeedbackDialogProps extends IBaseDialogProps {
     orderDetails: OrderDetail[];
 }
-export const OrderFeedbackDialog: React.FC<OrderFeedbackDialogProps> = ({ orderDetails, onClose, open }) => {
+
+// TODO: handle edit feedback
+export const EditOrderFeedbackDialog: React.FC<OrderFeedbackDialogProps> = ({ orderDetails, onClose, open }) => {
     const { user } = useAuth();
     const form = useForm<FeedbackFormData>({
         defaultValues: {

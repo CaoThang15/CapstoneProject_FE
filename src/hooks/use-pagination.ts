@@ -13,8 +13,14 @@ export default function usePagination(
     const [pageSize, setPageSize] = React.useState(params.defaultPageSize);
 
     const handlePageChange = (newPageIndex: number, newPageSize: number) => {
-        setPageIndex(newPageIndex);
-        setPageSize(newPageSize);
+        setPageSize((prevSize) => {
+            if (prevSize !== newPageSize) {
+                setPageIndex(1);
+            } else {
+                setPageIndex(newPageIndex);
+            }
+            return newPageSize;
+        });
     };
 
     const resetPagination = () => {
