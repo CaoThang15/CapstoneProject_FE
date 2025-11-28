@@ -1,6 +1,6 @@
 import React from "react";
 
-const NotificationManagementPage = () => {
+const NotificationManagementPage: React.FC = () => {
     return <div>NotificationManagementPage</div>;
 };
 

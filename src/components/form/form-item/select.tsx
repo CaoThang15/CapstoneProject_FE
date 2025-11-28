@@ -2,7 +2,7 @@ import { FormControl, MenuItem, Select, SelectProps } from "@mui/material";
 import React from "react";
 import { ControllerWrapper } from "../common";
 import FormErrorMessage from "../common/error";
-import { BaseFormItemProps } from "../types/form-item";
+import { BaseFormItemProps, BaseOption } from "../types/form-item";
 import { TValidationPattern } from "../types/validation";
 
 type SelectFieldValidationRules = TValidationPattern;
@@ -10,7 +10,7 @@ type SelectFieldValidationRules = TValidationPattern;
 export type SelectFieldFormItemProps = BaseFormItemProps &
     SelectFieldValidationRules &
     SelectProps & {
-        options: { value: string | number; label: string }[];
+        options: BaseOption[];
     };
 
 export const SelectFieldFormItem: React.FC<SelectFieldFormItemProps> = ({

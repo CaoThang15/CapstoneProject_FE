@@ -61,6 +61,9 @@ export enum CloudinaryFolder {
     CATEGORY = "category",
     PRODUCT = "product",
     FEEDBACK_IMAGES = "feedback_images",
+    IDENTITY_BACK_IMAGES = "identity_back_images",
+    IDENTITY_FRONT_IMAGES = "identity_front_images",
+    BUSINESS_LICENSE_IMAGES = "business_license_images",
 }
 
 export enum PaginationOrderBy {

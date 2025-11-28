@@ -33,6 +33,7 @@ const LandingHeader: React.FC = () => {
                             <Typography
                                 variant="caption"
                                 className="cursor-pointer text-center text-gray-500 hover:underline"
+                                onClick={() => (window.location.href = "seller/on-boarding")}
                             >
                                 Trở thành Người bán S-Market
                             </Typography>

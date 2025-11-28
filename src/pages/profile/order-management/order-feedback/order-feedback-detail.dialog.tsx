@@ -20,7 +20,7 @@ export const OrderFeedbackDetailDialog: React.FC<OrderFeedbackDetailDialogProps>
             <Dialog.Header title="Leave Feedback " />
             <Dialog.Body className="mt-3">
                 <Stack spacing={3}>
-                    {orderDetails.map((orderDetail, index) => (
+                    {orderDetails.map((orderDetail) => (
                         <BoxSection key={orderDetail.id}>
                             <Stack spacing={2}>
                                 <Stack direction="row" spacing={2} alignItems="center">

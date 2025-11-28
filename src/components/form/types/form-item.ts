@@ -54,6 +54,6 @@ export type BaseFormItemValidationRules = {
 export type BaseFormItemProps = BaseFormItemUIProps & BaseFormItemValidationRules;
 
 export type BaseOption = {
-    label: string;
+    label: string | React.ReactNode;
     value: string | number;
 };

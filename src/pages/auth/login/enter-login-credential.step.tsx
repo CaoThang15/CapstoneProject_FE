@@ -1,14 +1,5 @@
-import {
-    EmailOutlined,
-    Facebook,
-    Google,
-    LocalShippingOutlined,
-    LockOutline,
-    Login,
-    Shield,
-    Star,
-} from "@mui/icons-material";
-import { Box, Button, Divider, Stack, Typography } from "@mui/material";
+import { EmailOutlined, LocalShippingOutlined, LockOutline, Login, Shield, Star } from "@mui/icons-material";
+import { Box, Button, Stack, Typography } from "@mui/material";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import LoginImage from "~/assets/images/login-main-image.png";
@@ -105,7 +96,7 @@ const EnterLoginCredentialStep: React.FC = () => {
                             </Typography>
                         </Button>
                     </DynamicForm>
-                    <Divider className="my-5">
+                    {/* <Divider className="my-5">
                         <Typography className="text-sm text-gray-500">or continue with</Typography>
                     </Divider>
                     <Stack direction="row" spacing={1}>
@@ -131,7 +122,7 @@ const EnterLoginCredentialStep: React.FC = () => {
                                 {t(i18n.translationKey.login)} with Facebook
                             </Typography>
                         </Button>
-                    </Stack>
+                    </Stack> */}
                     <Typography className="my-4 text-center text-sm text-gray-500">
                         Don't have an account?{" "}
                         <span

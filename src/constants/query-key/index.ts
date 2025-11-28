@@ -75,6 +75,14 @@ const FeedbackQueryKey = {
     GET_PRODUCT_FEEDBACK_STATISTIC: "getProductFeedbackStatistic",
 };
 
+const SellerRequestQueryKey = {
+    CREATE_SELLER_REQUEST: "createSellerRequest",
+    GET_LIST_SELLER_REQUESTS: "getListSellerRequests",
+    GET_SELLER_REQUEST_DETAILS: "getSellerRequestDetails",
+    RESPONSE_SELLER_REQUEST: "responseSellerRequest",
+    GET_CURRENT_SELLER_REQUEST: "getCurrentSellerRequest",
+};
+
 export const QueryKey = {
     UPLOAD_FILE: UploadFileQueryKey,
     USER: UserQueryKey,
@@ -86,4 +94,5 @@ export const QueryKey = {
     NOTIFICATIONS: NotificationQueryKey,
     MESSAGE: MessageQueryKey,
     FEEDBACK: FeedbackQueryKey,
+    SELLER_REQUEST: SellerRequestQueryKey,
 };

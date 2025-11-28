@@ -118,7 +118,7 @@ const ChatBox: React.FC = () => {
                                                     bgcolor:
                                                         msg.sender == SenderMessage.USER
                                                             ? "primary.main"
-                                                            : (theme) => theme.palette.grey[200],
+                                                            : (theme: any) => theme.palette.grey[200],
                                                 }}
                                             >
                                                 {msg.text === "__loading__" ? (

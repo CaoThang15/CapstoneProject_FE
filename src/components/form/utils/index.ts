@@ -7,10 +7,14 @@ import { DATE_TIME_FORMAT } from "~/constants/date-time.format";
 import { EMAIL_PATTERN } from "../validation/pattern";
 import { TFunction } from "i18next";
 
-export const toBaseOption = <T>(source: T[], options: { label: keyof T; value: keyof T }): BaseOption[] => {
+type LabelConfig<T> =
+    | { label: keyof T; value: keyof T; renderLabel?: undefined }
+    | { label?: undefined; value: keyof T; renderLabel: (item: T) => React.ReactNode };
+
+export const toBaseOption = <T>(source: T[], options: LabelConfig<T>): BaseOption[] => {
     return source.map((item) => ({
-        value: item[options.value] as string,
-        label: item[options.label] as string,
+        value: item[options.value] as string | number,
+        label: options.renderLabel ? options.renderLabel(item) : (item[options.label!] as string), // Non-null assertion because of XOR type
     }));
 };
 

@@ -5,6 +5,7 @@ import CategoryManagementPage from "~/pages/admin/category/category-mangement.pa
 import AdminOrderDetailPage from "~/pages/admin/orders/order-detail.page";
 import AdminOrderManagementPage from "~/pages/admin/orders/order-management.page";
 import AdminProductManagementPage from "~/pages/admin/product/product-management.page";
+import SellerApprovalManagementPage from "~/pages/admin/seller-approval/seller-approval-management.page";
 import AdminUserManagementPage from "~/pages/admin/users/user-management.page";
 import AdminVoucherManagementPage from "~/pages/admin/voucher/voucher-management.page";
 import CartPage from "~/pages/cart/cart-page";
@@ -15,6 +16,7 @@ import { ProfilePage } from "~/pages/profile";
 import OrderDetailPage from "~/pages/profile/order-management/order-detail.page";
 import OrderManagementPage from "~/pages/profile/order-management/order-management.page";
 import VoucherManagementPage from "~/pages/profile/voucher-management/voucher-management.page";
+import SellerOnboardingPage from "~/pages/seller/on-boarding/on-boarding.page";
 import SellerOrderDetailPage from "~/pages/seller/order-management/order-detail.page";
 import SellerOrderManagementPage from "~/pages/seller/order-management/order-management.page";
 import CreateProductPage from "~/pages/seller/product-management/create-product.page";
@@ -48,18 +50,23 @@ export const AuthenticatedRoutes = (
                 </Route>
             </Route>
         </Route>
+        <Route path="seller" element={<AuthenticatedGuard role={Role.Buyer} />}>
+            <Route path="on-boarding" element={<SellerOnboardingPage />} />
+        </Route>
         <Route element={<ManagerWrapper />}>
-            <Route path="/seller" element={<AuthenticatedGuard role={Role.Seller} />}>
-                <Route index element={<LandingBackground />} />
-                <Route path="dashboard" element={<LandingBackground />} />
-                <Route path="orders">
-                    <Route index element={<SellerOrderManagementPage />} />
-                    <Route path=":id" element={<SellerOrderDetailPage />} />
-                </Route>
-                <Route path="products">
-                    <Route index element={<ProductManagementPage />} />
-                    <Route path="create" element={<CreateProductPage />} />
-                    <Route path="update/:id" element={<UpdateProductPage />} />
+            <Route path="/seller" element>
+                <Route element={<AuthenticatedGuard role={Role.Seller} />}>
+                    <Route index element={<LandingBackground />} />
+                    <Route path="dashboard" element={<LandingBackground />} />
+                    <Route path="orders">
+                        <Route index element={<SellerOrderManagementPage />} />
+                        <Route path=":id" element={<SellerOrderDetailPage />} />
+                    </Route>
+                    <Route path="products">
+                        <Route index element={<ProductManagementPage />} />
+                        <Route path="create" element={<CreateProductPage />} />
+                        <Route path="update/:id" element={<UpdateProductPage />} />
+                    </Route>
                 </Route>
             </Route>
             <Route path="/admin" element={<AuthenticatedGuard role={Role.Admin} />}>
@@ -71,8 +78,8 @@ export const AuthenticatedRoutes = (
                     <Route index element={<AdminOrderManagementPage />} />
                     <Route path=":id" element={<AdminOrderDetailPage />} />
                 </Route>
-
                 <Route path="vouchers" element={<AdminVoucherManagementPage />} />
+                <Route path="seller-approval" element={<SellerApprovalManagementPage />} />
             </Route>
         </Route>
     </Route>

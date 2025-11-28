@@ -14,10 +14,10 @@ const FormLabel: React.FC<FormLabelProps> = ({ required = false, label = "", ...
 
     return (
         <FormLabelMUI {...props}>
+            {required && <span style={{ color: "red" }}> * </span>}
             <Typography variant="body1" component="span" className={classNames("text-sm text-gray-500")}>
                 {label}
             </Typography>
-            {required && <span style={{ color: "red" }}> *</span>}
         </FormLabelMUI>
     );
 };
