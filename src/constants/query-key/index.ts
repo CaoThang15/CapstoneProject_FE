@@ -6,6 +6,7 @@ const UserQueryKey = {
     DELETE_USER: "deleteUser",
     GET_ROLE_NAMES: "getRoleNames",
     RESET_PASSWORD: "resetPassword",
+    UPDATE_PROFILE: "updateProfile",
 };
 
 const AuthQueryKey = {
@@ -35,9 +36,6 @@ const ProductsQueryKey = {
     UPDATE: "updateProduct",
     GENERATE_DESCRIPTION: "generateProductDescription",
     DELETE: "deleteProduct",
-};
-const UsersQueryKey = {
-    UPDATE_PROFILE: "updateProfile",
 };
 
 const OrdersQueryKey = {
@@ -74,6 +72,7 @@ const MessageQueryKey = {
 const FeedbackQueryKey = {
     PUBLISH_FEEDBACK: "publishFeedback",
     GET_PRODUCT_FEEDBACKS: "getProductFeedbacks",
+    GET_PRODUCT_FEEDBACK_STATISTIC: "getProductFeedbackStatistic",
 };
 
 export const QueryKey = {
@@ -83,7 +82,6 @@ export const QueryKey = {
     CATEGORIES: CategoriesQueryKey,
     ORDERS: OrdersQueryKey,
     PRODUCTS: ProductsQueryKey,
-    USERS: UsersQueryKey,
     VOUCHER: VoucherQueryKey,
     NOTIFICATIONS: NotificationQueryKey,
     MESSAGE: MessageQueryKey,

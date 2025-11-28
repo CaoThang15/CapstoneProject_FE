@@ -8,4 +8,5 @@ export const productsEndpoints = {
     updateProduct: (id: number) => `${productEndpointPrefix}/${id}`,
     generateProductDescription: `/ai/suggest-description`,
     deleteProduct: (productId: number) => `${productEndpointPrefix}/${productId}`,
+    getProductAttributeFilters: `${productEndpointPrefix}/attribute/filters`,
 };

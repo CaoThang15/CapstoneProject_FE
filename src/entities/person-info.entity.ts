@@ -10,4 +10,17 @@ export class User extends BaseEntity {
     province: string;
     roleId: Role;
     ward: string;
+
+    get roleName(): string {
+        switch (this.roleId) {
+            case Role.Admin:
+                return "Admin";
+            case Role.Seller:
+                return "Seller";
+            case Role.Buyer:
+                return "Buyer";
+            default:
+                return "Unknown";
+        }
+    }
 }

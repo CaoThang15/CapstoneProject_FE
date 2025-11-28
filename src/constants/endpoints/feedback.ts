@@ -5,4 +5,5 @@ export const feedbackEndpoints = {
     getProductFeedbacks: `${feedbackEndpointPrefix}/product`,
     getMyFeedback: `${feedbackEndpointPrefix}`,
     getFeedbackById: (feedbackId: number) => `${feedbackEndpointPrefix}/${feedbackId}`,
+    getProductFeedbackStatistic: (productId: number) => `${feedbackEndpointPrefix}/product/${productId}/statistic`,
 };

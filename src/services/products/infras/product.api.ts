@@ -2,7 +2,13 @@ import { endpoints } from "~/constants/endpoints";
 import { Product } from "~/entities/product.entity";
 import { callApi } from "~/libs/axios/request";
 import { HttpMethod, IPagination } from "~/libs/axios/types";
-import { CreateProductRequest, GenerateProductDescriptionRequest, UpdateProductRequest } from "./types";
+import {
+    CreateProductRequest,
+    GenerateProductDescriptionRequest,
+    ProductAttributeFilterRequest,
+    ProductAttributeFiltersResponse,
+    UpdateProductRequest,
+} from "./types";
 
 const getListProducts = (params: Record<string, any>) => {
     return callApi<IPagination<Product>>({
@@ -56,6 +62,14 @@ const deleteProduct = (productId: number) => {
     });
 };
 
+const getProductAttributeFilters = (params: ProductAttributeFilterRequest) => {
+    return callApi<ProductAttributeFiltersResponse>({
+        url: endpoints.products.getProductAttributeFilters,
+        method: HttpMethod.GET,
+        params,
+    });
+};
+
 export const productsApi = {
     getListProducts,
     getProductBySlug,
@@ -64,4 +78,5 @@ export const productsApi = {
     updateProduct,
     generateProductDescription,
     deleteProduct,
+    getProductAttributeFilters,
 };

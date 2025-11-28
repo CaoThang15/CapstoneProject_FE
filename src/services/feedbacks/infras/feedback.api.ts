@@ -1,7 +1,7 @@
 import { callApi } from "~/libs/axios/request";
 import { HttpMethod, IPagination, IPaginationRequest } from "~/libs/axios/types";
 import { endpoints } from "~/constants/endpoints";
-import { GetFeedbacksRequest, PublishFeedbackRequest } from "./types";
+import { GetFeedbacksRequest, GetProductFeedbackStatisticResponse, PublishFeedbackRequest } from "./types";
 import { Feedback } from "~/entities/feedback.entity";
 
 const publishFeedback = async (payload: PublishFeedbackRequest) => {
@@ -20,7 +20,15 @@ const getProductFeedback = async (payload: GetFeedbacksRequest & IPaginationRequ
     });
 };
 
+const getProductFeedbackStatistic = async (productId: number) => {
+    return await callApi<GetProductFeedbackStatisticResponse>({
+        method: HttpMethod.GET,
+        url: endpoints.feedback.getProductFeedbackStatistic(productId),
+    });
+};
+
 export const feedbacksApi = {
     publishFeedback,
     getProductFeedback,
+    getProductFeedbackStatistic,
 };

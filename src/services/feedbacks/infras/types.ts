@@ -10,4 +10,11 @@ export interface PublishFeedbackRequest {
 
 export interface GetFeedbacksRequest {
     productId?: number;
+    userId?: number;
+}
+
+export interface GetProductFeedbackStatisticResponse {
+    ratingStatistic: Record<number, number>;
+    averageRating: number;
+    totalFeedbacks: number;
 }

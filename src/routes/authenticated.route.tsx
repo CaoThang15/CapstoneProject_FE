@@ -5,6 +5,7 @@ import CategoryManagementPage from "~/pages/admin/category/category-mangement.pa
 import AdminOrderDetailPage from "~/pages/admin/orders/order-detail.page";
 import AdminOrderManagementPage from "~/pages/admin/orders/order-management.page";
 import AdminProductManagementPage from "~/pages/admin/product/product-management.page";
+import AdminUserManagementPage from "~/pages/admin/users/user-management.page";
 import AdminVoucherManagementPage from "~/pages/admin/voucher/voucher-management.page";
 import CartPage from "~/pages/cart/cart-page";
 import { CheckoutProvider } from "~/pages/checkout/checkout.context";
@@ -64,7 +65,7 @@ export const AuthenticatedRoutes = (
             <Route path="/admin" element={<AuthenticatedGuard role={Role.Admin} />}>
                 <Route index element={<div>Admin Page</div>} />
                 <Route path="categorys" element={<CategoryManagementPage />} />
-                <Route path="users" element={<div>Admin Page</div>} />
+                <Route path="users" element={<AdminUserManagementPage />} />
                 <Route path="products" element={<AdminProductManagementPage />} />
                 <Route path="orders">
                     <Route index element={<AdminOrderManagementPage />} />
