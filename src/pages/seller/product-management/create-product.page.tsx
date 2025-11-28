@@ -7,7 +7,7 @@ import {
     LocalShippingOutlined,
     MapOutlined,
 } from "@mui/icons-material";
-import { Avatar, Box, Button, Chip, Divider, Grid, IconButton, Stack, Typography } from "@mui/material";
+import { Avatar, Box, Button, Chip, Divider, Grid, IconButton, InputAdornment, Stack, Typography } from "@mui/material";
 import React from "react";
 import { useNavigate } from "react-router";
 import { BoxSection, HighlightCard } from "~/components/common";
@@ -236,6 +236,13 @@ const CreateProductPage: React.FC = () => {
                                                 <FormItem
                                                     render="input-number"
                                                     name="price"
+                                                    // slotProps={{
+                                                    //     input: {
+                                                    //         endAdornment: (
+                                                    //             <InputAdornment position="end">VND</InputAdornment>
+                                                    //         ),
+                                                    //     },
+                                                    // }}
                                                     label="Your Price"
                                                     required
                                                     prefix="VND"
@@ -244,7 +251,7 @@ const CreateProductPage: React.FC = () => {
                                                 />
                                             </Box>
                                         </BoxSection>
-                                        <Box className="flex items-center justify-between">
+                                        {/* <Box className="flex items-center justify-between">
                                             <Typography variant="body1" className="text-sm text-gray-500">
                                                 Market price
                                             </Typography>
@@ -257,7 +264,7 @@ const CreateProductPage: React.FC = () => {
                                                 Fraud risk
                                             </Typography>
                                             <HighlightCard typography="Low" color="success" />
-                                        </Box>
+                                        </Box> */}
                                     </Stack>
 
                                     <Stack spacing={1}>
@@ -293,14 +300,14 @@ const CreateProductPage: React.FC = () => {
                                         </Box>
                                     </Stack>
                                     <Divider sx={{ my: 2 }} />
-                                    <Stack spacing={1}>
+                                    {/* <Stack spacing={1}>
                                         <Typography variant="body2" color="text.secondary">
                                             Estimated Fees: $12.60
                                         </Typography>
                                         <Typography variant="body2" color="text.secondary">
                                             Payout: $267.40
                                         </Typography>
-                                    </Stack>
+                                    </Stack> */}
                                 </BoxSection>
                             </Grid>
                         </Grid>

@@ -1,4 +1,6 @@
 import {
+    ArrowDropDown,
+    ArrowDropUp,
     Battery0Bar,
     CameraAlt,
     CheckCircle,
@@ -19,6 +21,7 @@ import {
     Chip,
     Divider,
     Grid,
+    IconButton,
     Pagination,
     Rating,
     Stack,
@@ -56,6 +59,11 @@ const ProductDetailPage: React.FC = () => {
         productId: product?.id,
     });
 
+    const [selectedImageIndex, setSelectedImageIndex] = React.useState(0);
+    const [thumbnailStartIndex, setThumbnailStartIndex] = React.useState(0);
+    const images = product?.sharedFiles ?? [];
+    const visibleThumbnails = images.slice(thumbnailStartIndex, thumbnailStartIndex + 5);
+
     // TODO: handle pagination for feedbacks and test at case have feedback content
     const handleAddToCart = (e: React.MouseEvent) => {
         e.stopPropagation();
@@ -78,6 +86,22 @@ const ProductDetailPage: React.FC = () => {
         showToast.success(<AddToCartToastContent />);
     };
 
+    const handleThumbnailClick = (index: number) => {
+        setSelectedImageIndex(index);
+    };
+
+    const handleScrollUp = () => {
+        if (thumbnailStartIndex > 0) {
+            setThumbnailStartIndex((prev) => prev - 1);
+        }
+    };
+
+    const handleScrollDown = () => {
+        if (thumbnailStartIndex + 5 < images.length) {
+            setThumbnailStartIndex((prev) => prev + 1);
+        }
+    };
+
     return (
         <LoadingContainer isLoading={isLoading}>
             {!product || isError ? (
@@ -94,25 +118,63 @@ const ProductDetailPage: React.FC = () => {
                             <Stack direction="column" spacing={1}>
                                 <BoxSection className="p-2 md:p-3">
                                     <Box className="relative flex gap-2">
+                                        {/* Main Image */}
                                         <Box className="h-[420px] flex-1 rounded-lg object-cover md:h-[520px]">
                                             <ImageRenderer
-                                                src={product.sharedFiles?.[0]?.path}
-                                                className="rounded-xl object-contain"
+                                                src={images[selectedImageIndex]?.path}
+                                                alt={images[selectedImageIndex]?.name}
+                                                className="rounded-xl object-contain transition-all duration-300"
                                             />
                                         </Box>
-                                        {product.sharedFiles?.length > 1 ? (
-                                            <Stack spacing={1} className="hidden w-28 md:flex">
-                                                {product.sharedFiles.slice(1, 6).map((image) => (
-                                                    <Box
-                                                        key={image.path}
-                                                        className="h-24 w-28 cursor-pointer rounded rounded-lg border border-gray-100 object-cover"
-                                                    >
-                                                        <ImageRenderer src={image.path} alt={image.name} />
-                                                    </Box>
-                                                ))}
+
+                                        {/* Thumbnails + Controls */}
+                                        {images.length > 1 && (
+                                            <Stack alignItems="center" className="relative hidden w-28 md:flex">
+                                                <IconButton
+                                                    size="small"
+                                                    onClick={handleScrollUp}
+                                                    disabled={thumbnailStartIndex === 0}
+                                                    sx={{
+                                                        mb: 0.5,
+                                                        opacity: thumbnailStartIndex === 0 ? 0.3 : 1,
+                                                    }}
+                                                >
+                                                    <ArrowDropUp />
+                                                </IconButton>
+
+                                                <Stack spacing={1} sx={{ overflow: "hidden" }}>
+                                                    {visibleThumbnails.map((image, idx) => {
+                                                        const globalIndex = thumbnailStartIndex + idx;
+                                                        const isSelected = globalIndex === selectedImageIndex;
+
+                                                        return (
+                                                            <Box
+                                                                key={image.path}
+                                                                onClick={() => handleThumbnailClick(globalIndex)}
+                                                                className={`h-24 w-28 cursor-pointer rounded-lg border object-cover transition-all duration-200 ${
+                                                                    isSelected
+                                                                        ? "border-2 border-blue-500"
+                                                                        : "border border-gray-100 hover:border-gray-300"
+                                                                }`}
+                                                            >
+                                                                <ImageRenderer src={image.path} alt={image.name} />
+                                                            </Box>
+                                                        );
+                                                    })}
+                                                </Stack>
+
+                                                <IconButton
+                                                    size="small"
+                                                    onClick={handleScrollDown}
+                                                    disabled={thumbnailStartIndex + 5 >= images.length}
+                                                    sx={{
+                                                        mt: 0.5,
+                                                        opacity: thumbnailStartIndex + 5 >= images.length ? 0.3 : 1,
+                                                    }}
+                                                >
+                                                    <ArrowDropDown />
+                                                </IconButton>
                                             </Stack>
-                                        ) : (
-                                            <></>
                                         )}
                                     </Box>
                                 </BoxSection>
