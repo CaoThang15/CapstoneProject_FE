@@ -6,7 +6,7 @@ import { BaseFormItemProps } from "../types/form-item";
 
 type RadioGroupOption = {
     label?: string;
-    value: string;
+    value: string | number;
 };
 
 type RadioGroupUIProps = {

@@ -1,4 +1,4 @@
-import { Autocomplete, FormControl, TextField } from "@mui/material";
+import { Autocomplete, Box, FormControl, TextField } from "@mui/material";
 import React from "react";
 import { ControllerWrapper } from "../common";
 import FormErrorMessage from "../common/error";
@@ -34,7 +34,10 @@ export const AutocompleteFieldFormItem: React.FC<AutocompleteFieldFormItemProps>
                     <FormControl fullWidth margin="normal" size={size} error={!!error} required={required}>
                         <Autocomplete<BaseOption, false, false, false>
                             options={options}
-                            getOptionLabel={(option) => option.label}
+                            getOptionLabel={(option) => {
+                                if (typeof option.label === "string") return option.label;
+                                return "";
+                            }}
                             isOptionEqualToValue={(option, value) => {
                                 if (!value) return false;
                                 return option.value === value.value;
@@ -49,6 +52,12 @@ export const AutocompleteFieldFormItem: React.FC<AutocompleteFieldFormItemProps>
                                 onInputChange?.(event, value);
                             }}
                             openOnFocus={!props.readOnly}
+                            renderOption={(props, option) => (
+                                <Box component="li" {...props}>
+                                    {option.label}
+                                </Box>
+                            )}
+                            renderTags={(value) => value.map((option) => option.label)}
                             renderInput={(params) => (
                                 <TextField
                                     {...params}

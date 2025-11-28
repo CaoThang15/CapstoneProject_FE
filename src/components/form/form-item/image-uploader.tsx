@@ -146,7 +146,7 @@ export const ImageUploaderFormItem: React.FC<ImageUploaderFormItemProps> = ({
                                 const isDeleting = deletingIds.has(file.id);
                                 return (
                                     <Box
-                                        onClick={(e) => {
+                                        onClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
                                             e.stopPropagation();
                                         }}
                                         key={file.id}
@@ -191,7 +191,7 @@ export const ImageUploaderFormItem: React.FC<ImageUploaderFormItemProps> = ({
                                                 "border-gray-300": !error,
                                             },
                                         )}
-                                        onClick={(e) => {
+                                        onClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
                                             e.stopPropagation();
                                             if (!readOnly) open();
                                         }}
