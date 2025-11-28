@@ -67,7 +67,6 @@ const ProductSummary: React.FC<ProductSummaryProps> = ({ product }) => {
             <Typography className="mt-1 text-sm text-gray-500">
                 Seller: <span className="font-semibold">{product.seller.name}</span>
             </Typography>
-            {/* <Typography className="mt-1 text-sm text-gray-500">Location: Hanoi</Typography> */}
             <Button
                 startIcon={<AddShoppingCart />}
                 variant="contained"
