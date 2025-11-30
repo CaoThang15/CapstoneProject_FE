@@ -32,7 +32,7 @@ const EnterLoginOtpStep: React.FC = () => {
 
         try {
             await verifyLoginOtp({ email, otp: form.getValues().otpCode });
-            showToast.success("Login successful");
+            showToast.success("Đăng nhập thành công");
             navigate("/");
         } catch (error) {
             const message = (error as Error).message;
@@ -102,10 +102,10 @@ const EnterLoginOtpStep: React.FC = () => {
         <Stack className="my-8" spacing={3} direction={"row"} alignItems="center">
             <Box className="hidden basis-0 rounded-2xl border border-gray-200 bg-white px-6 py-10 md:block md:basis-1/2">
                 <Typography variant="h5" className="font-bold">
-                    Check your messages
+                    Kiểm tra tin nhắn
                 </Typography>
                 <Typography className="mt-3 text-sm">
-                    We sent a 6-digit code to {"email"}. Enter the code below to continue.
+                    Chúng tôi đã gửi mã xác thực 6 chữ số đến {email}. Nhập mã bên dưới để tiếp tục.
                 </Typography>
                 <img src={EnterOTPCodeImage} className="my-4 max-h-[300px] w-full object-cover" />
                 <Stack direction="row" spacing={2} className="mt-6">
@@ -115,46 +115,26 @@ const EnterLoginOtpStep: React.FC = () => {
                     />
                     <HighlightCard
                         startIcon={<AccessTimeOutlined />}
-                        typography={<Typography variant="body2">Expires in 10 min</Typography>}
+                        typography={<Typography variant="body2">Hết hạn sau 10 phút</Typography>}
                     />
                 </Stack>
             </Box>
 
             <Box className="my-auto hidden basis-0 rounded-2xl border border-gray-200 bg-white p-6 md:block md:basis-1/2">
-                <Typography className="mb-6 text-xl font-bold">Enter verification code</Typography>
-                <Typography className="mb-3 text-sm text-gray-400">6-digit code</Typography>
+                <Typography className="mb-6 text-xl font-bold">Nhập mã xác thực</Typography>
+                <Typography className="mb-3 text-sm text-gray-400">Mã gồm 6 chữ số</Typography>
                 <DynamicForm form={form} onSubmit={handleSubmit}>
                     <FormItem render="otp-code" name="otpCode" codeLength={6} required fullWidth />
                     <Typography className="mb-3 text-sm text-gray-400">
-                        Didn't get it? Check spam or try another method.
+                        Không nhận được mã? Kiểm tra thư mục Spam hoặc thử phương thức khác.
                     </Typography>
-                    {/* <Box
-                        className="mb-3 flex items-center justify-between rounded-xl px-4 py-3"
-                        sx={{
-                            bgcolor: "primary.light",
-                        }}
-                    >
-                        <Stack direction="row" spacing={1} alignItems="center">
-                            <HourglassEmptyOutlined fontSize="small" />
-                            <Typography variant="body2">Resend code in {formattedSecondsTime}</Typography>
-                        </Stack>
-                        <Button
-                            variant="text"
-                            className="bg-white px-4"
-                            startIcon={<CachedOutlined />}
-                            size="small"
-                            disabled={isActive}
-                            onClick={handleResend}
-                        >
-                            Resend code
-                        </Button>
-                    </Box> */}
+
                     {isLocked ? (
                         <HighlightCard
                             startIcon={<ShieldOutlined />}
                             typography={
                                 <Typography variant="body2" color="error">
-                                    Too many failed attempts. Please wait {formattedLockTime} before trying again.
+                                    Quá nhiều lần nhập sai. Vui lòng đợi {formattedLockTime} trước khi thử lại.
                                 </Typography>
                             }
                             className="mb-3"
@@ -165,13 +145,14 @@ const EnterLoginOtpStep: React.FC = () => {
                             startIcon={<ShieldOutlined />}
                             typography={
                                 <Typography variant="body2">
-                                    For your security, multiple failed attempts will temporarily lock password reset.
+                                    Vì lý do bảo mật, nhiều lần nhập sai sẽ tạm thời khóa chức năng xác thực.
                                 </Typography>
                             }
                             className="mb-3"
                             fullWidth
                         />
                     )}
+
                     <Button
                         startIcon={<SendOutlined />}
                         variant="contained"
@@ -180,7 +161,7 @@ const EnterLoginOtpStep: React.FC = () => {
                         className="!py-3"
                         disabled={form.formState.isSubmitting || isLocked}
                     >
-                        <Typography className="text-[16px] text-base font-semibold">Send reset code</Typography>
+                        <Typography className="text-[16px] text-base font-semibold">Gửi mã</Typography>
                     </Button>
                 </DynamicForm>
             </Box>

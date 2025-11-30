@@ -8,7 +8,7 @@ import { useForm } from "~/components/form/hooks/use-form";
 import { CloudinaryFolder } from "~/constants/enums";
 import { useMutationUpdateCategory } from "~/services/categories/hooks/mutations";
 import { useQueryCategoryById } from "~/services/categories/hooks/queries";
-import { useMutationDeleteFile, useMutationUploadFile } from "~/services/public-api/upload-file/hooks/mutation";
+import { useMutationUploadFile } from "~/services/public-api/upload-file/hooks/mutation";
 import { UploadedFile } from "~/services/public-api/upload-file/infras";
 import { showToast } from "~/utils";
 import { IEditCategoryFormValues } from "./types";
@@ -22,7 +22,6 @@ const EditCategoryDialog: React.FC<Props> = ({ onClose, open, categoryId }) => {
     const { data: category } = useQueryCategoryById({ categoryId: categoryId.toString() });
 
     const { mutateAsync: uploadFile } = useMutationUploadFile();
-    const { mutateAsync: deleteFile } = useMutationDeleteFile();
     const { mutateAsync: updateCategory, isPending: isUpdatingCategory } = useMutationUpdateCategory();
 
     const onSubmit = async (values: IEditCategoryFormValues) => {

@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { QueryKey } from "~/constants/query-key";
 import { endpoints } from "~/constants/endpoints";
 import { appConfig } from "~/configs/config";
-import { Notification } from "../../infras";
+import { Notification } from "~/entities/notification.entity";
 
 interface UseQueryConnectStreamOptions {
     enabled?: boolean;

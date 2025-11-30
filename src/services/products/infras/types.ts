@@ -80,3 +80,9 @@ export interface ProductAttributeFiltersResponse {
     minPrice: number;
     maxPrice: number;
 }
+
+export interface PredictPriceResponse {
+    predictedPrice: number;
+}
+
+export type PredictPriceRequest = Record<string, any>;

@@ -1,7 +1,8 @@
 import { endpoints } from "~/constants/endpoints";
 import { callApi } from "~/libs/axios/request";
 import { HttpMethod, IPagination } from "~/libs/axios/types";
-import { ApiNotification, NotificationQueryParams } from "./types";
+import { NotificationQueryParams } from "./types";
+import { ApiNotification } from "~/entities/notification.entity";
 
 const getNotifications = (params: NotificationQueryParams = {}) => {
     const { page = 1, limit = 20, filters = {} } = params;

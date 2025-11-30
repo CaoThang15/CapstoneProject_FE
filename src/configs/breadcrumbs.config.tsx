@@ -14,7 +14,7 @@ export const DEFAULT_FIRST_BREADCRUMB_MANAGER: IBreadcrumbItem = {
 };
 
 export const DEFAULT_FIRST_BREADCRUMB_PROFILE = {
-    label: "My Account",
+    label: "Trang cá nhân",
     icon: <PersonOutline />,
 };
 

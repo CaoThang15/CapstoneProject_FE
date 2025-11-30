@@ -18,8 +18,10 @@ import { ApplicationRoutes } from "./routes/index.tsx";
 import "~/utils/string.exts.ts";
 import relativeTime from "dayjs/plugin/relativeTime.js";
 import dayjs from "dayjs";
+import "dayjs/locale/vi";
 
 dayjs.extend(relativeTime);
+dayjs.locale("vi");
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 

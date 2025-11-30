@@ -1,19 +1,16 @@
 import { EmailOutlined, LocalShippingOutlined, LockOutline, Login, Shield, Star } from "@mui/icons-material";
 import { Box, Button, Stack, Typography } from "@mui/material";
 import React from "react";
-import { useTranslation } from "react-i18next";
 import LoginImage from "~/assets/images/login-main-image.png";
 import { HighlightCard, LoadingContainer } from "~/components/common";
 import DynamicForm from "~/components/form/dynamic-form";
 import FormItem from "~/components/form/form-item";
 import { useForm } from "~/components/form/hooks/use-form";
-import i18n from "~/configs/i18n";
 import { useAuth } from "~/contexts/auth.context";
 import { TLoginRequest } from "~/services/auth/types";
 import { useLoginStep } from "./login-context";
 
 const EnterLoginCredentialStep: React.FC = () => {
-    const { t } = useTranslation();
     const { login, isLoading } = useAuth();
     const { setEmail, nextStep } = useLoginStep();
     const form = useForm<TLoginRequest>();
@@ -28,46 +25,46 @@ const EnterLoginCredentialStep: React.FC = () => {
         <Stack className="my-8" spacing={3} direction={"row"} alignItems="center">
             <Box className="hidden basis-0 rounded-2xl border border-gray-200 bg-white px-6 py-10 md:block md:basis-1/2">
                 <Typography variant="h5" className="font-bold">
-                    Buy & sell verified tech
+                    Mua & bán thiết bị công nghệ đã xác thực
                 </Typography>
                 <Typography className="mt-3 text-sm">
-                    AI Price prediction and fraud detection keeps your deals safe.
+                    Dự đoán giá bằng AI và phát hiện gian lận giúp giao dịch của bạn an toàn.
                 </Typography>
                 <img src={LoginImage} className="my-4 max-h-[300px] w-full object-cover" />
                 <Stack direction="row" spacing={2} className="mt-6">
                     <HighlightCard
                         startIcon={<Shield />}
-                        typography={<Typography variant="body2">Buyer protection</Typography>}
+                        typography={<Typography variant="body2">Bảo vệ người mua</Typography>}
                     />
                     <HighlightCard
                         startIcon={<Star />}
-                        typography={<Typography variant="body2">AI deals</Typography>}
+                        typography={<Typography variant="body2">Giao dịch AI</Typography>}
                     />
                     <HighlightCard
                         startIcon={<LocalShippingOutlined />}
-                        typography={<Typography variant="body2">Fast shipping</Typography>}
+                        typography={<Typography variant="body2">Giao hàng nhanh</Typography>}
                     />
                 </Stack>
             </Box>
 
             <Box className="my-auto hidden basis-0 rounded-2xl border border-gray-200 bg-white p-6 md:block md:basis-1/2">
                 <LoadingContainer isLoading={isLoading}>
-                    <Typography className="mb-6 text-xl font-bold">Welcome back</Typography>
+                    <Typography className="mb-6 text-xl font-bold">Chào mừng trở lại</Typography>
                     <DynamicForm form={form} onSubmit={handleSubmit}>
                         <Stack spacing={2} className="">
                             <FormItem
                                 render="text-input"
                                 name="email"
-                                label={t(i18n.translationKey.username)}
-                                placeholder={t(i18n.translationKey.username)}
+                                label="Email"
+                                placeholder="Nhập email"
                                 startAdornment={<EmailOutlined />}
                                 required
                             />
                             <FormItem
                                 render="text-input"
                                 name="password"
-                                label={t(i18n.translationKey.password)}
-                                placeholder={t(i18n.translationKey.password)}
+                                label="Mật khẩu"
+                                placeholder="Nhập mật khẩu"
                                 isPassword
                                 required
                                 startAdornment={<LockOutline />}
@@ -80,7 +77,7 @@ const EnterLoginCredentialStep: React.FC = () => {
                                     window.location.href = "/forgot-password";
                                 }}
                             >
-                                Forgot password ?
+                                Quên mật khẩu?
                             </Typography>
                         </Stack>
                         <Button
@@ -91,45 +88,17 @@ const EnterLoginCredentialStep: React.FC = () => {
                             className="!py-3"
                             disabled={isLoading || form.formState.isSubmitting}
                         >
-                            <Typography className="text-[16px] text-base font-semibold">
-                                {t(i18n.translationKey.login)}
-                            </Typography>
+                            <Typography className="text-[16px] text-base font-semibold">Đăng nhập</Typography>
                         </Button>
                     </DynamicForm>
-                    {/* <Divider className="my-5">
-                        <Typography className="text-sm text-gray-500">or continue with</Typography>
-                    </Divider>
-                    <Stack direction="row" spacing={1}>
-                        <Button
-                            startIcon={<Google />}
-                            color="inherit"
-                            variant="outlined"
-                            fullWidth
-                            className="border-gray-300 py-2"
-                        >
-                            <Typography className="text-base font-bold">
-                                {t(i18n.translationKey.login)} with Google
-                            </Typography>
-                        </Button>
-                        <Button
-                            startIcon={<Facebook />}
-                            color="inherit"
-                            variant="outlined"
-                            fullWidth
-                            className="border-gray-300"
-                        >
-                            <Typography className="text-base font-bold">
-                                {t(i18n.translationKey.login)} with Facebook
-                            </Typography>
-                        </Button>
-                    </Stack> */}
+
                     <Typography className="my-4 text-center text-sm text-gray-500">
-                        Don't have an account?{" "}
+                        Chưa có tài khoản?{" "}
                         <span
                             className="text-primary cursor-pointer underline"
                             onClick={() => (window.location.href = "/register")}
                         >
-                            Create an account
+                            Tạo tài khoản
                         </span>
                     </Typography>
                 </LoadingContainer>

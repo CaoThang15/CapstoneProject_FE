@@ -1,19 +1,19 @@
 import { Box, Button, Stack, Typography } from "@mui/material";
+import { useLocalStorage } from "@uidotdev/usehooks";
 import React from "react";
 import { useFormContext } from "react-hook-form";
+import { useNavigate } from "react-router";
 import { BoxSection } from "~/components/common";
+import { PaymentQRCode } from "~/components/common/payment-qr-code";
 import ProductCheckoutSummary from "~/components/common/product/product-checkout.summary";
+import { OrderPaymentMethod, TransactionType } from "~/constants/enums";
 import { ProductCartResult } from "~/services/carts/hooks/use-query-get-product-cart";
 import { useMutationCreateOrder } from "~/services/orders/hooks/mutations";
+import { useQueryGetOrderQrCode } from "~/services/orders/hooks/queries";
+import { showToast } from "~/utils";
+import { LocalStorageCartItems } from "../cart/types";
 import { useCheckout } from "./checkout.context";
 import { CreateOrderRequestFormValue } from "./types";
-import { OrderPaymentMethod, TransactionType } from "~/constants/enums";
-import { showToast } from "~/utils";
-import { useNavigate } from "react-router";
-import { useLocalStorage } from "@uidotdev/usehooks";
-import { LocalStorageCartItems } from "../cart/types";
-import { useQueryGetOrderQrCode } from "~/services/orders/hooks/queries";
-import { PaymentQRCode } from "~/components/common/payment-qr-code";
 
 interface Props {
     productCart: ProductCartResult[];
@@ -49,7 +49,6 @@ export const ReviewStep: React.FC<Props> = ({ productCart }) => {
 
     const handleSubmit = async () => {
         const { shippingAddress, ward, province, ...orderData } = checkoutForm.getValues();
-        await createOrder({ ...orderData, shippingAddress: `${shippingAddress}, ${ward}, ${province}` });
 
         const response = await createOrder({
             ...orderData,
@@ -60,7 +59,6 @@ export const ReviewStep: React.FC<Props> = ({ productCart }) => {
         if (paymentMethod === OrderPaymentMethod.DEBIT) {
             const orderId = response[0].id;
             setCreatedOrderId(orderId);
-            saveLocalCartProducts({});
             setQrOpen(true);
             return;
         }
@@ -70,14 +68,16 @@ export const ReviewStep: React.FC<Props> = ({ productCart }) => {
         navigate("/");
     };
 
-    const { data: qrUrl, isLoading } = useQueryGetOrderQrCode(
+    const { data: qrInfo, isLoading } = useQueryGetOrderQrCode(
         qrOpen ? (createdOrderId ?? undefined) : undefined,
         TransactionType.Deposit,
     );
 
     const handleCloseQrDialog = () => {
         setQrOpen(false);
-        navigate("/");
+        setCreatedOrderId(null);
+        // saveLocalCartProducts({});
+        // navigate("/");
     };
 
     return (
@@ -121,11 +121,6 @@ export const ReviewStep: React.FC<Props> = ({ productCart }) => {
                             Payment method:
                         </Typography>
                         <Typography>{paymentLabel}</Typography>
-                        {/* {paymentMethod === "credit" && (
-                            <Typography>
-                                {cardholderName} ({maskCardNumber(cardNumber)})
-                            </Typography>
-                        )} */}
                     </Box>
                 </Stack>
             </BoxSection>
@@ -143,7 +138,12 @@ export const ReviewStep: React.FC<Props> = ({ productCart }) => {
                     Confirm payment
                 </Button>
             </Stack>
-            <PaymentQRCode open={qrOpen} onClose={handleCloseQrDialog} qrCode={qrUrl ?? ""} isLoading={isLoading} />
+            <PaymentQRCode
+                open={qrOpen}
+                onClose={handleCloseQrDialog}
+                qrInfo={qrInfo ?? undefined}
+                isLoading={isLoading}
+            />
         </Stack>
     );
 };

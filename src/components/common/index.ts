@@ -6,3 +6,4 @@ export { default as AddToCartToastContent } from "./add-to-cart-content/add-to-c
 export { default as ImageRenderer } from "./image-renderer/image-renderer";
 export { default as LoadingContainer } from "./loading-container/loading-container";
 export * from "./notification";
+export { default as PreviewImage } from "./preview-image/preview-image";

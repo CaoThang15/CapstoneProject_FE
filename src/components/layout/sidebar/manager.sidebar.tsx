@@ -64,7 +64,7 @@ export const ManagerSidebar: React.FC = () => {
                     children: item.children ? filterTree(item.children) : undefined,
                 }));
 
-        return filterTree(user?.roleId == Role.Seller ? sellerSidebarTree : adminSidebarTree);
+        return filterTree(user?.roleId == Role.Admin ? adminSidebarTree : sellerSidebarTree);
     }, [user]);
 
     const findBreadcrumbPath = React.useCallback(

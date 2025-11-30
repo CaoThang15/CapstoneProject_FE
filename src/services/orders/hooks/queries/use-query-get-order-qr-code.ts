@@ -2,18 +2,15 @@ import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { TransactionType } from "~/constants/enums";
 import { QueryKey } from "~/constants/query-key";
-import { ordersApi } from "~/services/orders/infras";
+import { IBaseApiResponse } from "~/libs/axios/types";
+import { ordersApi, QRInfoResponse } from "~/services/orders/infras";
 
-const convertBlobToDataURL = (blob: Blob): string => {
-    return URL.createObjectURL(blob);
+const transformData = (response: IBaseApiResponse<QRInfoResponse>): QRInfoResponse => {
+    return response.data;
 };
+
 export function useQueryGetOrderQrCode(orderId?: number, type?: TransactionType) {
-    const {
-        data: blob,
-        isLoading,
-        refetch,
-        isError,
-    } = useQuery({
+    const { data, isLoading, refetch, isError } = useQuery({
         queryKey: [QueryKey.ORDERS.GET_ORDER_QR_CODE, orderId, type],
         queryFn: async () => {
             return await ordersApi.generateOrderQRCode(orderId, type);
@@ -21,14 +18,13 @@ export function useQueryGetOrderQrCode(orderId?: number, type?: TransactionType)
         enabled: !!orderId && !!type,
     });
 
-    const qrCodeUrl = React.useMemo(() => {
-        if (!blob || isLoading || isError) return null;
-
-        return convertBlobToDataURL(blob);
-    }, [blob, isLoading, isError]);
+    const qrInfo = React.useMemo(() => {
+        if (isError || isLoading || !data) return null;
+        return transformData(data);
+    }, [data, isError, isLoading]);
 
     return {
-        data: qrCodeUrl,
+        data: qrInfo,
         isLoading,
         isError,
         refetch,

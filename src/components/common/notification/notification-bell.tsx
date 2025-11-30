@@ -1,10 +1,11 @@
-import React, { useState, useCallback } from "react";
-import { Badge, IconButton, Tooltip } from "@mui/material";
 import { Notifications as NotificationsIcon } from "@mui/icons-material";
-import { useQueryGetUnreadCount, useQueryConnectStream } from "~/services/notifications/hooks";
+import { Badge, IconButton, Tooltip } from "@mui/material";
 import { useQueryClient } from "@tanstack/react-query";
+import React, { useCallback, useState } from "react";
 import { QueryKey } from "~/constants/query-key";
-import { Notification } from "~/services/notifications/infras";
+import { ApiNotification } from "~/entities/notification.entity";
+import { useQueryGetUnreadCount } from "~/services/notifications/hooks";
+import { useNotificationStream } from "~/services/notifications/hooks/queries/use-notification-stream";
 import { NotificationList } from "./notification-list";
 
 export const NotificationBell: React.FC = () => {
@@ -13,7 +14,7 @@ export const NotificationBell: React.FC = () => {
     const queryClient = useQueryClient();
     const { data: unreadCount = 0 } = useQueryGetUnreadCount();
     const handleNewNotification = useCallback(
-        (_notification: Notification) => {
+        (_notification: ApiNotification) => {
             queryClient.setQueryData([QueryKey.NOTIFICATIONS.GET_UNREAD_COUNT], (oldCount: number = 0) => {
                 return oldCount + 1;
             });
@@ -26,10 +27,7 @@ export const NotificationBell: React.FC = () => {
     );
 
     // Connect to real-time stream
-    useQueryConnectStream({
-        enabled: true,
-        onNotification: handleNewNotification,
-    });
+    useNotificationStream(handleNewNotification);
 
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
@@ -54,17 +52,21 @@ export const NotificationBell: React.FC = () => {
                     color={unreadCount > 0 ? "primary" : "default"}
                 >
                     <Badge
-                        badgeContent={unreadCount}
+                        badgeContent={unreadCount > 9 ? "9+" : unreadCount}
                         color="error"
                         overlap="circular"
                         variant="standard"
                         sx={{
                             "& .MuiBadge-badge": {
+                                position: "absolute",
+                                top: 0,
+                                right: 0,
+                                transform: "translate(50%, -50%)",
                                 fontSize: 10,
-                                minWidth: 15,
+                                width: 15,
                                 height: 15,
-                                right: -5,
-                                top: 5,
+                                minWidth: 0,
+                                padding: 0,
                             },
                         }}
                     >

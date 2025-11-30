@@ -5,6 +5,8 @@ import { HttpMethod, IPagination } from "~/libs/axios/types";
 import {
     CreateProductRequest,
     GenerateProductDescriptionRequest,
+    PredictPriceRequest,
+    PredictPriceResponse,
     ProductAttributeFilterRequest,
     ProductAttributeFiltersResponse,
     UpdateProductRequest,
@@ -70,6 +72,14 @@ const getProductAttributeFilters = (params: ProductAttributeFilterRequest) => {
     });
 };
 
+const predictPrice = (data: PredictPriceRequest) => {
+    return callApi<PredictPriceResponse>({
+        url: endpoints.products.predictPrice,
+        method: HttpMethod.POST,
+        data,
+    });
+};
+
 export const productsApi = {
     getListProducts,
     getProductBySlug,
@@ -79,4 +89,5 @@ export const productsApi = {
     generateProductDescription,
     deleteProduct,
     getProductAttributeFilters,
+    predictPrice,
 };

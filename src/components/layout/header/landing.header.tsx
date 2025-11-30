@@ -1,109 +1,164 @@
-import { Category, Recycling, ShoppingCart } from "@mui/icons-material";
-import { AppBar, Badge, Box, Divider, IconButton, Stack, Tooltip, Typography } from "@mui/material";
+import { Recycling, SearchOutlined, ShoppingCart } from "@mui/icons-material";
+import { Badge, Box, Button, IconButton, Stack, TextField, Tooltip, Typography } from "@mui/material";
 import { useLocalStorage } from "@uidotdev/usehooks";
 import classNames from "classnames";
 import React from "react";
+import { useLocation } from "react-router";
 import { NotificationBell } from "~/components/common/notification";
 import { useAuth } from "~/contexts/auth.context";
 import { LocalStorageCartItems } from "~/pages/cart/types";
+import CategoryMenu from "./category-menu";
+import SellerMenu from "./seller-menu";
 import UserSection from "./user-section";
 
 const LandingHeader: React.FC = () => {
     const { user } = useAuth();
-    const [localCartProducts] = useLocalStorage("cart", {} as LocalStorageCartItems);
+    const location = useLocation();
+    const isHomepage = location.pathname === "/";
 
-    const handleNavigate = (href: string) => {
-        window.location.href = href;
+    const [localCartProducts] = useLocalStorage("cart", {} as LocalStorageCartItems);
+    const [scrolled, setScrolled] = React.useState(false);
+
+    const handleScroll = () => {
+        const threshold = 100;
+        setScrolled(window.scrollY > threshold);
     };
 
+    React.useEffect(() => {
+        if (!isHomepage) return;
+
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
+
     return (
-        <AppBar position="sticky" sx={{ top: 0 }} className="shadow-m w-full justify-center bg-stone-100 px-3 py-2">
-            <Box className="container mx-auto">
-                <Stack>
-                    <Box className="mb-2 flex items-center justify-between pb-1">
-                        <Box className="flex items-center space-x-2 text-sm">
-                            <Typography
-                                variant="caption"
-                                className="cursor-pointer text-center text-gray-500 hover:underline"
-                                onClick={() => handleNavigate("/seller")}
-                            >
-                                Kênh Người Bán
-                            </Typography>
-                            <Divider orientation="vertical" flexItem className="mx-2" />
-                            <Typography
-                                variant="caption"
-                                className="cursor-pointer text-center text-gray-500 hover:underline"
-                                onClick={() => (window.location.href = "seller/on-boarding")}
-                            >
-                                Trở thành Người bán S-Market
-                            </Typography>
-                        </Box>
-                        <UserSection />
-                    </Box>
-                    <Box className="flex basis-3/5 items-center justify-between">
-                        <Stack
-                            direction={"row"}
-                            spacing={2}
-                            alignItems="center"
-                            className="cursor-pointer pe-4"
-                            onClick={() => (window.location.href = "/")}
-                        >
-                            <IconButton disableRipple size="large" edge="start" aria-label="menu" sx={{ mr: 2 }}>
-                                <Recycling />
-                            </IconButton>
-                            <Typography variant="h5" fontWeight={700} className="w-1/2 whitespace-nowrap text-gray-600">
-                                S-Market
-                            </Typography>
-                        </Stack>
-                        <Stack
-                            flexDirection="row"
-                            className="ml-4 basis-2/5 space-x-5"
-                            justifyContent="flex-end"
-                            alignItems="center"
-                        >
-                            <Tooltip title="Danh mục" arrow placement="bottom">
-                                <IconButton
-                                    className="h-9 border-none text-gray-600"
-                                    onClick={() => handleNavigate("/category")}
-                                >
-                                    <Category fontSize="small" />
-                                </IconButton>
-                            </Tooltip>
+        <Box
+            className={classNames(
+                "z-50 flex w-full justify-between space-x-4 px-10 py-3 transition-all duration-500 ease-in-out",
+                {
+                    "fixed left-0 top-0 bg-white shadow-md": !isHomepage || scrolled,
+                    "bg-transparent": isHomepage && !scrolled,
+                },
+            )}
+        >
+            <Box className="flex items-center space-x-3">
+                <CategoryMenu />
 
-                            <Tooltip title="Giỏ hàng" arrow placement="bottom">
-                                <IconButton
-                                    onClick={() => (window.location.href = "/cart")}
-                                    className="h-9 border-none text-gray-600"
-                                >
-                                    <Badge
-                                        badgeContent={Object.keys(localCartProducts).length}
-                                        color="primary"
-                                        overlap="circular"
-                                        variant="standard"
-                                        className={classNames({
-                                            "me-3": Object.keys(localCartProducts).length > 0,
-                                        })}
-                                        sx={{
-                                            "& .MuiBadge-badge": {
-                                                fontSize: 10,
-                                                minWidth: 15,
-                                                height: 15,
-                                                right: -5,
-                                            },
-                                        }}
-                                    >
-                                        <ShoppingCart fontSize="small" />
-                                    </Badge>
-                                </IconButton>
-                            </Tooltip>
-
-                            {/* Notification Bell */}
-                            {user && <NotificationBell />}
-                        </Stack>
-                    </Box>
+                <Stack
+                    direction={"row"}
+                    spacing={0.5}
+                    alignItems="center"
+                    className="cursor-pointer rounded-2xl bg-white pe-5 ps-2"
+                    sx={{
+                        color: "primary.main",
+                    }}
+                    onClick={() => (window.location.href = "/")}
+                >
+                    <IconButton disableRipple edge="start" sx={{ color: "primary.main" }} aria-label="menu">
+                        <Recycling />
+                    </IconButton>
+                    <Typography
+                        variant="h6"
+                        fontWeight={700}
+                        sx={{ color: "primary.main" }}
+                        className="whitespace-nowrap"
+                    >
+                        S-Market
+                    </Typography>
                 </Stack>
+
+                {isHomepage && !scrolled && <SellerMenu />}
             </Box>
-        </AppBar>
+            {(!isHomepage || scrolled) && (
+                <TextField
+                    className="flex-1"
+                    size="small"
+                    placeholder="Tìm kiếm sản phẩm, danh mục hay thương hiệu mong muốn..."
+                    slotProps={{
+                        input: {
+                            className: "rounded-full pe-1 ps-3 bg-gray-100 ",
+                            startAdornment: <SearchOutlined className="pe-2 text-gray-400" />,
+                            endAdornment: (
+                                <IconButton
+                                    sx={{
+                                        bgcolor: "primary.main",
+                                        ":hover": { bgcolor: "primary.light" },
+                                    }}
+                                    size="small"
+                                >
+                                    <SearchOutlined fontSize="small" className="text-white" />
+                                </IconButton>
+                            ),
+                        },
+                    }}
+                />
+            )}
+
+            <Stack direction="row" spacing={1} className="ml-4" justifyContent="flex-end" alignItems="center">
+                <Tooltip title="Giỏ hàng" arrow placement="bottom">
+                    <IconButton onClick={() => (window.location.href = "/cart")} className="relative h-9 bg-white">
+                        <Badge
+                            badgeContent={
+                                localCartProducts
+                                    ? Object.keys(localCartProducts).length > 9
+                                        ? "9+"
+                                        : Object.keys(localCartProducts).length
+                                    : 0
+                            }
+                            color="error"
+                            overlap="circular"
+                            anchorOrigin={{ vertical: "top", horizontal: "right" }}
+                            sx={{
+                                "& .MuiBadge-badge": {
+                                    position: "absolute",
+                                    top: 0,
+                                    right: 0,
+                                    transform: "translate(50%, -50%)",
+                                    fontSize: 10,
+                                    width: 15,
+                                    height: 15,
+                                    minWidth: 0,
+                                    padding: 0,
+                                },
+                            }}
+                        >
+                            <ShoppingCart fontSize="small" />
+                        </Badge>
+                    </IconButton>
+                </Tooltip>
+
+                {/* Notification Bell */}
+                {/* {user && <NotificationBell />} */}
+                <Box className="rounded-2xl bg-white">{<NotificationBell />}</Box>
+                {!user ? (
+                    <Button
+                        variant={scrolled ? "outlined" : "contained"}
+                        className="rounded-full border-gray-300 bg-white px-5"
+                        color="inherit"
+                        onClick={() => (window.location.href = "/login")}
+                    >
+                        Đăng nhập
+                    </Button>
+                ) : (
+                    <Button
+                        variant={scrolled ? "outlined" : "contained"}
+                        className="rounded-full border-gray-300 bg-white px-5"
+                        color="inherit"
+                        onClick={() => (window.location.href = "/user/profile")}
+                    >
+                        Trang cá nhân
+                    </Button>
+                )}
+                <Button
+                    variant="contained"
+                    className="rounded-full px-5"
+                    onClick={() => (window.location.href = "/seller/products/create")}
+                >
+                    Đăng tin
+                </Button>
+                <UserSection scrolled={scrolled} />
+            </Stack>
+        </Box>
     );
 };
 

@@ -12,7 +12,7 @@ interface CheckoutSummaryProps {
 export const CheckoutSummary: React.FC<CheckoutSummaryProps> = ({ subtotal }) => {
     const { voucher } = useCheckout();
     const form = useFormContext<CreateOrderRequestFormValue>();
-
+    console.log(form.getValues());
     return (
         <BoxSection>
             <Stack direction="row" justifyContent="space-between" alignItems="center">
@@ -46,7 +46,7 @@ export const CheckoutSummary: React.FC<CheckoutSummaryProps> = ({ subtotal }) =>
                 <Divider sx={{ my: 1 }} />
                 <Stack direction="row" justifyContent="space-between">
                     <Typography fontWeight={700}>Total</Typography>
-                    <Typography fontWeight={700}>{formatCurrencyVND(form.getValues("totalAmount"))}</Typography>
+                    <Typography fontWeight={700}>{formatCurrencyVND(form.watch("totalAmount"))}</Typography>
                 </Stack>
             </Stack>
         </BoxSection>

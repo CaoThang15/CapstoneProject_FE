@@ -9,4 +9,5 @@ export const productsEndpoints = {
     generateProductDescription: `/ai/suggest-description`,
     deleteProduct: (productId: number) => `${productEndpointPrefix}/${productId}`,
     getProductAttributeFilters: `${productEndpointPrefix}/attribute/filters`,
+    predictPrice: `${productEndpointPrefix}/predict-price`,
 };

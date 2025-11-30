@@ -12,7 +12,7 @@ const ProfileWrapper: React.FC = () => {
             <Box className={`flex min-h-screen w-full flex-col`}>
                 <LandingHeader />
 
-                <main className="container mx-auto my-3 flex h-[calc(100%-64px)] w-full flex-1 flex-grow space-x-3">
+                <main className="container mx-auto my-3 flex h-[calc(100%-64px)] w-full flex-1 flex-grow space-x-3 pt-20">
                     <Box className="h-full w-[15%] min-w-[250px] flex-shrink-0 border border-gray-100">
                         <ProfileSidebar />
                     </Box>

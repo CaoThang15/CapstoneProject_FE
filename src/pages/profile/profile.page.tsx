@@ -76,7 +76,7 @@ const ProfilePage: React.FC = () => {
                                 ) : (
                                     <Box>
                                         <Typography variant="subtitle2" color="text.secondary">
-                                            Full name
+                                            Họ và tên
                                         </Typography>
                                         <Typography variant="h6">{user.name}</Typography>
                                     </Box>
@@ -115,7 +115,7 @@ const ProfilePage: React.FC = () => {
                                 ) : (
                                     <Box>
                                         <Typography variant="subtitle2" color="text.secondary" className="mt-2">
-                                            Phone
+                                            Số điện thoại
                                         </Typography>
                                         <Typography variant="body1">{user.phone ?? "N/A"} </Typography>
                                     </Box>
@@ -168,7 +168,7 @@ const ProfilePage: React.FC = () => {
                     {/* Addresses Section */}
                     <BoxSection className="w-full">
                         <Typography variant="h6" className="mb-4">
-                            Addresses
+                            Địa chỉ
                         </Typography>
 
                         <Box className="space-y-3">
@@ -179,7 +179,7 @@ const ProfilePage: React.FC = () => {
                                     ) : (
                                         <BoxSection className="!p-3">
                                             <Typography variant="subtitle2" color="text.secondary" className="">
-                                                Province
+                                                Tỉnh/Thành phố
                                             </Typography>
                                             <Typography>{form.watch("province")}</Typography>
                                         </BoxSection>
@@ -191,7 +191,7 @@ const ProfilePage: React.FC = () => {
                                     ) : (
                                         <BoxSection className="!p-3">
                                             <Typography variant="subtitle2" color="text.secondary" className="">
-                                                Ward
+                                                Phường
                                             </Typography>
                                             <Typography>{form.watch("ward")}</Typography>
                                         </BoxSection>
@@ -203,7 +203,7 @@ const ProfilePage: React.FC = () => {
                                     ) : (
                                         <BoxSection className="!p-3">
                                             <Typography variant="subtitle2" color="text.secondary" className="">
-                                                Address
+                                                Địa chỉ
                                             </Typography>
                                             <Typography>{form.watch("address")}</Typography>
                                         </BoxSection>
@@ -212,40 +212,10 @@ const ProfilePage: React.FC = () => {
                             </Grid>
                         </Box>
                     </BoxSection>
-                    {/* AI & Security Section */}
-                    <BoxSection className="w-full">
-                        <Typography variant="h6" className="mb-4">
-                            AI & Security
-                        </Typography>
-
-                        <Box className="mb-2 flex items-center justify-between rounded-lg border px-4 py-2">
-                            <Typography>Fraud shield</Typography>
-                            <Switch checked color="success" />
-                        </Box>
-
-                        <Box className="mb-2 flex items-center justify-between rounded-lg border px-4 py-2">
-                            <Typography>2-factor authentication</Typography>
-                            <Typography className="text-gray-600">SMS</Typography>
-                        </Box>
-
-                        <Box className="mb-3 flex items-center justify-between rounded-lg border px-4 py-2">
-                            <Typography>AI price tips</Typography>
-                            <Typography className="text-gray-600">Enabled</Typography>
-                        </Box>
-
-                        <Box className="flex gap-2">
-                            <Button variant="outlined" color="inherit" startIcon={<Settings />}>
-                                Configure
-                            </Button>
-                            <Button variant="contained" startIcon={<Shield />}>
-                                Review risk report
-                            </Button>
-                        </Box>
-                    </BoxSection>
                 </Box>
             </DynamicForm>
             <BoxSection>
-                <Typography variant="h6">Recent order</Typography>
+                <Typography variant="h6">Đơn hàng gần đây</Typography>
                 <Stack spacing={1} className="mt-2">
                     {orders.map((order) => (
                         <BoxSection key={order.id} className="flex items-center justify-between border-gray-200">
@@ -256,7 +226,7 @@ const ProfilePage: React.FC = () => {
                             <Stack spacing={1} className="flex-1 px-3">
                                 <Typography fontWeight={600}>{order.orderDetails[0].productName}</Typography>
                                 <Typography>
-                                    Order #{order.id} - {order.statusName}
+                                    Đơn hàng #{order.id} - {order.statusName}
                                 </Typography>
                             </Stack>
                             <Typography className="font-bold">{formatCurrencyVND(order.totalAmount)}</Typography>
