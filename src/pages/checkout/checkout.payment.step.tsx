@@ -16,16 +16,6 @@ export const PaymentStep: React.FC = () => {
         checkoutForm.setValue("paymentMethod", method);
     };
 
-    React.useEffect(() => {
-        if (paymentMethod != OrderPaymentMethod.CREDIT) {
-            checkoutForm.setValue("cardholderName", "");
-            checkoutForm.setValue("cardNumber", "");
-            checkoutForm.setValue("expiryDate", "");
-            checkoutForm.setValue("cvc", "");
-            checkoutForm.clearErrors(["cardholderName", "cardNumber", "expiryDate", "cvc"]);
-        }
-    }, [checkoutForm]);
-
     return (
         <Box>
             <BoxSection>
@@ -46,17 +36,6 @@ export const PaymentStep: React.FC = () => {
                     </Grid>
                     <Grid size={{ xs: 6 }}>
                         <Button
-                            variant={paymentMethod === OrderPaymentMethod.CREDIT ? "contained" : "outlined"}
-                            onClick={() => handleSelectPaymentMethod(OrderPaymentMethod.CREDIT)}
-                            fullWidth
-                            color="primary"
-                            startIcon={<CreditCardOutlined />}
-                        >
-                            Credit/Debit Card
-                        </Button>
-                    </Grid>
-                    <Grid size={{ xs: 6 }}>
-                        <Button
                             variant={paymentMethod === OrderPaymentMethod.DEBIT ? "contained" : "outlined"}
                             onClick={() => handleSelectPaymentMethod(OrderPaymentMethod.DEBIT)}
                             fullWidth
@@ -70,51 +49,6 @@ export const PaymentStep: React.FC = () => {
             </BoxSection>
 
             <BoxSection mt={2}>
-                <Typography variant="subtitle1" fontWeight={600}>
-                    Card details
-                </Typography>
-                <Grid container spacing={2} mt={1}>
-                    <Grid size={{ xs: 12 }}>
-                        <FormItem
-                            render="text-input"
-                            required={paymentMethod == OrderPaymentMethod.CREDIT}
-                            name="cardholderName"
-                            label="Cardholder name"
-                            disabled={paymentMethod !== OrderPaymentMethod.CREDIT}
-                            fullWidth
-                        />
-                    </Grid>
-                    <Grid size={{ xs: 12 }}>
-                        <FormItem
-                            render="text-input"
-                            required={paymentMethod == OrderPaymentMethod.CREDIT}
-                            name="cardNumber"
-                            label="Card number"
-                            fullWidth
-                            disabled={paymentMethod !== OrderPaymentMethod.CREDIT}
-                        />
-                    </Grid>
-                    <Grid size={{ xs: 6 }}>
-                        <FormItem
-                            render="text-input"
-                            required={paymentMethod == OrderPaymentMethod.CREDIT}
-                            name="expiryDate"
-                            label="Expiry (MM/YY)"
-                            fullWidth
-                            disabled={paymentMethod !== OrderPaymentMethod.CREDIT}
-                        />
-                    </Grid>
-                    <Grid size={{ xs: 6 }}>
-                        <FormItem
-                            render="text-input"
-                            required={paymentMethod == OrderPaymentMethod.CREDIT}
-                            name="cvc"
-                            label="CVC"
-                            fullWidth
-                            disabled={paymentMethod !== OrderPaymentMethod.CREDIT}
-                        />
-                    </Grid>
-                </Grid>
                 <Box mt={3} display="flex" justifyContent="flex-end" gap={2}>
                     <Button variant="outlined" onClick={prevStep}>
                         Back to delivery

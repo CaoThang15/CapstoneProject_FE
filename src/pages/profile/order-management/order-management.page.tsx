@@ -1,14 +1,16 @@
 import { LocalShippingOutlined } from "@mui/icons-material";
-import { Box, CircularProgress, Divider, Grid, Stack, Tab, Tabs, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Divider, Grid, Stack, Tab, Tabs, Typography } from "@mui/material";
 import React from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { BoxSection, ImageRenderer, LoadingContainer } from "~/components/common";
+import { PaymentQRCode } from "~/components/common/payment-qr-code";
 import { SearchBox } from "~/components/common/search-box";
 import DynamicForm from "~/components/form/dynamic-form";
 import { useForm } from "~/components/form/hooks/use-form";
-import { OrderStatus } from "~/constants/enums";
+import { OrderPaymentMethod, OrderStatus, PaymentStatus, TransactionType } from "~/constants/enums";
 import { usePagination } from "~/hooks";
-import { useQueryGetInfinityOrders } from "~/services/orders/hooks/queries";
+import { useMutationMarkedAsDelivered } from "~/services/orders/hooks/mutations";
+import { useQueryGetInfinityOrders, useQueryGetOrderQrCode } from "~/services/orders/hooks/queries";
 import { GetOrdersRequest } from "~/services/orders/infras";
 import { formatCurrencyVND } from "~/utils/currency";
 
@@ -56,6 +58,25 @@ const OrderManagementPage: React.FC = () => {
     const { pageIndex, pageSize } = usePagination();
     const [searchValue, setSearchValue] = React.useState<string>("");
 
+    const [selectedOrderId, setSelectedOrderId] = React.useState<number | null>(null);
+    const [openQr, setOpenQr] = React.useState(false);
+
+    const {
+        data: qrCodeUrl,
+        isLoading: qrLoading,
+        refetch: refetchQr,
+    } = useQueryGetOrderQrCode(selectedOrderId, TransactionType.Deposit);
+
+    const handlePayOrder = (orderId: number) => {
+        setSelectedOrderId(orderId);
+        setOpenQr(true);
+        refetchQr();
+    };
+
+    const { mutateAsync: markedAsDelivered, isPending: isMarkingAsDelivered } = useMutationMarkedAsDelivered();
+    const handleCheckDelivery = async (orderId: number) => {
+        await markedAsDelivered(orderId);
+    };
     const {
         data: { items: listOrders, total: totalOrders },
         fetchNextPage,
@@ -204,13 +225,31 @@ const OrderManagementPage: React.FC = () => {
                                                     </Stack>
                                                 ))}
                                             </BoxSection>
-                                            <BoxSection className="flex justify-end bg-gray-50">
+                                            <BoxSection className="flex items-center justify-end bg-gray-50">
                                                 <Typography fontSize={14}>
                                                     Total:{" "}
                                                     <span className="text-primary text-xl font-semibold">
                                                         {formatCurrencyVND(order.totalAmount - order.discountAmount)}
                                                     </span>
                                                 </Typography>
+                                                {order.paymentMethod === OrderPaymentMethod.DEBIT &&
+                                                    order.paymentStatus === PaymentStatus.PENDING && (
+                                                        <Button
+                                                            onClick={() => handlePayOrder(order.id)}
+                                                            className="ml-3 rounded px-4 py-2"
+                                                        >
+                                                            Thanh toán lại
+                                                        </Button>
+                                                    )}
+                                                {order.statusId === OrderStatus.Delivered && !order.receiveTime && (
+                                                    <Button
+                                                        onClick={() => handleCheckDelivery(order.id)}
+                                                        loading={isMarkingAsDelivered}
+                                                        loadingPosition="start"
+                                                    >
+                                                        Đã nhận hàng
+                                                    </Button>
+                                                )}
                                             </BoxSection>
                                         </Box>
                                     </Grid>
@@ -220,6 +259,12 @@ const OrderManagementPage: React.FC = () => {
                     </InfiniteScroll>
                 </LoadingContainer>
             </Stack>
+            <PaymentQRCode
+                open={openQr}
+                onClose={() => setOpenQr(false)}
+                qrCode={qrCodeUrl ?? ""}
+                isLoading={qrLoading}
+            />
         </DynamicForm>
     );
 };

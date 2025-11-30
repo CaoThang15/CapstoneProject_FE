@@ -9,4 +9,6 @@ export const ordersEndpoints = {
     getOrderById: (orderId: number) => `${ordersEndpointPrefix}/${orderId}`,
     updateOrderStatus: (orderId: number, status: OrderStatus) =>
         `${ordersEndpointPrefix}/${orderId}/status?status=${status}`,
+    generateOrderQRCode: (orderId: number) => `${ordersEndpointPrefix}/qr/${orderId}`,
+    markedAsDelivered: (orderId: number) => `${ordersEndpointPrefix}/${orderId}/receive-order`,
 };

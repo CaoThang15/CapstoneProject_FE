@@ -19,7 +19,7 @@ export type ImageUploaderFormItemProps = BaseFormItemProps & {
     maxFiles?: number;
     renderFile?: (file: UploadedFile) => React.ReactNode;
     onUpload: (file: File) => Promise<UploadedFile>;
-    onDelete: (file: UploadedFile) => Promise<void>;
+    onDelete?: (file: UploadedFile) => Promise<void>;
 };
 
 const DefaultFileUpload: React.FC<{ file: UploadedFile }> = ({ file }) => (
@@ -84,7 +84,9 @@ export const ImageUploaderFormItem: React.FC<ImageUploaderFormItemProps> = ({
         setDeletingIds((prev) => new Set(prev).add(file.id));
 
         try {
-            await onDelete(file);
+            if (onDelete) {
+                await onDelete(file);
+            }
             if (Array.isArray(currentValue)) {
                 const updated = currentValue.filter((f) => f.id !== file.id);
                 setValue(name, updated, { shouldValidate: true, shouldDirty: true });

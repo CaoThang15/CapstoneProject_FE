@@ -3,14 +3,16 @@ import { QRCode } from "react-qrcode-logo";
 import AppLogo from "~/assets/images/logo.png";
 import { Dialog } from "../dialog";
 import { Box, Typography } from "@mui/material";
+import { IBaseDialogProps } from "../dialog/types";
+import LoadingContainer from "../loading-container/loading-container";
+import ImageRenderer from "../image-renderer/image-renderer";
 
-interface PaymentQRCodeProps {
+interface PaymentQRCodeProps extends IBaseDialogProps {
     qrCode: string;
-    open: boolean;
-    onClose: () => void;
+    isLoading?: boolean;
 }
 
-const PaymentQRCode: React.FC<PaymentQRCodeProps> = ({ qrCode, open, onClose }) => {
+const PaymentQRCode: React.FC<PaymentQRCodeProps> = ({ qrCode, open, onClose, isLoading }) => {
     return (
         <Dialog
             open={open}
@@ -24,22 +26,30 @@ const PaymentQRCode: React.FC<PaymentQRCodeProps> = ({ qrCode, open, onClose }) 
             }}
         >
             <Dialog.Body>
-                <Box className="mt-3">
-                    <Typography variant="h6" align="center">
-                        Thanh toán QR Code
-                    </Typography>
-                    <QRCode
-                        removeQrCodeBehindLogo
-                        value={qrCode}
-                        style={{
-                            width: "100%",
-                            height: "100%",
-                        }}
-                        logoImage={AppLogo}
-                        qrStyle="squares"
-                        eyeRadius={5}
-                    />
-                </Box>
+                <LoadingContainer isLoading={isLoading}>
+                    <Box className="mt-3">
+                        <Typography variant="h6" align="center">
+                            Thanh toán QR Code
+                        </Typography>
+                        <ImageRenderer
+                            src={qrCode}
+                            alt="QR Code"
+                            style={{
+                                width: "100%",
+                                height: "100%",
+                            }}
+                        />
+                        {/* <QRCode
+                            value={qrCode}
+                            style={{
+                                width: "100%",
+                                height: "100%",
+                            }}
+                            qrStyle="squares"
+                            eyeRadius={5}
+                        /> */}
+                    </Box>
+                </LoadingContainer>
             </Dialog.Body>
         </Dialog>
     );
