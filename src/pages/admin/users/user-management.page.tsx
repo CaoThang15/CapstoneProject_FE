@@ -90,9 +90,15 @@ const AdminUserManagementPage: React.FC = () => {
             cellRenderer: (params: ICellRendererParams<User>) => {
                 return (
                     <Stack direction={"row"} spacing={1} className="h-full items-center justify-center">
-                        <Button color="error" onClick={() => setDeleteUserId(params.data.id)}>
-                            Remove
-                        </Button>
+                        {params.data.isSuspended ? (
+                            <Button color="error" onClick={() => setDeleteUserId(params.data.id)}>
+                                Mở khoá
+                            </Button>
+                        ) : (
+                            <Button color="error" onClick={() => setDeleteUserId(params.data.id)}>
+                                Khoá tài khoản
+                            </Button>
+                        )}
                     </Stack>
                 );
             },

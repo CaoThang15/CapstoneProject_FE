@@ -1,6 +1,6 @@
 import { Box, Stack, Typography } from "@mui/material";
 import React from "react";
-import { Product } from "~/entities";
+import { Product, Voucher } from "~/entities";
 import { formatCurrencyVND } from "~/utils/currency";
 import ImageRenderer from "../image-renderer/image-renderer";
 import BoxSection from "../section/box-section";
@@ -8,9 +8,10 @@ import BoxSection from "../section/box-section";
 interface Props {
     product: Product;
     quantity: number;
+    voucher?: Voucher;
 }
 
-const ProductCheckoutSummary: React.FC<Props> = ({ product, quantity }) => {
+const ProductCheckoutSummary: React.FC<Props> = ({ product, quantity, voucher }) => {
     return (
         <BoxSection sx={{ position: "relative" }}>
             <Stack direction="row" alignItems="center" spacing={2}>
@@ -36,7 +37,18 @@ const ProductCheckoutSummary: React.FC<Props> = ({ product, quantity }) => {
                     </Typography>
                 </Box>
 
-                <Typography fontWeight={700}>{formatCurrencyVND(product.price * quantity)}</Typography>
+                {voucher ? (
+                    <Stack direction="column" alignItems="flex-end" spacing={0.5}>
+                        <Typography className="line-through">{formatCurrencyVND(product.price * quantity)}</Typography>
+                        <Typography fontWeight={700}>
+                            {formatCurrencyVND(
+                                product.price * quantity - voucher.getDiscount(product.price * quantity),
+                            )}
+                        </Typography>
+                    </Stack>
+                ) : (
+                    <Typography fontWeight={700}>{formatCurrencyVND(product.price * quantity)}</Typography>
+                )}
             </Stack>
         </BoxSection>
     );

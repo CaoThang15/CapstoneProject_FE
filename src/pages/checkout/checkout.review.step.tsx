@@ -76,8 +76,8 @@ export const ReviewStep: React.FC<Props> = ({ productCart }) => {
     const handleCloseQrDialog = () => {
         setQrOpen(false);
         setCreatedOrderId(null);
-        // saveLocalCartProducts({});
-        // navigate("/");
+        saveLocalCartProducts({});
+        navigate("/");
     };
 
     return (
@@ -97,7 +97,12 @@ export const ReviewStep: React.FC<Props> = ({ productCart }) => {
                         Items
                     </Typography>
                     {productCart.map((item) => (
-                        <ProductCheckoutSummary key={item.data.id} product={item.data} quantity={item.data.quantity} />
+                        <ProductCheckoutSummary
+                            key={item.data.id}
+                            voucher={checkoutForm.watch("voucher")}
+                            product={item.data}
+                            quantity={item.data.quantity}
+                        />
                     ))}
                 </Stack>
             </BoxSection>
@@ -125,7 +130,7 @@ export const ReviewStep: React.FC<Props> = ({ productCart }) => {
                 </Stack>
             </BoxSection>
             <Stack direction="row" justifyContent="space-between" mt={3}>
-                <Button variant="outlined" onClick={() => setStep("payment")}>
+                <Button variant="outlined" color="inherit" onClick={() => setStep("payment")}>
                     Back to payment
                 </Button>
                 <Button

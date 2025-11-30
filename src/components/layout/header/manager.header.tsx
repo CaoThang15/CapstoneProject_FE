@@ -1,10 +1,14 @@
-import { NotificationsOutlined } from "@mui/icons-material";
+import { LogoutOutlined, NotificationsOutlined } from "@mui/icons-material";
 import { AppBar, Badge, Box, IconButton, Stack, Tooltip } from "@mui/material";
 import classNames from "classnames";
 import React from "react";
 import HeaderBreadcrumbs from "../breadcrumbs/breadcrumb";
+import { NotificationBell } from "~/components/common";
+import { useAuth } from "~/contexts/auth.context";
 
 const ManagerHeader: React.FC = () => {
+    const { logout } = useAuth();
+
     return (
         <AppBar position="sticky" sx={{ top: 0 }} className="shadow-m w-full justify-center bg-white px-3 py-2">
             <Box className="flex items-center justify-between">
@@ -17,11 +21,9 @@ const ManagerHeader: React.FC = () => {
                     justifyContent="flex-end"
                     alignItems="center"
                 >
-                    <Tooltip title="Giỏ hàng" arrow placement="bottom">
-                        <IconButton
-                            onClick={() => (window.location.href = "/cart")}
-                            className="h-9 border-none text-gray-600"
-                        >
+                    <NotificationBell />
+                    <Tooltip title="Đăng xuất" arrow placement="bottom">
+                        <IconButton onClick={logout} className="h-9 border-none text-gray-600">
                             <Badge
                                 badgeContent={0}
                                 color="primary"
@@ -39,7 +41,7 @@ const ManagerHeader: React.FC = () => {
                                     },
                                 }}
                             >
-                                <NotificationsOutlined fontSize="small" />
+                                <LogoutOutlined fontSize="small" />
                             </Badge>
                         </IconButton>
                     </Tooltip>

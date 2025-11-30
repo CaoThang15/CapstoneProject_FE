@@ -75,6 +75,7 @@ const CheckoutContent: React.FC = () => {
 
     React.useEffect(() => {
         const discountAmount = voucher ? voucher.getDiscount(subtotal) : 0;
+        checkoutForm.setValue("voucher", voucher || null);
         checkoutForm.setValue("totalAmount", subtotal - discountAmount);
         checkoutForm.setValue("voucherId", voucher?.id || null);
     }, [subtotal, voucher]);
