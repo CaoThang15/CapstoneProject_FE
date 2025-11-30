@@ -40,13 +40,6 @@ export enum HospitalServiceType {
     Test,
 }
 
-export enum PaymentStatus {
-    COMPLETED,
-    CANCELLED,
-    ADJUSTED,
-    PENDING,
-}
-
 export enum OrderStatus {
     PendingConfirmation = 2,
     PendingShipment,
@@ -75,4 +68,16 @@ export enum OrderPaymentMethod {
     CASH = "CASH",
     CREDIT = "CREDIT",
     DEBIT = "DEBIT",
+}
+
+export enum TransactionType {
+    Deposit = "Deposit",
+    Payout = "Payout",
+}
+
+export enum PaymentStatus {
+    PENDING = 1,
+    SUCCESS = 2,
+    SELLER_SUCCESS = 3,
+    FAILED = 4,
 }

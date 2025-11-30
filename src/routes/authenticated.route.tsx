@@ -2,6 +2,7 @@ import { Outlet, Route } from "react-router";
 import { Role } from "~/constants/roles";
 import AuthenticatedGuard from "~/guards/authenticated.guard";
 import CategoryManagementPage from "~/pages/admin/category/category-mangement.page";
+import CategoryDetailPage from "~/pages/admin/category/cateogry-detail.page";
 import AdminOrderDetailPage from "~/pages/admin/orders/order-detail.page";
 import AdminOrderManagementPage from "~/pages/admin/orders/order-management.page";
 import AdminProductManagementPage from "~/pages/admin/product/product-management.page";
@@ -71,7 +72,10 @@ export const AuthenticatedRoutes = (
             </Route>
             <Route path="/admin" element={<AuthenticatedGuard role={Role.Admin} />}>
                 <Route index element={<div>Admin Page</div>} />
-                <Route path="categorys" element={<CategoryManagementPage />} />
+                <Route path="categories">
+                    <Route index element={<CategoryManagementPage />} />
+                    <Route path=":id" element={<CategoryDetailPage />} />
+                </Route>
                 <Route path="users" element={<AdminUserManagementPage />} />
                 <Route path="products" element={<AdminProductManagementPage />} />
                 <Route path="orders">

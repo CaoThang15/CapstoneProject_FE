@@ -1,4 +1,4 @@
-import { OrderPaymentMethod, OrderStatus } from "~/constants/enums";
+import { OrderPaymentMethod, OrderStatus, PaymentStatus } from "~/constants/enums";
 import { User } from "./person-info.entity";
 import { BaseEntity } from "./base.entity";
 
@@ -26,10 +26,13 @@ export interface Order extends BaseEntity {
     customerId: number;
     customer: User;
     sellerId?: number;
+    receiveTime?: Date;
     seller?: User;
     statusId: OrderStatus;
     statusName: string;
     voucherId?: number;
     discountAmount?: number;
     orderDetails: OrderDetail[];
+    paymentStatus: PaymentStatus;
+    canPayout?: boolean;
 }

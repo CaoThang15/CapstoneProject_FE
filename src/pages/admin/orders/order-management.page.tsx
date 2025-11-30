@@ -3,14 +3,15 @@ import { ColDef, ICellRendererParams } from "ag-grid-community";
 import React from "react";
 import { BoxSection } from "~/components/common";
 import { AgDataGrid, useAgGrid } from "~/components/common/ag-grid";
+import { PaymentQRCode } from "~/components/common/payment-qr-code";
 import { SearchBox } from "~/components/common/search-box";
 import DynamicForm from "~/components/form/dynamic-form";
 import { useForm } from "~/components/form/hooks/use-form";
 import { DATE_TIME_FORMAT } from "~/constants/date-time.format";
-import { OrderStatus } from "~/constants/enums";
+import { OrderStatus, TransactionType } from "~/constants/enums";
 import { Order } from "~/entities";
 import { usePagination } from "~/hooks";
-import { useQueryGetOrdersWithPagination } from "~/services/orders/hooks/queries";
+import { useQueryGetOrderQrCode, useQueryGetOrdersWithPagination } from "~/services/orders/hooks/queries";
 import { GetOrdersRequest } from "~/services/orders/infras";
 import { formatCurrencyVND } from "~/utils/currency";
 import { formatDate } from "~/utils/date-time";
@@ -44,6 +45,21 @@ const AdminOrderManagementPage: React.FC = () => {
 
     const handleChange = (_: React.SyntheticEvent, newValue: number) => {
         setStatusFilter(newValue === 0 ? null : newValue);
+    };
+
+    const [selectedOrderId, setSelectedOrderId] = React.useState<number | null>(null);
+    const [openQr, setOpenQr] = React.useState(false);
+
+    const {
+        data: qrCodeUrl,
+        isLoading: qrLoading,
+        refetch: refetchQr,
+    } = useQueryGetOrderQrCode(selectedOrderId, TransactionType.Payout);
+
+    const handleReturnSellerMoney = (orderId: number) => {
+        setSelectedOrderId(orderId);
+        setOpenQr(true);
+        refetchQr();
     };
 
     const colDefs: ColDef<Order>[] = [
@@ -119,6 +135,13 @@ const AdminOrderManagementPage: React.FC = () => {
                         >
                             View
                         </Button>
+                        {params.data.statusId === OrderStatus.Delivered &&
+                            params.data.receiveTime &&
+                            params.data.canPayout && (
+                                <Button variant="contained" onClick={() => handleReturnSellerMoney(params.data.id)}>
+                                    Pay to seller
+                                </Button>
+                            )}
                     </Stack>
                 );
             },
@@ -203,6 +226,12 @@ const AdminOrderManagementPage: React.FC = () => {
                     {...agGrid}
                 />
             </Stack>
+            <PaymentQRCode
+                open={openQr}
+                onClose={() => setOpenQr(false)}
+                qrCode={qrCodeUrl ?? ""}
+                isLoading={qrLoading}
+            />
         </DynamicForm>
     );
 };

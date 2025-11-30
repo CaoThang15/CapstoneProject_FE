@@ -7,11 +7,13 @@ import { ProductCartResult } from "~/services/carts/hooks/use-query-get-product-
 import { useMutationCreateOrder } from "~/services/orders/hooks/mutations";
 import { useCheckout } from "./checkout.context";
 import { CreateOrderRequestFormValue } from "./types";
-import { OrderPaymentMethod } from "~/constants/enums";
+import { OrderPaymentMethod, TransactionType } from "~/constants/enums";
 import { showToast } from "~/utils";
 import { useNavigate } from "react-router";
 import { useLocalStorage } from "@uidotdev/usehooks";
 import { LocalStorageCartItems } from "../cart/types";
+import { useQueryGetOrderQrCode } from "~/services/orders/hooks/queries";
+import { PaymentQRCode } from "~/components/common/payment-qr-code";
 
 interface Props {
     productCart: ProductCartResult[];
@@ -19,7 +21,11 @@ interface Props {
 export const ReviewStep: React.FC<Props> = ({ productCart }) => {
     const [_, saveLocalCartProducts] = useLocalStorage("cart", {} as LocalStorageCartItems);
 
+    const [qrOpen, setQrOpen] = React.useState<boolean>(false);
+    const [createdOrderId, setCreatedOrderId] = React.useState<number | null>(null);
+
     const { mutateAsync: createOrder, isPending } = useMutationCreateOrder();
+
     const { setStep } = useCheckout();
     const navigate = useNavigate();
     const checkoutForm = useFormContext<CreateOrderRequestFormValue>();
@@ -44,8 +50,33 @@ export const ReviewStep: React.FC<Props> = ({ productCart }) => {
     const handleSubmit = async () => {
         const { shippingAddress, ward, province, ...orderData } = checkoutForm.getValues();
         await createOrder({ ...orderData, shippingAddress: `${shippingAddress}, ${ward}, ${province}` });
-        showToast.success("Order placed successfully!");
+
+        const response = await createOrder({
+            ...orderData,
+            shippingAddress: `${shippingAddress}, ${ward}, ${province}`,
+            totalAmount: 1000,
+        });
+
+        if (paymentMethod === OrderPaymentMethod.DEBIT) {
+            const orderId = response[0].id;
+            setCreatedOrderId(orderId);
+            saveLocalCartProducts({});
+            setQrOpen(true);
+            return;
+        }
+
         saveLocalCartProducts({});
+        showToast.success("Order placed successfully!");
+        navigate("/");
+    };
+
+    const { data: qrUrl, isLoading } = useQueryGetOrderQrCode(
+        qrOpen ? (createdOrderId ?? undefined) : undefined,
+        TransactionType.Deposit,
+    );
+
+    const handleCloseQrDialog = () => {
+        setQrOpen(false);
         navigate("/");
     };
 
@@ -59,7 +90,6 @@ export const ReviewStep: React.FC<Props> = ({ productCart }) => {
                     Confirm items, delivery, and payment details before placing your order.
                 </Typography>
             </BoxSection>
-
             {/* Example item list */}
             <BoxSection>
                 <Stack spacing={2}>
@@ -113,6 +143,7 @@ export const ReviewStep: React.FC<Props> = ({ productCart }) => {
                     Confirm payment
                 </Button>
             </Stack>
+            <PaymentQRCode open={qrOpen} onClose={handleCloseQrDialog} qrCode={qrUrl ?? ""} isLoading={isLoading} />
         </Stack>
     );
 };

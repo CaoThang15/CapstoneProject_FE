@@ -43,6 +43,8 @@ const OrdersQueryKey = {
     GET_ORDERS: "getOrders",
     GET_MY_ORDERS: "getMyOrders",
     GET_ORDER_BY_ID: "getOrderById",
+    GET_ORDER_QR_CODE: "getOrderQrCode",
+    MARKED_AS_DELIVERED: "markedAsDelivered",
     UPDATE_ORDER_STATUS: "updateOrderStatus",
 };
 

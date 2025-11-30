@@ -18,7 +18,7 @@ export const adminSidebarTree: SidebarTabProps[] = [
     {
         labelKey: "Category Management",
         icon: <CategoryOutlined />,
-        pathName: `${ADMIN_PREFIX_ROUTE}/categorys`,
+        pathName: `${ADMIN_PREFIX_ROUTE}/categories`,
     },
     {
         labelKey: "User Management",
