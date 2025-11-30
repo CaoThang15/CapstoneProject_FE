@@ -23,6 +23,7 @@ export function useQueryGetProductFilterAttributes(params?: GetProductWithPagina
             return {
                 minPrice: 0,
                 maxPrice: 0,
+                brands: [],
             };
         return transformData(data);
     }, [data, isError, isLoading]);

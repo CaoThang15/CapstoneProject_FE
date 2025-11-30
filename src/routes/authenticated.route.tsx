@@ -71,7 +71,8 @@ export const AuthenticatedRoutes = (
                 </Route>
             </Route>
             <Route path="/admin" element={<AuthenticatedGuard role={Role.Admin} />}>
-                <Route index element={<div>Admin Page</div>} />
+                <Route index element={<LandingBackground />} />
+                <Route path="dashboard" element={<LandingBackground />} />
                 <Route path="categories">
                     <Route index element={<CategoryManagementPage />} />
                     <Route path=":id" element={<CategoryDetailPage />} />

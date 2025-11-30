@@ -79,6 +79,7 @@ export interface ProductAttributeFilterRequest {
 export interface ProductAttributeFiltersResponse {
     minPrice: number;
     maxPrice: number;
+    brands: string[];
 }
 
 export interface PredictPriceResponse {

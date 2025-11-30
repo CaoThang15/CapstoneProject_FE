@@ -43,6 +43,7 @@ const CategoryManagementPage: React.FC = () => {
                 <React.Fragment>
                     <Button
                         variant="text"
+                        color="success"
                         size="small"
                         onClick={() => (window.location.href = `/admin/categories/${params.data.id}`)}
                     >
@@ -51,6 +52,7 @@ const CategoryManagementPage: React.FC = () => {
                     <Button
                         variant="text"
                         size="small"
+                        color="primary"
                         onClick={() => {
                             setSelectedCategoryId(params.data.id);
                             setOpenEditDialog(true);

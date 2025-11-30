@@ -1,4 +1,4 @@
-import { Box, Divider, Slider, Typography } from "@mui/material";
+import { Box, Checkbox, Divider, Slider, Typography } from "@mui/material";
 import { debounce } from "lodash";
 import React from "react";
 import { SearchBox } from "~/components/common/search-box";
@@ -18,6 +18,7 @@ const ProductFilter: React.FC<ProductFilterProps> = ({ onChange, categoryId }) =
     const [selectedFilters, setSelectedFilters] = React.useState({
         minPrice: 0,
         maxPrice: 1000,
+        brands: [],
         keyword: "",
     });
 
@@ -91,6 +92,35 @@ const ProductFilter: React.FC<ProductFilterProps> = ({ onChange, categoryId }) =
             </Box>
 
             <Divider className="my-4" />
+
+            {/* Brands */}
+            <Box>
+                <Typography variant="subtitle2" fontWeight={600} className="mb-2">
+                    Brands
+                </Typography>
+                <Box className="max-h-40 overflow-y-auto">
+                    {filterAttributes.brands.map((brand) => (
+                        <Box key={brand} className="mb-1">
+                            <label className="flex items-center space-x-2">
+                                <Checkbox
+                                    checked={selectedFilters.brands.includes(brand)}
+                                    onChange={(e) => {
+                                        let newSelectedBrands = [...selectedFilters.brands];
+                                        if (e.target.checked) {
+                                            newSelectedBrands.push(brand);
+                                        } else {
+                                            newSelectedBrands = newSelectedBrands.filter((b) => b !== brand);
+                                        }
+                                        setSelectedFilters((prev) => ({ ...prev, brands: newSelectedBrands }));
+                                        onChange({ brands: newSelectedBrands });
+                                    }}
+                                />
+                                <span>{brand}</span>
+                            </label>
+                        </Box>
+                    ))}
+                </Box>
+            </Box>
         </Box>
     );
 };

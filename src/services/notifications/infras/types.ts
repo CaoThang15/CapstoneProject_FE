@@ -33,7 +33,7 @@ export const transformNotification = (apiNotification: ApiNotification): Notific
         createdAt: new Date(apiNotification.sendAt),
         createdBy: null,
         lastUpdatedBy: null,
-        actionUrl: apiNotification.idRefer ? `/orders/${apiNotification.idRefer}` : undefined, //waiting for actual endpoint
+        actionUrl: apiNotification.idRefer ? `/user/orders/${apiNotification.idRefer}` : undefined, //waiting for actual endpoint
         metadata: {
             systemNotificationId: apiNotification.systemNotificationId,
             idRefer: apiNotification.idRefer,

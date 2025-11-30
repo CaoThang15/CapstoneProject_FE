@@ -142,7 +142,7 @@ const ApplyVoucherPopup: React.FC<ApplyVoucherPopupProps> = ({
                                 <Typography fontWeight={300} fontSize={15} color="text.secondary">
                                     Subtotal
                                 </Typography>
-                                <Typography>{formatCurrencyVND(subTotal)}</Typography>
+                                <Typography fontWeight={700}>{formatCurrencyVND(subTotal)}</Typography>
                             </Box>
                             <Box className="flex items-center justify-between">
                                 <Typography fontWeight={300} fontSize={15} color="text.secondary">
@@ -157,7 +157,7 @@ const ApplyVoucherPopup: React.FC<ApplyVoucherPopupProps> = ({
                                 <Typography fontWeight={300} fontSize={15} color="text.secondary">
                                     Estimated total
                                 </Typography>
-                                <Typography>
+                                <Typography fontWeight={700}>
                                     {formatCurrencyVND(
                                         subTotal - (draftVoucher ? draftVoucher.getDiscount(subTotal) : 0),
                                     )}

@@ -12,7 +12,7 @@ interface CheckoutSummaryProps {
 export const CheckoutSummary: React.FC<CheckoutSummaryProps> = ({ subtotal }) => {
     const { voucher } = useCheckout();
     const form = useFormContext<CreateOrderRequestFormValue>();
-    console.log(form.getValues());
+
     return (
         <BoxSection>
             <Stack direction="row" justifyContent="space-between" alignItems="center">

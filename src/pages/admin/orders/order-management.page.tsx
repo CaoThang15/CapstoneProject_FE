@@ -8,7 +8,7 @@ import { SearchBox } from "~/components/common/search-box";
 import DynamicForm from "~/components/form/dynamic-form";
 import { useForm } from "~/components/form/hooks/use-form";
 import { DATE_TIME_FORMAT } from "~/constants/date-time.format";
-import { OrderStatus, TransactionType } from "~/constants/enums";
+import { OrderStatus, PaymentStatus, TransactionType } from "~/constants/enums";
 import { Order } from "~/entities";
 import { usePagination } from "~/hooks";
 import { useQueryGetOrderQrCode, useQueryGetOrdersWithPagination } from "~/services/orders/hooks/queries";
@@ -114,7 +114,7 @@ const AdminOrderManagementPage: React.FC = () => {
                     case OrderStatus.Returned:
                         return <Chip label="Returned" color="error" />;
                     case OrderStatus.PendingConfirmation:
-                        return <Chip label="Pending Confirmation" color="info" />;
+                        return <Chip label="Pending Confirmation" color="secondary" />;
                     case OrderStatus.PendingShipment:
                         return <Chip label="Pending Shipment" color="warning" />;
                     case OrderStatus.Shipping:
@@ -128,7 +128,7 @@ const AdminOrderManagementPage: React.FC = () => {
                 return (
                     <Stack direction={"row"} spacing={1} className="h-full items-center justify-center">
                         <Button
-                            variant="contained"
+                            variant="outlined"
                             onClick={() => {
                                 window.location.href = `/admin/orders/${params.data.id}`;
                             }}
@@ -136,9 +136,14 @@ const AdminOrderManagementPage: React.FC = () => {
                             View
                         </Button>
                         {params.data.statusId === OrderStatus.Delivered &&
+                            params.data.paymentStatus != PaymentStatus.SELLER_SUCCESS &&
                             params.data.receiveTime &&
                             params.data.canPayout && (
-                                <Button variant="contained" onClick={() => handleReturnSellerMoney(params.data.id)}>
+                                <Button
+                                    variant="contained"
+                                    color="success"
+                                    onClick={() => handleReturnSellerMoney(params.data.id)}
+                                >
                                     Pay to seller
                                 </Button>
                             )}

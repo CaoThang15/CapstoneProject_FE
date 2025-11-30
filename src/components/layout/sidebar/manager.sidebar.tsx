@@ -111,7 +111,7 @@ export const ManagerSidebar: React.FC = () => {
 
             <Box
                 className={classNames(
-                    `flex h-full transform flex-col border-r border-gray-300 bg-gray-50 p-4 transition-transform duration-300 md:relative md:flex md:translate-x-0`,
+                    `flex h-full transform flex-col border-r border-gray-300 bg-gray-50 pt-4 transition-transform duration-300 md:relative md:flex md:translate-x-0`,
                     { "translate-x-0": isOpen, "-translate-x-full": !isOpen },
                 )}
             >
@@ -121,19 +121,14 @@ export const ManagerSidebar: React.FC = () => {
                     </IconButton>
                 </Box>
 
-                <Stack className="no-scrollbar w-full flex-1 overflow-y-auto overflow-x-hidden">
+                <Stack className="no-scrollbar w-full flex-1 overflow-y-auto overflow-x-hidden px-4">
                     {filteredSidebarTree.map((sideBar, idx) => (
                         <SidebarTabItem key={sideBar.labelKey + idx} {...sideBar} level={0} />
                     ))}
                 </Stack>
 
-                <Stack className="mt-4 flex-shrink-0 border-t border-gray-300 pt-2">
+                <Stack className="mt-4 flex-shrink-0 border-t border-gray-300 px-4 pt-2">
                     <UserInfoSummary />
-                    <SidebarTabItem
-                        icon={<ExitToApp />}
-                        labelKey={i18n.translationKey.signOut}
-                        onClick={handleLogout}
-                    />
                 </Stack>
             </Box>
 

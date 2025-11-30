@@ -18,8 +18,9 @@ export const CheckoutSidebar: React.FC = () => {
             <Stack>
                 {steps.map((s) => (
                     <Button
-                        variant={step === s.key ? "contained" : "text"}
+                        variant={step === s.key ? "contained" : "outlined"}
                         onClick={(e) => e.preventDefault()}
+                        color="primary"
                         className={classNames({ "bg-transparent hover:bg-transparent": step !== s.key })}
                         disableRipple
                         startIcon={s.icon}
