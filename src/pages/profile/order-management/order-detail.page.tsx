@@ -49,7 +49,7 @@ const OrderDetailPage: React.FC = () => {
                     <Stack className="px-2 py-3" spacing={3}>
                         <BoxSection className="flex items-center justify-between border border-gray-200 p-3">
                             <Box>
-                                <Typography variant="h6">Order #{order.id}</Typography>
+                                <Typography variant="h6">Đơn hàng #{order.id}</Typography>
                             </Box>
                             <Button
                                 variant="outlined"
@@ -57,7 +57,7 @@ const OrderDetailPage: React.FC = () => {
                                 onClick={() => navigate("/orders")}
                                 startIcon={<ChevronLeftOutlined />}
                             >
-                                Back to Orders
+                                Quay lại danh sách đơn
                             </Button>
                         </BoxSection>
 
@@ -67,7 +67,7 @@ const OrderDetailPage: React.FC = () => {
                                     <Stack spacing={1} direction="row" alignItems="center" className="mb-2 w-full">
                                         <LocalMallOutlined />
                                         <Typography variant="h6" fontWeight={500}>
-                                            Items in this order
+                                            Sản phẩm trong đơn
                                         </Typography>
                                     </Stack>
                                     <Stack direction={"row"} spacing={1} className="w-full">
@@ -90,8 +90,9 @@ const OrderDetailPage: React.FC = () => {
                                                         {orderDetail.productName}
                                                     </Typography>
                                                 </Stack>
+
                                                 <Typography variant="body2">
-                                                    Quantity: {orderDetail.quantity}
+                                                    Số lượng: {orderDetail.quantity}
                                                 </Typography>
 
                                                 <Typography variant="body2" className="text-gray-500">
@@ -100,31 +101,35 @@ const OrderDetailPage: React.FC = () => {
                                             </BoxSection>
                                         ))}
                                     </Stack>
+
                                     <Divider className="my-3" />
+
                                     <Box className="flex space-x-3">
                                         <Box className="w-full">
                                             <Typography fontSize={16} fontWeight={600}>
                                                 <span className="mr-1">
                                                     <LocationOnOutlined />
                                                 </span>
-                                                Shipping summary
+                                                Thông tin giao hàng
                                             </Typography>
                                             <Stack spacing={0.5} className="mt-1">
                                                 <Typography>{order.customer.name}</Typography>
                                                 <Typography variant="body2" color="text.secondary">
-                                                    {order.shippingAddress ?? "N/A"}
+                                                    {order.shippingAddress ?? "Không có"}
                                                 </Typography>
                                                 <Typography variant="body2" color="text.secondary">
                                                     {order.phoneNumber}
                                                 </Typography>
                                             </Stack>
                                         </Box>
+
+                                        {/* Payment method */}
                                         <Box className="w-full">
                                             <Typography fontSize={16} fontWeight={600}>
                                                 <span className="mr-1">
                                                     <PaymentOutlined />
                                                 </span>
-                                                Payment method
+                                                Phương thức thanh toán
                                             </Typography>
                                             <Typography className="mt-1 lowercase capitalize">
                                                 {order.paymentMethod.toCase("pascal")}
@@ -133,53 +138,59 @@ const OrderDetailPage: React.FC = () => {
                                     </Box>
                                 </BoxSection>
                             </Grid>
+
                             <Grid size={{ xs: 12, xl: 4 }}>
-                                {/* Order Info */}
-                                <BoxSection className="h-full !bg-[#e8f6f5]">
+                                <BoxSection className="h-full">
                                     <Stack direction="row" alignItems="center" spacing={1} mb={2}>
                                         <PersonOutline fontSize="small" />
                                         <Typography fontWeight={600} color="primary">
-                                            Order summary
+                                            Thông tin đơn hàng
                                         </Typography>
                                     </Stack>
+
                                     <BoxSection>
                                         <Stack spacing={1}>
                                             <Stack spacing={2}>
                                                 <Box className="flex items-center justify-between">
                                                     <Typography fontWeight={300} fontSize={15} color="text.secondary">
-                                                        Order ID
+                                                        Mã đơn hàng
                                                     </Typography>
                                                     <Typography>{order.id}</Typography>
                                                 </Box>
+
                                                 <Box className="flex items-center justify-between">
                                                     <Typography fontWeight={300} fontSize={15} color="text.secondary">
-                                                        Placed on
+                                                        Ngày đặt
                                                     </Typography>
                                                     <Typography>
-                                                        {dayjs(order.createdAt).format("MMM D, YYYY")}
+                                                        {dayjs(order.createdAt).format("DD/MM/YYYY")}
                                                     </Typography>
                                                 </Box>
+
                                                 <Box className="flex items-center justify-between">
                                                     <Typography fontWeight={300} fontSize={15} color="text.secondary">
-                                                        Seller
+                                                        Người bán
                                                     </Typography>
                                                     <Box className="flex items-center">
                                                         <Avatar src={order.seller.avatar} className="me-2" />
                                                         {order.seller.name}
                                                     </Box>
                                                 </Box>
+
                                                 <Box className="flex items-center justify-between">
                                                     <Typography fontWeight={300} fontSize={15} color="text.secondary">
-                                                        Status
+                                                        Trạng thái
                                                     </Typography>
                                                     <Typography color="primary">{order.statusName}</Typography>
                                                 </Box>
                                             </Stack>
+
                                             <Divider className="!my-2" />
+
                                             <Stack spacing={2}>
                                                 <Box className="flex items-center justify-between">
                                                     <Typography fontWeight={300} fontSize={15} color="text.secondary">
-                                                        Subtotal
+                                                        Tạm tính
                                                     </Typography>
                                                     <Typography>
                                                         {formatCurrencyVND(
@@ -190,6 +201,7 @@ const OrderDetailPage: React.FC = () => {
                                                         )}
                                                     </Typography>
                                                 </Box>
+
                                                 <Box className="flex items-center justify-between">
                                                     <Typography fontWeight={300} fontSize={15} color="text.secondary">
                                                         Voucher
@@ -199,17 +211,20 @@ const OrderDetailPage: React.FC = () => {
                                                     </Typography>
                                                 </Box>
                                             </Stack>
+
                                             <Divider className="!my-2" />
+
                                             <Stack spacing={2}>
                                                 <Box className="flex items-center justify-between">
                                                     <Typography fontWeight={600} color="text.secondary">
-                                                        Total
+                                                        Tổng cộng
                                                     </Typography>
                                                     <Typography fontWeight={600} color="text.secondary">
                                                         {formatCurrencyVND(order.totalAmount - order.discountAmount)}
                                                     </Typography>
                                                 </Box>
                                             </Stack>
+
                                             {order.statusId === OrderStatus.Delivered ? (
                                                 <Button
                                                     variant="contained"
@@ -217,49 +232,16 @@ const OrderDetailPage: React.FC = () => {
                                                     onClick={() => setOpenFeedback(true)}
                                                     startIcon={<StarBorderRounded />}
                                                 >
-                                                    {total > 0 ? "Edit Your Feedback" : "Leave Feedback"}
+                                                    {total > 0 ? "Chỉnh sửa đánh giá" : "Đánh giá sản phẩm"}
                                                 </Button>
                                             ) : null}
                                         </Stack>
                                     </BoxSection>
                                 </BoxSection>
                             </Grid>
-                            <Grid size={{ xs: 12 }}>
-                                <BoxSection className="">
-                                    <Stack spacing={1} direction="row" alignItems="center" className="mb-2 w-full">
-                                        <NotesOutlined />
-                                        <Typography variant="h6" fontWeight={500}>
-                                            Seller notes
-                                        </Typography>
-                                    </Stack>
-                                    <Stack direction={"row"} spacing={1} className="w-full">
-                                        <Typography>{order.note || "No notes from seller."}</Typography>
-                                    </Stack>
-                                    <Divider className="my-3" />
-                                    <Stack spacing={1}>
-                                        <Typography fontSize={16} fontWeight={600}>
-                                            <span className="mr-1">
-                                                <ShieldOutlined />
-                                            </span>
-                                            AI checks
-                                        </Typography>
-                                        <Typography fontSize={16} fontWeight={600}>
-                                            <span className="mr-1">
-                                                <StarBorderRounded />
-                                            </span>
-                                            Price prediction was within 4% of market
-                                        </Typography>
-                                        <Typography fontSize={16} fontWeight={600}>
-                                            <span className="mr-1">
-                                                <ShieldOutlined />
-                                            </span>
-                                            Fraud risk: Low
-                                        </Typography>
-                                    </Stack>
-                                </BoxSection>
-                            </Grid>
                         </Grid>
                     </Stack>
+
                     <OrderFeedbackDialog
                         onClose={() => setOpenFeedback(false)}
                         open={openFeedback}

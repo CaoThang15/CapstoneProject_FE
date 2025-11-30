@@ -1,5 +1,6 @@
 import {
     AddOutlined,
+    AttachMoneyOutlined,
     BackHandOutlined,
     DeleteOutline,
     GeneratingTokensOutlined,
@@ -20,13 +21,17 @@ import { CloudinaryFolder } from "~/constants/enums";
 import { useAuth } from "~/contexts/auth.context";
 import { Category } from "~/entities";
 import { useQueryCategories } from "~/services/categories/hooks/queries";
-import { useMutationCreateProduct, useMutationGenerateProductDescription } from "~/services/products/hooks/mutation";
+import {
+    useMutationCreateProduct,
+    useMutationGenerateProductDescription,
+    useMutationPredictPrice,
+} from "~/services/products/hooks/mutation";
 import { CreateProductRequest } from "~/services/products/infras";
 import { useMutationDeleteFile, useMutationUploadFile } from "~/services/public-api/upload-file/hooks/mutation";
 import { UploadedFile } from "~/services/public-api/upload-file/infras";
 import { showToast } from "~/utils";
-import { formatCurrencyVND } from "~/utils/currency";
 import { GeneratingDescriptionConfirmPopup } from "./popup/generating-description-confirm.popup";
+import { PredictPriceConfirmPopup } from "./popup/predict-price-confirm.popup";
 
 type CreateProductFormValue = CreateProductRequest & {
     media?: UploadedFile[];
@@ -74,11 +79,14 @@ const CreateProductPage: React.FC = () => {
     const navigate = useNavigate();
     const [openConfirmPopup, setOpenConfirmPopup] = React.useState<boolean>(false);
     const [draftSuggestedDescription, setDraftSuggestedDescription] = React.useState<string>("");
+    const [openPredictPricePopup, setOpenPredictPricePopup] = React.useState<boolean>(false);
+    const [draftSuggestedPrice, setDraftSuggestedPrice] = React.useState<number>(0);
 
     const { data: listCategories } = useQueryCategories();
     const { mutateAsync: createProduct, isPending } = useMutationCreateProduct();
     const { mutateAsync: generateProductDescription, isPending: isGeneratingDescription } =
         useMutationGenerateProductDescription();
+    const { mutateAsync: predictPrice, isPending: isPredictingPrice } = useMutationPredictPrice();
 
     const handleAddProperty = () => {
         const current = form.getValues("properties") || [];
@@ -131,6 +139,14 @@ const CreateProductPage: React.FC = () => {
         });
         setDraftSuggestedDescription(suggestedDescription);
         setOpenConfirmPopup(true);
+    };
+
+    const handlePredictPrice = async () => {
+        const predictedPrice = await predictPrice({
+            ...form.watch("properties"),
+        });
+        setDraftSuggestedPrice(predictedPrice.predictedPrice);
+        setOpenPredictPricePopup(true);
     };
 
     React.useEffect(() => {
@@ -221,50 +237,40 @@ const CreateProductPage: React.FC = () => {
                                     <Typography variant="h6" fontWeight={600} mb={2}>
                                         Pricing & Safety
                                     </Typography>
-                                    <BoxSection className="px-4 py-2">
-                                        <Typography variant="h6" fontWeight={500}>
-                                            {formatCurrencyVND(280000)}
-                                        </Typography>
-                                        <Typography variant="body1" className="text-sm text-gray-500">
-                                            AI suggest price
-                                        </Typography>
-                                    </BoxSection>
                                     <Stack spacing={1} className="my-2">
-                                        <BoxSection className="flex !w-full items-center space-x-2 !px-4 !pb-1 !pt-3">
-                                            <LocalAtmOutlined className="text-gray-600" />
-                                            <Box className="flex-1">
-                                                <FormItem
-                                                    render="input-number"
-                                                    name="price"
-                                                    // slotProps={{
-                                                    //     input: {
-                                                    //         endAdornment: (
-                                                    //             <InputAdornment position="end">VND</InputAdornment>
-                                                    //         ),
-                                                    //     },
-                                                    // }}
-                                                    label="Your Price"
-                                                    required
-                                                    prefix="VND"
-                                                    fullWidth
-                                                    minNumber={1}
-                                                />
+                                        <BoxSection className="!px-4 !pb-1 !pt-3">
+                                            <Box className="flex !w-full items-center space-x-2">
+                                                <LocalAtmOutlined className="text-gray-600" />
+                                                <Box className="flex-1">
+                                                    <FormItem
+                                                        render="input-number"
+                                                        name="price"
+                                                        label="Your Price"
+                                                        required
+                                                        slotProps={{
+                                                            input: {
+                                                                endAdornment: <span className="mr-1">VND</span>,
+                                                            },
+                                                        }}
+                                                        prefix="VND"
+                                                        fullWidth
+                                                        minNumber={1}
+                                                    />
+                                                </Box>
+                                            </Box>
+                                            <Box className="mt-1 flex justify-end">
+                                                <Button
+                                                    className=""
+                                                    variant="outlined"
+                                                    startIcon={<AttachMoneyOutlined />}
+                                                    onClick={handlePredictPrice}
+                                                    loading={isPredictingPrice}
+                                                    loadingPosition="start"
+                                                >
+                                                    Predict Price
+                                                </Button>
                                             </Box>
                                         </BoxSection>
-                                        {/* <Box className="flex items-center justify-between">
-                                            <Typography variant="body1" className="text-sm text-gray-500">
-                                                Market price
-                                            </Typography>
-                                            <Typography variant="body1" fontWeight={600}>
-                                                {formatCurrencyVND(280000)} - {formatCurrencyVND(350000)}
-                                            </Typography>
-                                        </Box>
-                                        <Box className="flex items-center justify-between">
-                                            <Typography variant="body1" className="text-sm text-gray-500">
-                                                Fraud risk
-                                            </Typography>
-                                            <HighlightCard typography="Low" color="success" />
-                                        </Box> */}
                                     </Stack>
 
                                     <Stack spacing={1}>
@@ -300,14 +306,6 @@ const CreateProductPage: React.FC = () => {
                                         </Box>
                                     </Stack>
                                     <Divider sx={{ my: 2 }} />
-                                    {/* <Stack spacing={1}>
-                                        <Typography variant="body2" color="text.secondary">
-                                            Estimated Fees: $12.60
-                                        </Typography>
-                                        <Typography variant="body2" color="text.secondary">
-                                            Payout: $267.40
-                                        </Typography>
-                                    </Stack> */}
                                 </BoxSection>
                             </Grid>
                         </Grid>
@@ -448,6 +446,11 @@ const CreateProductPage: React.FC = () => {
                     open={openConfirmPopup}
                     onClose={() => setOpenConfirmPopup(false)}
                     description={draftSuggestedDescription}
+                />
+                <PredictPriceConfirmPopup
+                    open={openPredictPricePopup}
+                    onClose={() => setOpenPredictPricePopup(false)}
+                    predictedPrice={draftSuggestedPrice}
                 />
             </DynamicForm>
         </Box>

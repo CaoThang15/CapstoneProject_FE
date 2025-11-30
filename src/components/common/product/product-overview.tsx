@@ -39,7 +39,7 @@ const ProductOverview: React.FC<Props> = ({ product }) => {
 
     return (
         <Box
-            className="rounded-xl border border-gray-200 bg-white p-4"
+            className="h-full rounded-xl border border-gray-200 bg-white p-4"
             onClick={() => (window.location.href = `/product/${product.slug}`)}
             sx={{ cursor: "pointer" }}
         >

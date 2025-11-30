@@ -1,26 +1,7 @@
+import { ApiNotification, Notification, NotificationType } from "~/entities/notification.entity";
+
 // API response structure for a single notification
-export interface ApiNotification {
-    id: number;
-    systemNotificationId: number;
-    type: number;
-    content: string;
-    isRead: boolean;
-    idRefer: number | null;
-    sendAt: string;
-}
-
 // Frontend notification interface (transformed from API)
-export interface Notification {
-    id: string;
-    message: string;
-    type: "general" | "voucher" | "order" | "payment";
-    isRead: boolean;
-    createdAt: string;
-    updatedAt?: string;
-    actionUrl?: string;
-    metadata?: Record<string, any>;
-}
-
 // For backward compatibility and mock data
 export interface NotificationListResponse {
     notifications: Notification[];
@@ -31,7 +12,7 @@ export interface NotificationListResponse {
 
 export interface NotificationFilters {
     isRead?: boolean;
-    type?: Notification["type"];
+    type?: NotificationType;
     startDate?: string;
     endDate?: string;
 }
@@ -44,28 +25,14 @@ export interface NotificationQueryParams {
 }
 
 export const transformNotification = (apiNotification: ApiNotification): Notification => {
-    // Map type number to string based on backend NotificationType enum
-    const getTypeFromNumber = (type: number): Notification["type"] => {
-        switch (type) {
-            case 1:
-                return "general"; // General = 1
-            case 2:
-                return "voucher"; // Voucher = 2
-            case 3:
-                return "order"; // Order = 3
-            case 4:
-                return "payment"; // Payment = 4
-            default:
-                return "general";
-        }
-    };
-
     return {
-        id: apiNotification.id.toString(),
+        id: apiNotification.id,
         message: apiNotification.content,
-        type: getTypeFromNumber(apiNotification.type),
+        type: apiNotification.type as NotificationType,
         isRead: apiNotification.isRead,
-        createdAt: apiNotification.sendAt,
+        createdAt: new Date(apiNotification.sendAt),
+        createdBy: null,
+        lastUpdatedBy: null,
         actionUrl: apiNotification.idRefer ? `/orders/${apiNotification.idRefer}` : undefined, //waiting for actual endpoint
         metadata: {
             systemNotificationId: apiNotification.systemNotificationId,
@@ -79,7 +46,6 @@ export const transformNotificationListResponse = (
     page: number,
 ): NotificationListResponse => {
     const transformedNotifications = apiResponse.items.map(transformNotification);
-
     return {
         notifications: transformedNotifications,
         totalCount: apiResponse.metadata.totalItems,

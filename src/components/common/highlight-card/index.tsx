@@ -13,7 +13,7 @@ const HighlightCard: React.FC<HighlightCardProps> = ({ startIcon, typography, cl
             className={classNames("cursor-default justify-start rounded-xl border-none px-4 py-2", className)}
             // color="light"
             disableRipple
-            sx={{ bgcolor: "primary.light", color: "primary.main" }}
+            sx={{ bgcolor: "primary.light", color: "white" }}
             startIcon={startIcon}
             {...props}
         >

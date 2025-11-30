@@ -1,11 +1,10 @@
-import { AccountBalanceOutlined, CreditCardOutlined, LocalAtmOutlined } from "@mui/icons-material";
+import { AccountBalanceOutlined, LocalAtmOutlined } from "@mui/icons-material";
 import { Box, Button, Grid, Typography } from "@mui/material";
+import React from "react";
 import { useFormContext } from "react-hook-form";
 import { BoxSection } from "~/components/common";
-import FormItem from "~/components/form/form-item";
-import { useCheckout } from "./checkout.context";
-import React from "react";
 import { OrderPaymentMethod } from "~/constants/enums";
+import { useCheckout } from "./checkout.context";
 
 export const PaymentStep: React.FC = () => {
     const { nextStep, prevStep } = useCheckout();

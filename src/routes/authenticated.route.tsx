@@ -55,7 +55,7 @@ export const AuthenticatedRoutes = (
             <Route path="on-boarding" element={<SellerOnboardingPage />} />
         </Route>
         <Route element={<ManagerWrapper />}>
-            <Route path="/seller" element>
+            <Route path="seller">
                 <Route element={<AuthenticatedGuard role={Role.Seller} />}>
                     <Route index element={<LandingBackground />} />
                     <Route path="dashboard" element={<LandingBackground />} />

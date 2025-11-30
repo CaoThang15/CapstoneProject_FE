@@ -25,25 +25,25 @@ import {
 import dayjs from "dayjs";
 import React from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { Notification, NotificationType } from "~/entities/notification.entity";
 import {
     useInfiniteQueryNotifications,
     useMutationDeleteNotification,
     useMutationMarkAllRead,
     useMutationMarkRead,
 } from "~/services/notifications/hooks";
-import { Notification } from "~/services/notifications/infras";
 
-const NotificationTypeIcon: React.FC<{ type: Notification["type"]; isRead: boolean }> = ({ type, isRead }) => {
+const NotificationTypeIcon: React.FC<{ type: NotificationType; isRead: boolean }> = ({ type, isRead }) => {
     const iconColor = isRead ? "action" : "primary";
 
     switch (type) {
-        case "general":
+        case NotificationType.General:
             return <InfoIcon fontSize="small" color={iconColor} />;
-        case "voucher":
+        case NotificationType.Voucher:
             return <VoucherIcon fontSize="small" color={iconColor} />;
-        case "order":
+        case NotificationType.Order:
             return <OrderIcon fontSize="small" color={iconColor} />;
-        case "payment":
+        case NotificationType.Payment:
             return <PaymentIcon fontSize="small" color={iconColor} />;
         default:
             return <InfoIcon fontSize="small" color={iconColor} />;
@@ -57,7 +57,7 @@ const NotificationItem: React.FC<{
 }> = ({ notification, onMarkAsRead, onDelete }) => {
     const handleClick = () => {
         if (!notification.isRead) {
-            onMarkAsRead(notification.id);
+            onMarkAsRead(notification.id.toString());
         }
 
         // Navigate to action URL if available
@@ -68,7 +68,7 @@ const NotificationItem: React.FC<{
 
     const handleDelete = (e: React.MouseEvent) => {
         e.stopPropagation();
-        onDelete(notification.id);
+        onDelete(notification.id.toString());
     };
 
     return (

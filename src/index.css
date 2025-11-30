@@ -42,7 +42,7 @@ body {
     place-items: center;
     min-width: 320px;
     min-height: 100vh;
-    background-color: #f6fbfa;
+    background-color: rgb(244, 244, 244);
 }
 
 h1 {

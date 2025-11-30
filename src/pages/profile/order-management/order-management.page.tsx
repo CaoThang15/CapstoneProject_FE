@@ -2,13 +2,16 @@ import { LocalShippingOutlined } from "@mui/icons-material";
 import { Box, Button, CircularProgress, Divider, Grid, Stack, Tab, Tabs, Typography } from "@mui/material";
 import React from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { toast } from "react-toastify";
 import { BoxSection, ImageRenderer, LoadingContainer } from "~/components/common";
 import { PaymentQRCode } from "~/components/common/payment-qr-code";
 import { SearchBox } from "~/components/common/search-box";
 import DynamicForm from "~/components/form/dynamic-form";
 import { useForm } from "~/components/form/hooks/use-form";
 import { OrderPaymentMethod, OrderStatus, PaymentStatus, TransactionType } from "~/constants/enums";
+import { NotificationType } from "~/entities/notification.entity";
 import { usePagination } from "~/hooks";
+import { useNotificationStream } from "~/services/notifications/hooks/queries/use-notification-stream";
 import { useMutationMarkedAsDelivered } from "~/services/orders/hooks/mutations";
 import { useQueryGetInfinityOrders, useQueryGetOrderQrCode } from "~/services/orders/hooks/queries";
 import { GetOrdersRequest } from "~/services/orders/infras";
@@ -62,7 +65,7 @@ const OrderManagementPage: React.FC = () => {
     const [openQr, setOpenQr] = React.useState(false);
 
     const {
-        data: qrCodeUrl,
+        data: qrCode,
         isLoading: qrLoading,
         refetch: refetchQr,
     } = useQueryGetOrderQrCode(selectedOrderId, TransactionType.Deposit);
@@ -104,6 +107,14 @@ const OrderManagementPage: React.FC = () => {
     const totalPrice = React.useMemo(() => {
         return listOrders.reduce((acc, curr) => acc + curr.totalAmount, 0);
     }, [isLoading, totalOrders]);
+
+    useNotificationStream((notification) => {
+        if (notification.type === NotificationType.Payment) {
+            toast.success(`Payment completed!`);
+            setOpenQr(false);
+            setSelectedOrderId(null);
+        }
+    });
 
     return (
         <DynamicForm form={form}>
@@ -261,8 +272,11 @@ const OrderManagementPage: React.FC = () => {
             </Stack>
             <PaymentQRCode
                 open={openQr}
-                onClose={() => setOpenQr(false)}
-                qrCode={qrCodeUrl ?? ""}
+                onClose={() => {
+                    setSelectedOrderId(null);
+                    setOpenQr(false);
+                }}
+                qrInfo={qrCode ?? undefined}
                 isLoading={qrLoading}
             />
         </DynamicForm>

@@ -1,10 +1,9 @@
-import { callApi } from "~/libs/axios/request";
-import { CreateOrderRequest, GetOrdersRequest } from "./types";
 import { endpoints } from "~/constants/endpoints";
-import { HttpMethod, IPagination } from "~/libs/axios/types";
-import { Order } from "~/entities";
 import { OrderStatus, TransactionType } from "~/constants/enums";
-import { axiosInstance } from "~/libs/axios/axios-instance";
+import { Order } from "~/entities";
+import { callApi } from "~/libs/axios/request";
+import { HttpMethod, IPagination } from "~/libs/axios/types";
+import { CreateOrderRequest, GetOrdersRequest, QRInfoResponse } from "./types";
 
 const createOrder = async (orderData: CreateOrderRequest) => {
     return await callApi<Order[]>({
@@ -46,12 +45,11 @@ const updateOrderStatus = async (orderId: number, status: OrderStatus) => {
 };
 
 const generateOrderQRCode = async (orderId: number, type: TransactionType) => {
-    const response = await axiosInstance.get(endpoints.orders.generateOrderQRCode(orderId), {
-        responseType: "blob",
+    return await callApi<QRInfoResponse>({
+        url: endpoints.orders.generateOrderQRCode(orderId),
+        method: HttpMethod.GET,
         params: { type },
     });
-
-    return response.data;
 };
 
 const markedAsDelivered = async (orderId: number) => {

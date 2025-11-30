@@ -51,7 +51,7 @@ const AdminOrderManagementPage: React.FC = () => {
     const [openQr, setOpenQr] = React.useState(false);
 
     const {
-        data: qrCodeUrl,
+        data: qrCode,
         isLoading: qrLoading,
         refetch: refetchQr,
     } = useQueryGetOrderQrCode(selectedOrderId, TransactionType.Payout);
@@ -228,8 +228,11 @@ const AdminOrderManagementPage: React.FC = () => {
             </Stack>
             <PaymentQRCode
                 open={openQr}
-                onClose={() => setOpenQr(false)}
-                qrCode={qrCodeUrl ?? ""}
+                onClose={() => {
+                    setOpenQr(false);
+                    setSelectedOrderId(null);
+                }}
+                qrInfo={qrCode ?? undefined}
                 isLoading={qrLoading}
             />
         </DynamicForm>

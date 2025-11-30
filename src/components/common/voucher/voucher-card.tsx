@@ -18,12 +18,12 @@ const VoucherCard: React.FC<VoucherCardProps> = ({ voucher, isOwned, onSaveVouch
 
     return (
         <>
-            <Box className="flex h-full space-x-2 rounded-xl border border-gray-300 shadow-sm">
+            <Box className="flex h-full space-x-2 overflow-hidden rounded-xl border border-gray-300 shadow-sm">
                 <Box
                     className="flex h-full w-[140px] flex-col items-center justify-center p-2"
                     sx={{ backgroundColor: "primary.light" }}
                 >
-                    <Typography fontWeight={600} fontSize={16} color="primary">
+                    <Typography fontWeight={600} fontSize={16} color="primary.contrastText">
                         {voucher.getDiscountLabel()}
                     </Typography>
                 </Box>
@@ -33,7 +33,7 @@ const VoucherCard: React.FC<VoucherCardProps> = ({ voucher, isOwned, onSaveVouch
                     </Typography>
                     <Box className="flex justify-end space-x-2">
                         <Button variant="outlined" color="inherit" onClick={handleCopyCode}>
-                            Copy
+                            Sao chép mã
                         </Button>
                         {!isOwned && (
                             <Button
@@ -50,7 +50,7 @@ const VoucherCard: React.FC<VoucherCardProps> = ({ voucher, isOwned, onSaveVouch
                     </Typography>
                     <LinearProgress variant="determinate" value={voucher.getUsagePercentage()} />
                     <Typography fontSize={12} color="text.secondary">
-                        Usage left: {voucher.getUsageLeftPercentage()}% remaining. Valid until{" "}
+                        Còn lại: {voucher.getUsageLeftPercentage()}% còn lại. Hạn sử dụng đến{" "}
                         {formatDate(voucher.endDate, DATE_TIME_FORMAT["dd/MM/yyyy"])}
                     </Typography>
                 </Stack>

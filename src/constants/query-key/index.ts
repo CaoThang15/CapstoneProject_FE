@@ -36,6 +36,8 @@ const ProductsQueryKey = {
     UPDATE: "updateProduct",
     GENERATE_DESCRIPTION: "generateProductDescription",
     DELETE: "deleteProduct",
+    GET_PRODUCT_ATTRIBUTE_FILTERS: "getProductAttributeFilters",
+    PREDICT_PRICE: "predictPrice",
 };
 
 const OrdersQueryKey = {

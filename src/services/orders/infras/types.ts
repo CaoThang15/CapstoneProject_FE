@@ -31,3 +31,11 @@ export interface GetOrdersRequest extends ISearchKeywordRequest, IPaginationRequ
     paymentMethodCode?: number;
     statusId?: OrderStatus;
 }
+
+export interface QRInfoResponse {
+    qrCodeUrl: string;
+    code: string;
+    bankAccount: string;
+    bankName: string;
+    value: number;
+}

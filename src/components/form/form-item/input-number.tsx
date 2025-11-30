@@ -15,6 +15,12 @@ export type InputNumberFormItemProps = Omit<BaseFormItemProps, "defaultValue"> &
     InputNumberUIProps &
     InputNumberValidationRules;
 
+const formatNumber = (value: number | string) => {
+    if (value === "" || value === null || value === undefined) return "";
+    const num = Number(String(value).replace(/\D/g, ""));
+    if (isNaN(num)) return "";
+    return num.toLocaleString("de-DE"); // → 1.234.567
+};
 export const InputNumberFormItem: React.FC<InputNumberFormItemProps> = ({
     name,
     defaultValue,
@@ -41,7 +47,12 @@ export const InputNumberFormItem: React.FC<InputNumberFormItemProps> = ({
                         {...field}
                         placeholder={placeholder}
                         fullWidth={fullWidth}
-                        type="number"
+                        value={formatNumber(field.value)}
+                        onChange={(e) => {
+                            const raw = e.target.value.replace(/\./g, "").replace(/\D/g, "");
+                            field.onChange(raw ? Number(raw) : "");
+                        }}
+                        type="text"
                         size={size}
                         error={!!error}
                         required={required}

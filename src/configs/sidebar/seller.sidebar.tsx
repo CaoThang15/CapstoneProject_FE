@@ -4,17 +4,17 @@ import { SidebarTabProps } from "~/components/layout/sidebar/tabs/sidebar.tab";
 export const SELLER_PREFIX_ROUTE = "/seller";
 export const sellerSidebarTree: SidebarTabProps[] = [
     {
-        labelKey: "Dashboard",
+        labelKey: "Bảng điều khiển",
         icon: <DashboardOutlined />,
         pathName: `${SELLER_PREFIX_ROUTE}/dashboard`,
     },
     {
-        labelKey: "My Products",
+        labelKey: "Sản phẩm của tôi",
         icon: <Inventory2Outlined />,
         pathName: `${SELLER_PREFIX_ROUTE}/products`,
     },
     {
-        labelKey: "Order Management",
+        labelKey: "Quản lý đơn hàng",
         icon: <ManageHistoryOutlined />,
         pathName: `${SELLER_PREFIX_ROUTE}/orders`,
     },
